@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oduyo CRM - Servis Dokümantasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .doc-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.2);
+        }
+
+        .doc-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .doc-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+        }
+
+        .doc-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .doc-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .doc-badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #2196f3;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .doc-badge.new {
+            background: #d4edda;
+            color: #28a745;
+        }
+
+        .doc-badge.updated {
+            background: #fff3cd;
+            color: #ffc107;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Oduyo CRM</h1>
+            <p>Servis Dokümantasyonu</p>
+            <span class="version-badge">v2.0-refactor</span>
+        </header>
+
+        <h2 class="section-title">🆕 Yeni Eklenenler</h2>
+        <div class="docs-grid">
+            <a href="refactored_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">🚀</div>
+                    <div class="doc-title">V2.0 Refactor Özeti</div>
+                </div>
+                <div class="doc-description">
+                    Phase 5 ile eklenen tüm yeni servisler ve özellikler. CreditUsage, DealerCommission, OfferPricing ve daha fazlası.
+                </div>
+                <span class="doc-badge new">YENİ</span>
+                <span class="doc-badge">Kapsamlı</span>
+            </a>
+        </div>
+
+        <h2 class="section-title">📖 Temel Servisler</h2>
+        <div class="docs-grid">
+            <a href="company_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">🏢</div>
+                    <div class="doc-title">Company Services</div>
+                </div>
+                <div class="doc-description">
+                    Firma yönetimi: Firma CRUD, iletişim bilgileri, firma ayarları
+                </div>
+                <span class="doc-badge updated">Güncellendi</span>
+            </a>
+
+            <a href="user_auth_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">👤</div>
+                    <div class="doc-title">User & Auth Services</div>
+                </div>
+                <div class="doc-description">
+                    Kullanıcı yönetimi, kimlik doğrulama, yetkilendirme
+                </div>
+                <span class="doc-badge">Stabil</span>
+            </a>
+
+            <a href="tenant_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">🏛️</div>
+                    <div class="doc-title">Tenant Services</div>
+                </div>
+                <div class="doc-description">
+                    Multi-tenant yönetimi, tenant ayarları, izolasyon
+                </div>
+                <span class="doc-badge">Stabil</span>
+            </a>
+        </div>
+
+        <h2 class="section-title">💼 İş Süreçleri</h2>
+        <div class="docs-grid">
+            <a href="demo_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">🎯</div>
+                    <div class="doc-title">Demo Services</div>
+                </div>
+                <div class="doc-description">
+                    Demo talepleri, randevu yönetimi, takip süreçleri
+                </div>
+                <span class="doc-badge updated">Güncellendi</span>
+            </a>
+
+            <a href="offer_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">💰</div>
+                    <div class="doc-title">Offer Services</div>
+                </div>
+                <div class="doc-description">
+                    Teklif oluşturma, fiyatlandırma, onay süreçleri, OTP
+                </div>
+                <span class="doc-badge updated">Güncellendi</span>
+            </a>
+
+            <a href="payment_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">💳</div>
+                    <div class="doc-title">Payment Services</div>
+                </div>
+                <div class="doc-description">
+                    Ödeme işlemleri, sanal POS, tahsilat yönetimi
+                </div>
+                <span class="doc-badge updated">Güncellendi</span>
+            </a>
+        </div>
+
+        <h2 class="section-title">🔐 Lisans ve Kampanya</h2>
+        <div class="docs-grid">
+            <a href="license_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">🔐</div>
+                    <div class="doc-title">License Services</div>
+                </div>
+                <div class="doc-description">
+                    Lisans yönetimi, trial, grace period, senkronizasyon
+                </div>
+                <span class="doc-badge updated">Güncellendi</span>
+            </a>
+
+            <a href="campaign_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">🎁</div>
+                    <div class="doc-title">Campaign Services</div>
+                </div>
+                <div class="doc-description">
+                    Kampanya yönetimi, indirimler, freeze period
+                </div>
+                <span class="doc-badge updated">Güncellendi</span>
+            </a>
+
+            <a href="product_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">📦</div>
+                    <div class="doc-title">Product Services</div>
+                </div>
+                <div class="doc-description">
+                    Ürün, paket ve modül yönetimi, fiyatlandırma
+                </div>
+                <span class="doc-badge">Stabil</span>
+            </a>
+        </div>
+
+        <h2 class="section-title">🤝 Bayi Yönetimi</h2>
+        <div class="docs-grid">
+            <a href="dealer_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">🤝</div>
+                    <div class="doc-title">Dealer Services</div>
+                </div>
+                <div class="doc-description">
+                    Bayi yönetimi, hiyerarşi, kullanıcı eşleştirme
+                </div>
+                <span class="doc-badge">Stabil</span>
+            </a>
+
+            <a href="refactored_services_docs.html#dealer-commission" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">💼</div>
+                    <div class="doc-title">Commission Services</div>
+                </div>
+                <div class="doc-description">
+                    Bayi komisyonları, hak ediş, ödeme takibi
+                </div>
+                <span class="doc-badge new">YENİ</span>
+            </a>
+        </div>
+
+        <h2 class="section-title">⚙️ Yardımcı Servisler</h2>
+        <div class="docs-grid">
+            <a href="lookup_services_docs.html" class="doc-card">
+                <div class="doc-card-header">
+                    <div class="doc-icon">📋</div>
+                    <div class="doc-title">Lookup Services</div>
+                </div>
+                <div class="doc-description">
+                    Genel tanımlar, ayarlar, para birimleri, durum kodları
+                </div>
+                <span class="doc-badge">Stabil</span>
+            </a>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Ödüyo CRM - Tüm hakları saklıdır</p>
+            <p><strong>Versiyon:</strong> 2.0-refactor | <strong>Güncelleme:</strong> 2025-10-08</p>
+        </footer>
+    </div>
+</body>
+</html>

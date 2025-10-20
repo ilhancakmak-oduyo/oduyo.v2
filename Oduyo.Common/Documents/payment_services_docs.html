@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödeme/Tahsilat Servis Dokümantasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #3498db;
+        }
+        
+        main {
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+        }
+        
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .keyword { color: #c678dd; }
+        .string { color: #98c379; }
+        .comment { color: #5c6370; font-style: italic; }
+        .method { color: #61afef; }
+        .type { color: #e5c07b; }
+        .number { color: #d19a66; }
+        
+        .platform-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .platform-tab {
+            padding: 0.75rem 1.5rem;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .platform-tab:hover {
+            background: #e9ecef;
+        }
+        
+        .platform-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .platform-content {
+            display: none;
+        }
+        
+        .platform-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💳 Ödeme/Tahsilat Servis Dokümantasyonu</h1>
+            <p>Web API • Blazor • WinForms • Mobile için Ödeme Servisleri</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#payment-service">PaymentService</a></li>
+                <li><a href="#virtualpos-service">VirtualPOSService</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <section id="payment-service">
+                <h2>💳 IPaymentService</h2>
+                
+                <div class="note">
+                    <strong>💡 Ödeme Nedir?</strong> Müşterilerden alınan ödemelerin kaydedildiği ve takip edildiği sistemdir. Sanal POS entegrasyonları ile çalışır ve ödeme durumları (beklemede, tamamlandı, başarısız, iade) takip edilir.
+                </div>
+
+                <h3>PaymentStatus Enum Değerleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Değer</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Pending (1)</td>
+                            <td>Beklemede - Ödeme başlatıldı</td>
+                        </tr>
+                        <tr>
+                            <td>Completed (2)</td>
+                            <td>Tamamlandı - Ödeme başarılı</td>
+                        </tr>
+                        <tr>
+                            <td>Failed (3)</td>
+                            <td>Başarısız - Ödeme gerçekleşmedi</td>
+                        </tr>
+                        <tr>
+                            <td>Refunded (4)</td>
+                            <td>İade Edildi - Ödeme iade edildi</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Ödeme Oluşturma - CreatePaymentAsync</h3>
+                
+                <div class="platform-tabs">
+                    <button class="platform-tab active" onclick="showPlatform('payment-create', 'webapi')">Web API</button>
+                    <button class="platform-tab" onclick="showPlatform('payment-create', 'blazor')">Blazor</button>
+                    <button class="platform-tab" onclick="showPlatform('payment-create', 'winforms')">WinForms</button>
+                    <button class="platform-tab" onclick="showPlatform('payment-create', 'mobile')">Mobile</button>
+                </div>
+                
+                <div id="payment-create-webapi" class="platform-content active">
+                    <h4>Web API Controller</h4>
+                    <pre><code>[<span class="type">HttpPost</span>]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">CreatePayment</span>([FromBody] CreatePaymentDto dto)
+{
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">var</span> payment = <span class="keyword">await</span> _paymentService.CreatePaymentAsync(dto, currentUserId);
+    <span class="keyword">return</span> Ok(<span class="keyword">new</span> { message = <span class="string">"Ödeme oluşturuldu"</span>, data = payment });
+}</code></pre>
+                </div>
+                
+                <div id="payment-create-blazor" class="platform-content">
+                    <h4>Blazor Component</h4>
+                    <pre><code>@inject IPaymentService PaymentService
+
+<span class="keyword">private async</span> Task <span class="method">CreatePayment</span>()
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreatePaymentDto
+    {
+        CompanyId = companyId,
+        OfferId = offerId,
+        Amount = totalAmount,
+        CurrencyId = currencyId,
+        VirtualPOSId = selectedPOSId
+    };
+    
+    <span class="keyword">var</span> payment = <span class="keyword">await</span> PaymentService.CreatePaymentAsync(dto, currentUserId);
+    NavigationManager.NavigateTo(<span class="string">$"/payment/{payment.Id}"</span>);
+}</code></pre>
+                </div>
+                
+                <div id="payment-create-winforms" class="platform-content">
+                    <h4>WinForms</h4>
+                    <pre><code><span class="keyword">private async void</span> <span class="method">btnCreatePayment_Click</span>(<span class="keyword">object</span> sender, EventArgs e)
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreatePaymentDto
+    {
+        CompanyId = (<span class="keyword">int</span>)cmbCompany.SelectedValue,
+        OfferId = offerId,
+        Amount = numAmount.Value,
+        CurrencyId = (<span class="keyword">int</span>)cmbCurrency.SelectedValue,
+        VirtualPOSId = (<span class="keyword">int</span>)cmbVirtualPOS.SelectedValue
+    };
+    
+    <span class="keyword">var</span> payment = <span class="keyword">await</span> _paymentService.CreatePaymentAsync(dto, _currentUserId);
+    MessageBox.Show(<span class="string">"Ödeme oluşturuldu"</span>);
+}</code></pre>
+                </div>
+                
+                <div id="payment-create-mobile" class="platform-content">
+                    <h4>Mobile (MAUI/Xamarin)</h4>
+                    <pre><code><span class="keyword">private async</span> Task <span class="method">CreatePayment</span>()
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreatePaymentDto
+    {
+        CompanyId = CompanyId,
+        OfferId = OfferId,
+        Amount = Amount,
+        CurrencyId = CurrencyId,
+        VirtualPOSId = VirtualPOSId
+    };
+    
+    <span class="keyword">var</span> payment = <span class="keyword">await</span> _paymentService.CreatePaymentAsync(dto, _currentUserId);
+    <span class="keyword">await</span> DisplayAlert(<span class="string">"Başarılı"</span>, <span class="string">"Ödeme oluşturuldu"</span>, <span class="string">"Tamam"</span>);
+}</code></pre>
+                </div>
+
+                <h3>Ödeme Tamamlama - CompletePaymentAsync</h3>
+                <pre><code><span class="comment">// Sanal POS'tan başarılı yanıt geldiğinde</span>
+<span class="keyword">var</span> success = <span class="keyword">await</span> _paymentService.CompletePaymentAsync(
+    paymentId, 
+    transactionId: <span class="string">"TRX123456789"</span>, 
+    currentUserId
+);</code></pre>
+
+                <h3>Ödeme Başarısız - FailPaymentAsync</h3>
+                <pre><code><span class="keyword">var</span> success = <span class="keyword">await</span> _paymentService.FailPaymentAsync(
+    paymentId, 
+    reason: <span class="string">"Yetersiz bakiye"</span>, 
+    currentUserId
+);</code></pre>
+
+                <h3>Ödeme İadesi - RefundPaymentAsync</h3>
+                <pre><code><span class="keyword">var</span> success = <span class="keyword">await</span> _paymentService.RefundPaymentAsync(paymentId, currentUserId);</code></pre>
+
+                <h3>Ödeme Getirme İşlemleri</h3>
+                <pre><code><span class="comment">// Firma ödemeleri</span>
+<span class="keyword">var</span> payments = <span class="keyword">await</span> _paymentService.GetCompanyPaymentsAsync(companyId);
+
+<span class="comment">// Duruma göre</span>
+<span class="keyword">var</span> pending = <span class="keyword">await</span> _paymentService.GetPaymentsByStatusAsync(PaymentStatus.Pending);
+
+<span class="comment">// Toplam tutar</span>
+<span class="keyword">var</span> total = <span class="keyword">await</span> _paymentService.GetCompanyTotalPaymentsAsync(companyId);</code></pre>
+            </section>
+
+            <section id="virtualpos-service">
+                <h2>🏦 IVirtualPOSService</h2>
+                
+                <div class="note">
+                    <strong>💡 Sanal POS:</strong> Online ödeme almak için kullanılan sanal pos entegrasyonlarının yönetildiği sistemdir.
+                </div>
+
+                <h3>Sanal POS Oluşturma - CreateVirtualPOSAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> CreateVirtualPOSDto
+{
+    Name = <span class="string">"İş Bankası Sanal POS"</span>,
+    MerchantId = <span class="string">"MERCHANT123"</span>,
+    ApiKey = <span class="string">"api_key"</span>,
+    ApiSecret = <span class="string">"api_secret"</span>
+};
+
+<span class="keyword">var</span> pos = <span class="keyword">await</span> _virtualPOSService.CreateVirtualPOSAsync(dto, currentUserId);</code></pre>
+
+                <h3>Sanal POS Listeleme</h3>
+                <pre><code><span class="keyword">var</span> allPOS = <span class="keyword">await</span> _virtualPOSService.GetAllVirtualPOSAsync();
+<span class="keyword">var</span> activePOS = <span class="keyword">await</span> _virtualPOSService.GetActiveVirtualPOSAsync();</code></pre>
+            </section>
+
+            <section>
+                <h2>📋 Servis Özet Tablosu</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servis</th>
+                            <th>Metod</th>
+                            <th>Açıklama</th>
+                            <th>Dönüş Tipi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="9"><strong>IPaymentService</strong></td>
+                            <td>CreatePaymentAsync</td>
+                            <td>Ödeme oluşturur</td>
+                            <td>Task&lt;Payment&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>CompletePaymentAsync</td>
+                            <td>Ödemeyi tamamlar</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>FailPaymentAsync</td>
+                            <td>Ödemeyi başarısız işaretler</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>RefundPaymentAsync</td>
+                            <td>Ödemeyi iade eder</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetPaymentByIdAsync</td>
+                            <td>ID ile ödeme getirir</td>
+                            <td>Task&lt;Payment&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCompanyPaymentsAsync</td>
+                            <td>Firma ödemelerini getirir</td>
+                            <td>Task&lt;List&lt;Payment&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetPaymentsByStatusAsync</td>
+                            <td>Duruma göre ödemeler</td>
+                            <td>Task&lt;List&lt;Payment&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetPaymentsByOfferAsync</td>
+                            <td>Teklif ödemeleri</td>
+                            <td>Task&lt;List&lt;Payment&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCompanyTotalPaymentsAsync</td>
+                            <td>Toplam ödeme tutarı</td>
+                            <td>Task&lt;decimal&gt;</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="6"><strong>IVirtualPOSService</strong></td>
+                            <td>CreateVirtualPOSAsync</td>
+                            <td>Sanal POS oluşturur</td>
+                            <td>Task&lt;VirtualPOS&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateVirtualPOSAsync</td>
+                            <td>Sanal POS günceller</td>
+                            <td>Task&lt;VirtualPOS&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteVirtualPOSAsync</td>
+                            <td>Sanal POS siler</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetVirtualPOSByIdAsync</td>
+                            <td>ID ile sanal POS</td>
+                            <td>Task&lt;VirtualPOS&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetAllVirtualPOSAsync</td>
+                            <td>Tüm sanal POSlar</td>
+                            <td>Task&lt;List&lt;VirtualPOS&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetActiveVirtualPOSAsync</td>
+                            <td>Aktif sanal POSlar</td>
+                            <td>Task&lt;List&lt;VirtualPOS&gt;&gt;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>⚡ Dependency Injection Kurulumu</h2>
+                <pre><code>builder.Services.AddScoped&lt;IPaymentService, PaymentService&gt;();
+builder.Services.AddScoped&lt;IVirtualPOSService, VirtualPOSService&gt;();</code></pre>
+            </section>
+
+            <section>
+                <h2>🔒 Güvenlik ve En İyi Pratikler</h2>
+                
+                <div class="warning">
+                    <h4>1. API Bilgilerinin Güvenliği</h4>
+                    <p>API Key ve Secret şifreli saklanmalıdır.</p>
+                </div>
+
+                <div class="success">
+                    <h4>2. İş Kuralları</h4>
+                    <ul>
+                        <li>Sadece Completed ödemeler iade edilebilir</li>
+                        <li>Her ödeme işlemi loglanmalı</li>
+                        <li>Transaction kullanılmalı</li>
+                        <li>Ödeme tamamlandığında lisans oluşturulmalı</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Ödüyo CRM - Ödeme/Tahsilat Servis Dokümantasyonu</p>
+        </footer>
+    </div>
+
+    <script>
+        function showPlatform(section, platform) {
+            const tabs = document.querySelectorAll(`#${section} .platform-tab`);
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const contents = document.querySelectorAll(`[id^="${section}-"]`);
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${section}-${platform}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

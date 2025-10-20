@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tenant Yönetimi Servis Dokümantasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #3498db;
+        }
+        
+        main {
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+        }
+        
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .keyword { color: #c678dd; }
+        .string { color: #98c379; }
+        .comment { color: #5c6370; font-style: italic; }
+        .method { color: #61afef; }
+        .type { color: #e5c07b; }
+        .number { color: #d19a66; }
+        
+        .platform-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .platform-tab {
+            padding: 0.75rem 1.5rem;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .platform-tab:hover {
+            background: #e9ecef;
+        }
+        
+        .platform-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .platform-content {
+            display: none;
+        }
+        
+        .platform-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏢 Tenant Yönetimi Servis Dokümantasyonu</h1>
+            <p>Web API • Blazor • WinForms • Mobile için Tenant Servisleri</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#tenant-service">TenantService</a></li>
+                <li><a href="#tenant-user-service">TenantUserService</a></li>
+                <li><a href="#tenant-setting-service">TenantSettingService</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <section id="tenant-service">
+                <h2>🏢 ITenantService</h2>
+                
+                <h3>Tenant Oluşturma - CreateTenantAsync</h3>
+                
+                <div class="platform-tabs">
+                    <button class="platform-tab active" onclick="showPlatform('tenant-create', 'webapi')">Web API</button>
+                    <button class="platform-tab" onclick="showPlatform('tenant-create', 'blazor')">Blazor</button>
+                    <button class="platform-tab" onclick="showPlatform('tenant-create', 'winforms')">WinForms</button>
+                    <button class="platform-tab" onclick="showPlatform('tenant-create', 'mobile')">Mobile</button>
+                </div>
+                
+                <div id="tenant-create-webapi" class="platform-content active">
+                    <h4>Web API Controller</h4>
+                    <pre><code>[<span class="type">HttpPost</span>]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">CreateTenant</span>([FromBody] CreateTenantDto dto)
+{
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">try</span>
+    {
+        <span class="keyword">var</span> tenant = <span class="keyword">await</span> _tenantService.CreateTenantAsync(dto, currentUserId);
+        <span class="keyword">return</span> Ok(<span class="keyword">new</span> { message = <span class="string">"Tenant oluşturuldu"</span>, data = tenant });
+    }
+    <span class="keyword">catch</span> (InvalidOperationException ex)
+    {
+        <span class="keyword">return</span> BadRequest(<span class="keyword">new</span> { message = ex.Message });
+    }
+}</code></pre>
+                </div>
+                
+                <div id="tenant-create-blazor" class="platform-content">
+                    <h4>Blazor Component</h4>
+                    <pre><code>@inject ITenantService TenantService
+@inject AuthenticationStateProvider AuthStateProvider
+
+<span class="keyword">private async</span> Task <span class="method">CreateTenant</span>()
+{
+    <span class="keyword">var</span> authState = <span class="keyword">await</span> AuthStateProvider.GetAuthenticationStateAsync();
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(authState.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateTenantDto
+    {
+        Name = tenantName,
+        Domain = domain,
+        ConnectionString = connectionString
+    };
+    
+    <span class="keyword">try</span>
+    {
+        <span class="keyword">var</span> tenant = <span class="keyword">await</span> TenantService.CreateTenantAsync(dto, currentUserId);
+        <span class="keyword">await</span> JSRuntime.InvokeVoidAsync(<span class="string">"alert"</span>, <span class="string">"Tenant oluşturuldu"</span>);
+        NavigationManager.NavigateTo(<span class="string">"/tenants"</span>);
+    }
+    <span class="keyword">catch</span> (InvalidOperationException ex)
+    {
+        errorMessage = ex.Message;
+    }
+}</code></pre>
+                </div>
+                
+                <div id="tenant-create-winforms" class="platform-content">
+                    <h4>WinForms</h4>
+                    <pre><code><span class="keyword">private readonly</span> ITenantService _tenantService;
+<span class="keyword">private readonly int</span> _currentUserId;
+
+<span class="keyword">private async void</span> <span class="method">btnCreateTenant_Click</span>(<span class="keyword">object</span> sender, EventArgs e)
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateTenantDto
+    {
+        Name = txtName.Text,
+        Domain = txtDomain.Text,
+        ConnectionString = txtConnectionString.Text
+    };
+    
+    <span class="keyword">try</span>
+    {
+        <span class="keyword">var</span> tenant = <span class="keyword">await</span> _tenantService.CreateTenantAsync(dto, _currentUserId);
+        MessageBox.Show(<span class="string">"Tenant başarıyla oluşturuldu"</span>, <span class="string">"Başarılı"</span>, 
+            MessageBoxButtons.OK, MessageBoxIcon.Information);
+        <span class="keyword">this</span>.Close();
+    }
+    <span class="keyword">catch</span> (InvalidOperationException ex)
+    {
+        MessageBox.Show(ex.Message, <span class="string">"Hata"</span>, MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}</code></pre>
+                </div>
+                
+                <div id="tenant-create-mobile" class="platform-content">
+                    <h4>Mobile (MAUI/Xamarin)</h4>
+                    <pre><code><span class="keyword">private readonly</span> ITenantService _tenantService;
+<span class="keyword">private readonly int</span> _currentUserId;
+
+<span class="keyword">private async</span> Task <span class="method">CreateTenant</span>()
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateTenantDto
+    {
+        Name = Name,
+        Domain = Domain,
+        ConnectionString = ConnectionString
+    };
+    
+    <span class="keyword">try</span>
+    {
+        <span class="keyword">var</span> tenant = <span class="keyword">await</span> _tenantService.CreateTenantAsync(dto, _currentUserId);
+        <span class="keyword">await</span> Application.Current.MainPage.DisplayAlert(<span class="string">"Başarılı"</span>, 
+            <span class="string">"Tenant oluşturuldu"</span>, <span class="string">"Tamam"</span>);
+        <span class="keyword">await</span> Shell.Current.GoToAsync(<span class="string">".."</span>);
+    }
+    <span class="keyword">catch</span> (InvalidOperationException ex)
+    {
+        <span class="keyword">await</span> Application.Current.MainPage.DisplayAlert(<span class="string">"Hata"</span>, ex.Message, <span class="string">"Tamam"</span>);
+    }
+}</code></pre>
+                </div>
+
+                <h3>Tenant Güncelleme - UpdateTenantAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateTenantDto
+{
+    Name = <span class="string">"Yeni Tenant Adı"</span>,
+    Domain = <span class="string">"newtenant.example.com"</span>,
+    ConnectionString = <span class="string">"Server=...;Database=..."</span>,
+    IsActive = <span class="keyword">true</span>
+};
+
+<span class="keyword">try</span>
+{
+    <span class="keyword">var</span> tenant = <span class="keyword">await</span> _tenantService.UpdateTenantAsync(tenantId, dto, currentUserId);
+}
+<span class="keyword">catch</span> (InvalidOperationException ex)
+{
+    <span class="comment">// Hata yönetimi</span>
+}</code></pre>
+
+                <h3>Tenant Silme - DeleteTenantAsync</h3>
+                <pre><code><span class="keyword">var</span> success = <span class="keyword">await</span> _tenantService.DeleteTenantAsync(tenantId, currentUserId);
+
+<span class="keyword">if</span> (success)
+{
+    <span class="comment">// Başarılı</span>
+}</code></pre>
+
+                <h3>Tenant Getirme İşlemleri</h3>
+                <pre><code><span class="comment">// ID ile tenant getir</span>
+<span class="keyword">var</span> tenant = <span class="keyword">await</span> _tenantService.GetTenantByIdAsync(tenantId);
+
+<span class="comment">// Domain ile tenant getir</span>
+<span class="keyword">var</span> tenant = <span class="keyword">await</span> _tenantService.GetTenantByDomainAsync(<span class="string">"example.com"</span>);
+
+<span class="comment">// Tüm tenant'ları getir</span>
+<span class="keyword">var</span> allTenants = <span class="keyword">await</span> _tenantService.GetAllTenantsAsync();
+
+<span class="comment">// Aktif tenant'ları getir</span>
+<span class="keyword">var</span> activeTenants = <span class="keyword">await</span> _tenantService.GetActiveTenantsAsync();</code></pre>
+
+                <div class="note">
+                    <strong>💡 Domain Benzersizliği:</strong> Her tenant'ın domain'i benzersiz olmalıdır. Aynı domain ile yeni tenant oluşturulamaz veya güncelleme yapılamaz.
+                </div>
+            </section>
+
+            <section id="tenant-user-service">
+                <h2>👥 ITenantUserService</h2>
+                
+                <h3>Kullanıcıya Tenant Atama - AssignTenantToUserAsync</h3>
+                <pre><code><span class="keyword">var</span> success = <span class="keyword">await</span> _tenantUserService.AssignTenantToUserAsync(
+    tenantId: <span class="number">5</span>, 
+    userId: <span class="number">12</span>, 
+    createdBy: currentUserId
+);
+
+<span class="keyword">if</span> (success)
+{
+    <span class="comment">// Kullanıcı tenant'a atandı</span>
+}
+<span class="keyword">else</span>
+{
+    <span class="comment">// Kullanıcı zaten bu tenant'a atanmış</span>
+}</code></pre>
+
+                <h3>Kullanıcıdan Tenant Çıkarma - RemoveTenantFromUserAsync</h3>
+                <pre><code><span class="keyword">var</span> success = <span class="keyword">await</span> _tenantUserService.RemoveTenantFromUserAsync(
+    tenantId: <span class="number">5</span>, 
+    userId: <span class="number">12</span>, 
+    deletedBy: currentUserId
+);</code></pre>
+
+                <h3>Kullanıcının Tenant'larını Getirme - GetUserTenantsAsync</h3>
+                <pre><code><span class="comment">// Bir kullanıcının erişim hakkı olan tüm tenant'ları getir</span>
+<span class="keyword">var</span> userTenants = <span class="keyword">await</span> _tenantUserService.GetUserTenantsAsync(userId);
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> tenant <span class="keyword">in</span> userTenants)
+{
+    Console.WriteLine(<span class="string">$"Tenant: {tenant.Name} - {tenant.Domain}"</span>);
+}</code></pre>
+
+                <h3>Tenant'ın Kullanıcılarını Getirme - GetTenantUsersAsync</h3>
+                <pre><code><span class="comment">// Bir tenant'a atanmış tüm kullanıcıları getir</span>
+<span class="keyword">var</span> tenantUsers = <span class="keyword">await</span> _tenantUserService.GetTenantUsersAsync(tenantId);
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> user <span class="keyword">in</span> tenantUsers)
+{
+    Console.WriteLine(<span class="string">$"Kullanıcı: {user.FirstName} {user.LastName}"</span>);
+}</code></pre>
+
+                <h3>Kullanıcı-Tenant İlişkisi Kontrolü - IsUserAssignedToTenantAsync</h3>
+                <pre><code><span class="keyword">var</span> isAssigned = <span class="keyword">await</span> _tenantUserService.IsUserAssignedToTenantAsync(tenantId, userId);
+
+<span class="keyword">if</span> (isAssigned)
+{
+    <span class="comment">// Kullanıcı bu tenant'a erişebilir</span>
+}</code></pre>
+
+                <div class="success">
+                    <strong>✓ Örnek Kullanım - Blazor Tenant Seçici:</strong>
+                    <pre><code>@inject ITenantUserService TenantUserService
+
+&lt;select @bind="selectedTenantId"&gt;
+    @foreach (var tenant in userTenants)
+    {
+        &lt;option value="@tenant.Id"&gt;@tenant.Name&lt;/option&gt;
+    }
+&lt;/select&gt;
+
+@code {
+    <span class="keyword">private</span> List&lt;Tenant&gt; userTenants;
+    <span class="keyword">private int</span> selectedTenantId;
+    <span class="keyword">private int</span> currentUserId;
+    
+    <span class="keyword">protected override async</span> Task <span class="method">OnInitializedAsync</span>()
+    {
+        <span class="keyword">var</span> authState = <span class="keyword">await</span> AuthStateProvider.GetAuthenticationStateAsync();
+        currentUserId = <span class="keyword">int</span>.Parse(authState.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        
+        userTenants = <span class="keyword">await</span> TenantUserService.GetUserTenantsAsync(currentUserId);
+    }
+}</code></pre>
+                </div>
+
+                <div class="warning">
+                    <strong>⚠️ Önemli Not:</strong> Bir kullanıcı birden fazla tenant'a atanabilir (N-N ilişki). Kullanıcı giriş yaptığında hangi tenant'ta çalışacağını seçmelidir.
+                </div>
+            </section>
+
+            <section id="tenant-setting-service">
+                <h2>⚙️ ITenantSettingService</h2>
+                
+                <h3>Tenant Ayarı Oluşturma - CreateSettingAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> CreateTenantSettingDto
+{
+    TenantId = <span class="number">5</span>,
+    Key = <span class="string">"MaxUserCount"</span>,
+    Value = <span class="string">"50"</span>
+};
+
+<span class="keyword">try</span>
+{
+    <span class="keyword">var</span> setting = <span class="keyword">await</span> _tenantSettingService.CreateSettingAsync(dto, currentUserId);
+}
+<span class="keyword">catch</span> (InvalidOperationException ex)
+{
+    <span class="comment">// Aynı key zaten mevcut</span>
+}</code></pre>
+
+                <h3>Tenant Ayarı Güncelleme - UpdateSettingAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateTenantSettingDto
+{
+    Value = <span class="string">"100"</span>
+};
+
+<span class="keyword">var</span> setting = <span class="keyword">await</span> _tenantSettingService.UpdateSettingAsync(settingId, dto, currentUserId);</code></pre>
+
+                <h3>Tenant'ın Tüm Ayarlarını Getirme - GetTenantSettingsAsync</h3>
+                <pre><code><span class="keyword">var</span> settings = <span class="keyword">await</span> _tenantSettingService.GetTenantSettingsAsync(tenantId);
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> setting <span class="keyword">in</span> settings)
+{
+    Console.WriteLine(<span class="string">$"{setting.Key}: {setting.Value}"</span>);
+}</code></pre>
+
+                <h3>Key ile Ayar Getirme - GetTenantSettingByKeyAsync</h3>
+                <pre><code><span class="keyword">var</span> setting = <span class="keyword">await</span> _tenantSettingService.GetTenantSettingByKeyAsync(
+    tenantId, 
+    <span class="string">"MaxUserCount"</span>
+);
+
+<span class="keyword">if</span> (setting != <span class="keyword">null</span>)
+{
+    Console.WriteLine(<span class="string">$"Max User Count: {setting.Value}"</span>);
+}</code></pre>
+
+                <h3>Ayar Value'sunu Direkt Getirme - GetTenantSettingValueAsync</h3>
+                <pre><code><span class="comment">// Default value ile</span>
+<span class="keyword">var</span> maxUserCount = <span class="keyword">await</span> _tenantSettingService.GetTenantSettingValueAsync(
+    tenantId, 
+    <span class="string">"MaxUserCount"</span>, 
+    defaultValue: <span class="string">"10"</span>
+);
+
+<span class="comment">// maxUserCount = "50" veya ayar yoksa "10"</span></code></pre>
+
+                <div class="success">
+                    <strong>✓ Kullanım Senaryosu - Tenant Limitleri:</strong>
+                    <pre><code><span class="comment">// Tenant'ın kullanıcı limitini kontrol et</span>
+<span class="keyword">var</span> maxUserCount = <span class="keyword">await</span> _tenantSettingService.GetTenantSettingValueAsync(
+    tenantId, 
+    <span class="string">"MaxUserCount"</span>, 
+    <span class="string">"10"</span>
+);
+
+<span class="keyword">var</span> currentUserCount = <span class="keyword">await</span> _tenantUserService.GetTenantUsersAsync(tenantId);
+
+<span class="keyword">if</span> (currentUserCount.Count >= <span class="keyword">int</span>.Parse(maxUserCount))
+{
+    <span class="keyword">return</span> BadRequest(<span class="keyword">new</span> { message = <span class="string">"Tenant kullanıcı limitine ulaştı"</span> });
+}</code></pre>
+                </div>
+
+                <div class="note">
+                    <strong>💡 Yaygın Tenant Ayarları:</strong>
+                    <ul>
+                        <li><code>MaxUserCount</code> - Maksimum kullanıcı sayısı</li>
+                        <li><code>StorageQuota</code> - Depolama kotası (GB)</li>
+                        <li><code>EnableFeatureX</code> - Özellik açık/kapalı</li>
+                        <li><code>Theme</code> - Tema ayarları</li>
+                        <li><code>Language</code> - Varsayılan dil</li>
+                        <li><code>TimeZone</code> - Saat dilimi</li>
+                        <li><code>CompanyLogo</code> - Logo URL</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>📋 Servis Özet Tablosu</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servis</th>
+                            <th>Metod</th>
+                            <th>Açıklama</th>
+                            <th>Dönüş Tipi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="6"><strong>ITenantService</strong></td>
+                            <td>CreateTenantAsync</td>
+                            <td>Yeni tenant oluşturur</td>
+                            <td>Task&lt;Tenant&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateTenantAsync</td>
+                            <td>Tenant bilgilerini günceller</td>
+                            <td>Task&lt;Tenant&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteTenantAsync</td>
+                            <td>Tenant'ı siler (soft delete)</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetTenantByIdAsync</td>
+                            <td>ID ile tenant getirir</td>
+                            <td>Task&lt;Tenant&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetTenantByDomainAsync</td>
+                            <td>Domain ile tenant getirir</td>
+                            <td>Task&lt;Tenant&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetActiveTenantsAsync</td>
+                            <td>Aktif tenant'ları getirir</td>
+                            <td>Task&lt;List&lt;Tenant&gt;&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="5"><strong>ITenantUserService</strong></td>
+                            <td>AssignTenantToUserAsync</td>
+                            <td>Kullanıcıya tenant atar</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>RemoveTenantFromUserAsync</td>
+                            <td>Kullanıcıdan tenant çıkarır</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetUserTenantsAsync</td>
+                            <td>Kullanıcının tenant'larını getirir</td>
+                            <td>Task&lt;List&lt;Tenant&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetTenantUsersAsync</td>
+                            <td>Tenant'ın kullanıcılarını getirir</td>
+                            <td>Task&lt;List&lt;User&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>IsUserAssignedToTenantAsync</td>
+                            <td>Kullanıcı-tenant ilişkisi kontrol eder</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="6"><strong>ITenantSettingService</strong></td>
+                            <td>CreateSettingAsync</td>
+                            <td>Yeni ayar oluşturur</td>
+                            <td>Task&lt;TenantSetting&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateSettingAsync</td>
+                            <td>Ayar günceller</td>
+                            <td>Task&lt;TenantSetting&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteSettingAsync</td>
+                            <td>Ayar siler</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetTenantSettingsAsync</td>
+                            <td>Tenant'ın tüm ayarlarını getirir</td>
+                            <td>Task&lt;List&lt;TenantSetting&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetTenantSettingByKeyAsync</td>
+                            <td>Key ile ayar getirir</td>
+                            <td>Task&lt;TenantSetting&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetTenantSettingValueAsync</td>
+                            <td>Ayar value'sunu direkt getirir</td>
+                            <td>Task&lt;string&gt;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>⚡ Dependency Injection Kurulumu</h2>
+                
+                <h3>Program.cs / Startup.cs</h3>
+                <pre><code><span class="comment">// Servis kayıtları</span>
+builder.Services.AddScoped&lt;ITenantService, TenantService&gt;();
+builder.Services.AddScoped&lt;ITenantUserService, TenantUserService&gt;();
+builder.Services.AddScoped&lt;ITenantSettingService, TenantSettingService&gt;();</code></pre>
+
+                <h3>Constructor Injection Kullanımı</h3>
+                <pre><code><span class="comment">// Web API Controller</span>
+<span class="keyword">public class</span> <span class="type">TenantController</span> : ControllerBase
+{
+    <span class="keyword">private readonly</span> ITenantService _tenantService;
+    <span class="keyword">private readonly</span> ITenantUserService _tenantUserService;
+    <span class="keyword">private readonly</span> ITenantSettingService _tenantSettingService;
+    
+    <span class="keyword">public</span> TenantController(
+        ITenantService tenantService,
+        ITenantUserService tenantUserService,
+        ITenantSettingService tenantSettingService)
+    {
+        _tenantService = tenantService;
+        _tenantUserService = tenantUserService;
+        _tenantSettingService = tenantSettingService;
+    }
+}
+
+<span class="comment">// Blazor Component</span>
+@inject ITenantService TenantService
+@inject ITenantUserService TenantUserService
+@inject ITenantSettingService TenantSettingService
+
+<span class="comment">// WinForms</span>
+<span class="keyword">public class</span> <span class="type">TenantForm</span> : Form
+{
+    <span class="keyword">private readonly</span> ITenantService _tenantService;
+    
+    <span class="keyword">public</span> TenantForm(ITenantService tenantService)
+    {
+        _tenantService = tenantService;
+        InitializeComponent();
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>🎯 Gerçek Kullanım Senaryoları</h2>
+                
+                <h3>1. Yeni Müşteri (Tenant) Kazanıldığında</h3>
+                <pre><code><span class="comment">// 1. Tenant oluştur</span>
+<span class="keyword">var</span> tenantDto = <span class="keyword">new</span> CreateTenantDto
+{
+    Name = <span class="string">"ABC Şirketi"</span>,
+    Domain = <span class="string">"abc.oduyo.com"</span>,
+    ConnectionString = <span class="string">"Server=...;Database=ABC_DB;"</span>
+};
+
+<span class="keyword">var</span> tenant = <span class="keyword">await</span> _tenantService.CreateTenantAsync(tenantDto, adminUserId);
+
+<span class="comment">// 2. Ana kullanıcı oluştur</span>
+<span class="keyword">var</span> userDto = <span class="keyword">new</span> CreateUserDto
+{
+    FirstName = <span class="string">"Ahmet"</span>,
+    LastName = <span class="string">"Yılmaz"</span>,
+    Email = <span class="string">"ahmet@abc.com"</span>,
+    Phone = <span class="string">"5551234567"</span>,
+    Password = <span class="string">"TempPass123!"</span>,
+    UserType = UserType.Tenant
+};
+
+<span class="keyword">var</span> userResult = <span class="keyword">await</span> _userService.CreateUserAsync(userDto, adminUserId);
+<span class="keyword">var</span> user = <span class="keyword">await</span> _userService.GetUserByEmailAsync(userDto.Email);
+
+<span class="comment">// 3. Kullanıcıyı tenant'a ata</span>
+<span class="keyword">await</span> _tenantUserService.AssignTenantToUserAsync(tenant.Id, user.Id, adminUserId);
+
+<span class="comment">// 4. Tenant ayarlarını tanımla</span>
+<span class="keyword">await</span> _tenantSettingService.CreateSettingAsync(<span class="keyword">new</span> CreateTenantSettingDto
+{
+    TenantId = tenant.Id,
+    Key = <span class="string">"MaxUserCount"</span>,
+    Value = <span class="string">"50"</span>
+}, adminUserId);
+
+<span class="keyword">await</span> _tenantSettingService.CreateSettingAsync(<span class="keyword">new</span> CreateTenantSettingDto
+{
+    TenantId = tenant.Id,
+    Key = <span class="string">"StorageQuota"</span>,
+    Value = <span class="string">"100"</span>
+}, adminUserId);</code></pre>
+
+                <h3>2. Tenant Kullanıcısı Giriş Yaptığında</h3>
+                <pre><code>[<span class="type">HttpPost</span>(<span class="string">"login"</span>)]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">Login</span>([FromBody] LoginDto dto)
+{
+    <span class="comment">// 1. Kullanıcı doğrulama</span>
+    <span class="keyword">var</span> user = <span class="keyword">await</span> _userService.GetUserByEmailAsync(dto.Email);
+    <span class="keyword">if</span> (user == <span class="keyword">null</span> || !<span class="keyword">await</span> _userService.CheckPasswordAsync(user, dto.Password))
+        <span class="keyword">return</span> Unauthorized();
+    
+    <span class="comment">// 2. Kullanıcının tenant'larını getir</span>
+    <span class="keyword">var</span> userTenants = <span class="keyword">await</span> _tenantUserService.GetUserTenantsAsync(user.Id);
+    
+    <span class="keyword">if</span> (userTenants.Count == <span class="number">0</span>)
+        <span class="keyword">return</span> BadRequest(<span class="keyword">new</span> { message = <span class="string">"Herhangi bir tenant'a atanmamışsınız"</span> });
+    
+    <span class="comment">// 3. Token üret</span>
+    <span class="keyword">var</span> token = GenerateJwtToken(user, userTenants);
+    
+    <span class="keyword">return</span> Ok(<span class="keyword">new</span> 
+    { 
+        token, 
+        user, 
+        tenants = userTenants 
+    });
+}</code></pre>
+
+                <h3>3. Tenant Bazlı Veri Filtreleme</h3>
+                <pre><code>[<span class="type">HttpGet</span>(<span class="string">"companies"</span>)]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">GetCompanies</span>([FromHeader] <span class="keyword">int</span> tenantId)
+{
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="comment">// Kullanıcının bu tenant'a erişimi var mı kontrol et</span>
+    <span class="keyword">var</span> hasAccess = <span class="keyword">await</span> _tenantUserService.IsUserAssignedToTenantAsync(tenantId, currentUserId);
+    
+    <span class="keyword">if</span> (!hasAccess)
+        <span class="keyword">return</span> Forbidden();
+    
+    <span class="comment">// Tenant'a ait firmaları getir</span>
+    <span class="keyword">var</span> companies = <span class="keyword">await</span> _context.Companies
+        .Where(c => c.TenantId == tenantId)
+        .ToListAsync();
+    
+    <span class="keyword">return</span> Ok(companies);
+}</code></pre>
+
+                <h3>4. Multi-Tenant Alt Kullanıcı Ekleme</h3>
+                <pre><code><span class="comment">// Ana tenant kullanıcısının altına alt kullanıcı ekle</span>
+<span class="keyword">var</span> mainUserId = <span class="number">10</span>;
+<span class="keyword">var</span> tenantId = <span class="number">5</span>;
+
+<span class="comment">// 1. Alt kullanıcı oluştur</span>
+<span class="keyword">var</span> subUserDto = <span class="keyword">new</span> CreateUserDto
+{
+    FirstName = <span class="string">"Mehmet"</span>,
+    LastName = <span class="string">"Demir"</span>,
+    Email = <span class="string">"mehmet@abc.com"</span>,
+    Phone = <span class="string">"5559876543"</span>,
+    Password = <span class="string">"Pass123!"</span>,
+    UserType = UserType.Tenant
+};
+
+<span class="keyword">var</span> result = <span class="keyword">await</span> _userService.CreateUserAsync(subUserDto, mainUserId);
+<span class="keyword">var</span> subUser = <span class="keyword">await</span> _userService.GetUserByEmailAsync(subUserDto.Email);
+
+<span class="comment">// 2. Alt kullanıcıyı tenant'a ata</span>
+<span class="keyword">await</span> _tenantUserService.AssignTenantToUserAsync(tenantId, subUser.Id, mainUserId);
+
+<span class="comment">// 3. Hiyerarşi oluştur</span>
+<span class="keyword">await</span> _userHierarchyService.CreateHierarchyAsync(mainUserId, subUser.Id, mainUserId);</code></pre>
+            </section>
+
+            <section>
+                <h2>🔒 Güvenlik ve En İyi Pratikler</h2>
+                
+                <div class="warning">
+                    <h4>1. Domain Benzersizliği</h4>
+                    <p>Her tenant'ın domain'i benzersiz olmalıdır. CreateTenantAsync ve UpdateTenantAsync metodları domain kontrolü yapar.</p>
+                </div>
+
+                <div class="warning">
+                    <h4>2. Tenant Erişim Kontrolü</h4>
+                    <p>Her API çağrısında kullanıcının ilgili tenant'a erişim hakkı olup olmadığını kontrol edin.</p>
+                    <pre><code><span class="keyword">var</span> hasAccess = <span class="keyword">await</span> _tenantUserService.IsUserAssignedToTenantAsync(tenantId, userId);
+<span class="keyword">if</span> (!hasAccess) <span class="keyword">return</span> Forbidden();</code></pre>
+                </div>
+
+                <div class="warning">
+                    <h4>3. Veri İzolasyonu</h4>
+                    <p>Tenant'lara ait verileri mutlaka tenant bazlı filtreleyin. Global query filter kullanmayı düşünün.</p>
+                </div>
+
+                <div class="note">
+                    <h4>4. Connection String Güvenliği</h4>
+                    <p>Connection string'leri şifreleyerek saklayın. Hassas bilgileri asla düz metin olarak saklamayın.</p>
+                </div>
+
+                <div class="note">
+                    <h4>5. Tenant Ayarları için Caching</h4>
+                    <p>Sık kullanılan tenant ayarlarını cache'leyin. Her istekte veritabanından okumayın.</p>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Ödüyo CRM - Tenant Yönetimi Servis Dokümantasyonu</p>
+        </footer>
+    </div>
+
+    <script>
+        function showPlatform(section, platform) {
+            const tabs = document.querySelectorAll(`#${section} .platform-tab`);
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const contents = document.querySelectorAll(`[id^="${section}-"]`);
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${section}-${platform}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lookup Servisleri Dokümantasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #3498db;
+        }
+        
+        main {
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+        }
+        
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .keyword { color: #c678dd; }
+        .string { color: #98c379; }
+        .comment { color: #5c6370; font-style: italic; }
+        .method { color: #61afef; }
+        .type { color: #e5c07b; }
+        .number { color: #d19a66; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .platform-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .platform-tab {
+            padding: 0.75rem 1.5rem;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .platform-tab:hover {
+            background: #e9ecef;
+        }
+        
+        .platform-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .platform-content {
+            display: none;
+        }
+        
+        .platform-content.active {
+            display: block;
+        }
+        
+        ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Lookup Servisleri Dokümantasyonu</h1>
+            <p>Web API • Blazor • WinForms • Mobile için Lookup Servisleri</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#channel-service">ChannelService</a></li>
+                <li><a href="#status-service">StatusService</a></li>
+                <li><a href="#currency-service">CurrencyService</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <section id="channel-service">
+                <h2>📡 IChannelService</h2>
+                
+                <div class="note">
+                    <strong>💡 Kanal Nedir?</strong> Müşteri veya potansiyel müşterinin işletmeye hangi yolla ulaştığını belirleyen lookup tablosudur. Örnek: Web Sitesi, Telefon, E-posta, Sosyal Medya, Referans, vb.
+                </div>
+
+                <h3>Kanal Oluşturma - CreateChannelAsync</h3>
+                
+                <div class="platform-tabs">
+                    <button class="platform-tab active" onclick="showPlatform('channel-create', 'webapi')">Web API</button>
+                    <button class="platform-tab" onclick="showPlatform('channel-create', 'blazor')">Blazor</button>
+                    <button class="platform-tab" onclick="showPlatform('channel-create', 'winforms')">WinForms</button>
+                    <button class="platform-tab" onclick="showPlatform('channel-create', 'mobile')">Mobile</button>
+                </div>
+                
+                <div id="channel-create-webapi" class="platform-content active">
+                    <h4>Web API Controller</h4>
+                    <pre><code>[<span class="type">HttpPost</span>]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">CreateChannel</span>([FromBody] CreateChannelDto dto)
+{
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">var</span> channel = <span class="keyword">await</span> _channelService.CreateChannelAsync(dto, currentUserId);
+    <span class="keyword">return</span> Ok(<span class="keyword">new</span> { message = <span class="string">"Kanal oluşturuldu"</span>, data = channel });
+}</code></pre>
+                </div>
+                
+                <div id="channel-create-blazor" class="platform-content">
+                    <h4>Blazor Component</h4>
+                    <pre><code>@inject IChannelService ChannelService
+
+<span class="keyword">private async</span> Task <span class="method">CreateChannel</span>()
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateChannelDto
+    {
+        Name = channelName,
+        Description = description
+    };
+    
+    <span class="keyword">var</span> channel = <span class="keyword">await</span> ChannelService.CreateChannelAsync(dto, currentUserId);
+    <span class="keyword">await</span> JSRuntime.InvokeVoidAsync(<span class="string">"alert"</span>, <span class="string">"Kanal oluşturuldu"</span>);
+}</code></pre>
+                </div>
+                
+                <div id="channel-create-winforms" class="platform-content">
+                    <h4>WinForms</h4>
+                    <pre><code><span class="keyword">private async void</span> <span class="method">btnCreateChannel_Click</span>(<span class="keyword">object</span> sender, EventArgs e)
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateChannelDto
+    {
+        Name = txtName.Text,
+        Description = txtDescription.Text
+    };
+    
+    <span class="keyword">var</span> channel = <span class="keyword">await</span> _channelService.CreateChannelAsync(dto, _currentUserId);
+    MessageBox.Show(<span class="string">"Kanal oluşturuldu"</span>);
+}</code></pre>
+                </div>
+                
+                <div id="channel-create-mobile" class="platform-content">
+                    <h4>Mobile (MAUI/Xamarin)</h4>
+                    <pre><code><span class="keyword">private async</span> Task <span class="method">CreateChannel</span>()
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateChannelDto
+    {
+        Name = ChannelName,
+        Description = Description
+    };
+    
+    <span class="keyword">var</span> channel = <span class="keyword">await</span> _channelService.CreateChannelAsync(dto, _currentUserId);
+    <span class="keyword">await</span> DisplayAlert(<span class="string">"Başarılı"</span>, <span class="string">"Kanal oluşturuldu"</span>, <span class="string">"Tamam"</span>);
+}</code></pre>
+                </div>
+
+                <h3>Kanal Güncelleme - UpdateChannelAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateChannelDto
+{
+    Name = <span class="string">"Kurumsal Web Sitesi"</span>,
+    Description = <span class="string">"Ana web sitesi ve landing page'ler"</span>,
+    IsActive = <span class="keyword">true</span>
+};
+
+<span class="keyword">var</span> channel = <span class="keyword">await</span> _channelService.UpdateChannelAsync(channelId, dto, currentUserId);</code></pre>
+
+                <h3>Kanal Listeleme</h3>
+                <pre><code><span class="comment">// Tüm kanalları getir</span>
+<span class="keyword">var</span> allChannels = <span class="keyword">await</span> _channelService.GetAllChannelsAsync();
+
+<span class="comment">// Sadece aktif kanalları getir</span>
+<span class="keyword">var</span> activeChannels = <span class="keyword">await</span> _channelService.GetActiveChannelsAsync();
+
+<span class="comment">// ID ile kanal getir</span>
+<span class="keyword">var</span> channel = <span class="keyword">await</span> _channelService.GetChannelByIdAsync(channelId);</code></pre>
+
+                <div class="success">
+                    <strong>✓ Blazor - Dropdown Örneği:</strong>
+                    <pre><code>@inject IChannelService ChannelService
+
+&lt;select @bind="selectedChannelId" class="form-select"&gt;
+    &lt;option value="0"&gt;Kanal Seçiniz&lt;/option&gt;
+    @foreach (var channel in channels)
+    {
+        &lt;option value="@channel.Id"&gt;@channel.Name&lt;/option&gt;
+    }
+&lt;/select&gt;
+
+@code {
+    <span class="keyword">private</span> List&lt;Channel&gt; channels = <span class="keyword">new</span>();
+    <span class="keyword">private int</span> selectedChannelId;
+    
+    <span class="keyword">protected override async</span> Task <span class="method">OnInitializedAsync</span>()
+    {
+        channels = <span class="keyword">await</span> ChannelService.GetActiveChannelsAsync();
+    }
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <strong>✓ WinForms - ComboBox Örneği:</strong>
+                    <pre><code><span class="keyword">private async void</span> <span class="method">LoadChannels</span>()
+{
+    <span class="keyword">var</span> channels = <span class="keyword">await</span> _channelService.GetActiveChannelsAsync();
+    
+    cmbChannel.DataSource = channels;
+    cmbChannel.DisplayMember = <span class="string">"Name"</span>;
+    cmbChannel.ValueMember = <span class="string">"Id"</span>;
+    cmbChannel.SelectedIndex = -<span class="number">1</span>;
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="status-service">
+                <h2>🔵 IStatusService</h2>
+                
+                <div class="note">
+                    <strong>💡 Durum Nedir?</strong> Farklı entity'lerin (Firma, Teklif, İletişim vb.) durumlarını belirleyen lookup tablosudur. EntityType ile hangi entity için kullanıldığı belirlenir.
+                </div>
+
+                <h3>Durum Oluşturma - CreateStatusAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> CreateStatusDto
+{
+    Name = <span class="string">"Potansiyel Müşteri"</span>,
+    Description = <span class="string">"Henüz müşteri olmamış potansiyel firma"</span>,
+    EntityType = <span class="string">"Company"</span>
+};
+
+<span class="keyword">var</span> status = <span class="keyword">await</span> _statusService.CreateStatusAsync(dto, currentUserId);</code></pre>
+
+                <h3>Entity'ye Göre Durum Getirme - GetStatusesByEntityTypeAsync</h3>
+                <pre><code><span class="comment">// Firma durumları</span>
+<span class="keyword">var</span> companyStatuses = <span class="keyword">await</span> _statusService.GetStatusesByEntityTypeAsync(<span class="string">"Company"</span>);
+
+<span class="comment">// Teklif durumları</span>
+<span class="keyword">var</span> offerStatuses = <span class="keyword">await</span> _statusService.GetStatusesByEntityTypeAsync(<span class="string">"Offer"</span>);
+
+<span class="comment">// İletişim durumları</span>
+<span class="keyword">var</span> contactStatuses = <span class="keyword">await</span> _statusService.GetStatusesByEntityTypeAsync(<span class="string">"Contact"</span>);</code></pre>
+
+                <h3>Tüm Durumları Getirme</h3>
+                <pre><code><span class="keyword">var</span> allStatuses = <span class="keyword">await</span> _statusService.GetAllStatusesAsync();
+<span class="keyword">var</span> activeStatuses = <span class="keyword">await</span> _statusService.GetActiveStatusesAsync();</code></pre>
+
+                <div class="warning">
+                    <strong>⚠️ Önemli:</strong> EntityType sabit değerler kullanılmalı. Örnek: "Company", "Offer", "Contact", "Lead". Bu değerler enum olarak tanımlanabilir.
+                </div>
+
+                <div class="success">
+                    <strong>✓ Örnek Kullanım - Firma Durum Değiştirme:</strong>
+                    <pre><code><span class="comment">// Firmayı aktif müşteri olarak işaretle</span>
+<span class="keyword">var</span> activeCustomerStatus = <span class="keyword">await</span> _statusService.GetStatusesByEntityTypeAsync(<span class="string">"Company"</span>)
+    .FirstOrDefault(s => s.Name == <span class="string">"Aktif Müşteri"</span>);
+
+company.StatusId = activeCustomerStatus.Id;
+<span class="keyword">await</span> _companyService.UpdateCompanyAsync(company.Id, updateDto, currentUserId);</code></pre>
+                </div>
+
+                <h3>Örnek Status Kayıtları</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>EntityType</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Company</td>
+                            <td>Potansiyel Müşteri</td>
+                            <td>Henüz müşteri olmamış</td>
+                        </tr>
+                        <tr>
+                            <td>Company</td>
+                            <td>Aktif Müşteri</td>
+                            <td>Lisansı olan aktif müşteri</td>
+                        </tr>
+                        <tr>
+                            <td>Company</td>
+                            <td>Pasif Müşteri</td>
+                            <td>Lisansı sona ermiş müşteri</td>
+                        </tr>
+                        <tr>
+                            <td>Offer</td>
+                            <td>Taslak</td>
+                            <td>Henüz gönderilmemiş teklif</td>
+                        </tr>
+                        <tr>
+                            <td>Offer</td>
+                            <td>Gönderildi</td>
+                            <td>Müşteriye gönderildi</td>
+                        </tr>
+                        <tr>
+                            <td>Offer</td>
+                            <td>Kabul Edildi</td>
+                            <td>Müşteri kabul etti</td>
+                        </tr>
+                        <tr>
+                            <td>Offer</td>
+                            <td>Reddedildi</td>
+                            <td>Müşteri reddetti</td>
+                        </tr>
+                        <tr>
+                            <td>Contact</td>
+                            <td>Yeni</td>
+                            <td>Yeni oluşturulan iletişim</td>
+                        </tr>
+                        <tr>
+                            <td>Contact</td>
+                            <td>Devam Ediyor</td>
+                            <td>İletişim devam ediyor</td>
+                        </tr>
+                        <tr>
+                            <td>Contact</td>
+                            <td>Tamamlandı</td>
+                            <td>İletişim tamamlandı</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="currency-service">
+                <h2>💱 ICurrencyService</h2>
+                
+                <div class="note">
+                    <strong>💡 Para Birimi Nedir?</strong> Sistemde kullanılan para birimlerini ve döviz kurlarını yöneten lookup tablosudur. TRY, USD, EUR gibi para birimleri tanımlanır.
+                </div>
+
+                <h3>Para Birimi Oluşturma - CreateCurrencyAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> CreateCurrencyDto
+{
+    Code = <span class="string">"USD"</span>,
+    Name = <span class="string">"Amerikan Doları"</span>,
+    Symbol = <span class="string">"$"</span>,
+    ExchangeRate = <span class="number">34.50m</span> <span class="comment">// 1 USD = 34.50 TRY</span>
+};
+
+<span class="keyword">var</span> currency = <span class="keyword">await</span> _currencyService.CreateCurrencyAsync(dto, currentUserId);</code></pre>
+
+                <h3>Para Birimi Güncelleme - UpdateCurrencyAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateCurrencyDto
+{
+    Name = <span class="string">"Amerikan Doları"</span>,
+    Symbol = <span class="string">"$"</span>,
+    ExchangeRate = <span class="number">34.75m</span>, <span class="comment">// Güncel kur</span>
+    IsActive = <span class="keyword">true</span>
+};
+
+<span class="keyword">var</span> currency = <span class="keyword">await</span> _currencyService.UpdateCurrencyAsync(currencyId, dto, currentUserId);</code></pre>
+
+                <h3>Para Birimi Getirme</h3>
+                <pre><code><span class="comment">// Kod ile getir</span>
+<span class="keyword">var</span> usd = <span class="keyword">await</span> _currencyService.GetCurrencyByCodeAsync(<span class="string">"USD"</span>);
+<span class="keyword">var</span> eur = <span class="keyword">await</span> _currencyService.GetCurrencyByCodeAsync(<span class="string">"EUR"</span>);
+
+<span class="comment">// Tüm para birimlerini getir</span>
+<span class="keyword">var</span> allCurrencies = <span class="keyword">await</span> _currencyService.GetAllCurrenciesAsync();
+<span class="keyword">var</span> activeCurrencies = <span class="keyword">await</span> _currencyService.GetActiveCurrenciesAsync();</code></pre>
+
+                <h3>Para Birimi Çevirme - ConvertCurrencyAsync</h3>
+                <pre><code><span class="comment">// 1000 USD'yi TRY'ye çevir</span>
+<span class="keyword">var</span> usd = <span class="keyword">await</span> _currencyService.GetCurrencyByCodeAsync(<span class="string">"USD"</span>);
+<span class="keyword">var</span> tryc = <span class="keyword">await</span> _currencyService.GetCurrencyByCodeAsync(<span class="string">"TRY"</span>);
+
+<span class="keyword">var</span> amountInTRY = <span class="keyword">await</span> _currencyService.ConvertCurrencyAsync(
+    amount: <span class="number">1000m</span>, 
+    fromCurrencyId: usd.Id, 
+    toCurrencyId: tryc.Id
+);
+
+Console.WriteLine(<span class="string">$"1000 USD = {amountInTRY} TRY"</span>);</code></pre>
+
+                <div class="warning">
+                    <strong>⚠️ Kur Güncelleme:</strong> Döviz kurları güncel tutulmalıdır. Background job ile günlük otomatik kur güncellemesi yapılabilir.
+                </div>
+
+                <div class="success">
+                    <strong>✓ Gerçek Senaryo - Teklif Oluştururken Para Birimi:</strong>
+                    <pre><code><span class="comment">// Müşteri USD ile teklif istedi, TRY karşılığını göster</span>
+
+<span class="keyword">var</span> packagePrice = <span class="number">999m</span>; <span class="comment">// USD</span>
+<span class="keyword">var</span> usd = <span class="keyword">await</span> _currencyService.GetCurrencyByCodeAsync(<span class="string">"USD"</span>);
+<span class="keyword">var</span> tryc = <span class="keyword">await</span> _currencyService.GetCurrencyByCodeAsync(<span class="string">"TRY"</span>);
+
+<span class="keyword">var</span> priceInTRY = <span class="keyword">await</span> _currencyService.ConvertCurrencyAsync(
+    packagePrice, usd.Id, tryc.Id);
+
+<span class="keyword">var</span> offer = <span class="keyword">new</span> CreateOfferDto
+{
+    PackageId = packageId,
+    Price = packagePrice,
+    CurrencyId = usd.Id,
+    PriceInTRY = priceInTRY <span class="comment">// Raporlama için</span>
+};</code></pre>
+                </div>
+
+                <div class="success">
+                    <strong>✓ Background Job - Otomatik Kur Güncelleme:</strong>
+                    <pre><code><span class="keyword">public async</span> Task <span class="method">UpdateExchangeRates</span>()
+{
+    <span class="comment">// Merkez Bankası API'sinden kurları çek</span>
+    <span class="keyword">var</span> rates = <span class="keyword">await</span> FetchExchangeRatesFromCentralBank();
+    
+    <span class="keyword">foreach</span> (<span class="keyword">var</span> rate <span class="keyword">in</span> rates)
+    {
+        <span class="keyword">var</span> currency = <span class="keyword">await</span> _currencyService.GetCurrencyByCodeAsync(rate.Code);
+        
+        <span class="keyword">if</span> (currency != <span class="keyword">null</span>)
+        {
+            <span class="keyword">await</span> _currencyService.UpdateCurrencyAsync(currency.Id, <span class="keyword">new</span> UpdateCurrencyDto
+            {
+                Name = currency.Name,
+                Symbol = currency.Symbol,
+                ExchangeRate = rate.Value,
+                IsActive = currency.IsActive
+            }, systemUserId);
+        }
+    }
+}</code></pre>
+                </div>
+
+                <h3>Örnek Currency Kayıtları</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Symbol</th>
+                            <th>ExchangeRate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TRY</td>
+                            <td>Türk Lirası</td>
+                            <td>₺</td>
+                            <td>1.00</td>
+                        </tr>
+                        <tr>
+                            <td>USD</td>
+                            <td>Amerikan Doları</td>
+                            <td>$</td>
+                            <td>34.50</td>
+                        </tr>
+                        <tr>
+                            <td>EUR</td>
+                            <td>Euro</td>
+                            <td>€</td>
+                            <td>37.25</td>
+                        </tr>
+                        <tr>
+                            <td>GBP</td>
+                            <td>İngiliz Sterlini</td>
+                            <td>£</td>
+                            <td>43.80</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>📋 Servis Özet Tablosu</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servis</th>
+                            <th>Metod</th>
+                            <th>Açıklama</th>
+                            <th>Dönüş Tipi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="6"><strong>IChannelService</strong></td>
+                            <td>CreateChannelAsync</td>
+                            <td>Yeni kanal oluşturur</td>
+                            <td>Task&lt;Channel&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateChannelAsync</td>
+                            <td>Kanal bilgilerini günceller</td>
+                            <td>Task&lt;Channel&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteChannelAsync</td>
+                            <td>Kanalı siler (soft delete)</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetChannelByIdAsync</td>
+                            <td>ID ile kanal getirir</td>
+                            <td>Task&lt;Channel&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetAllChannelsAsync</td>
+                            <td>Tüm kanalları getirir</td>
+                            <td>Task&lt;List&lt;Channel&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetActiveChannelsAsync</td>
+                            <td>Aktif kanalları getirir</td>
+                            <td>Task&lt;List&lt;Channel&gt;&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="7"><strong>IStatusService</strong></td>
+                            <td>CreateStatusAsync</td>
+                            <td>Yeni durum oluşturur</td>
+                            <td>Task&lt;Status&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateStatusAsync</td>
+                            <td>Durum bilgilerini günceller</td>
+                            <td>Task&lt;Status&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteStatusAsync</td>
+                            <td>Durumu siler (soft delete)</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetStatusByIdAsync</td>
+                            <td>ID ile durum getirir</td>
+                            <td>Task&lt;Status&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetAllStatusesAsync</td>
+                            <td>Tüm durumları getirir</td>
+                            <td>Task&lt;List&lt;Status&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetActiveStatusesAsync</td>
+                            <td>Aktif durumları getirir</td>
+                            <td>Task&lt;List&lt;Status&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetStatusesByEntityTypeAsync</td>
+                            <td>Entity tipine göre durumları getirir</td>
+                            <td>Task&lt;List&lt;Status&gt;&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="8"><strong>ICurrencyService</strong></td>
+                            <td>CreateCurrencyAsync</td>
+                            <td>Yeni para birimi oluşturur</td>
+                            <td>Task&lt;Currency&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateCurrencyAsync</td>
+                            <td>Para birimi bilgilerini günceller</td>
+                            <td>Task&lt;Currency&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteCurrencyAsync</td>
+                            <td>Para birimini siler (soft delete)</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCurrencyByIdAsync</td>
+                            <td>ID ile para birimi getirir</td>
+                            <td>Task&lt;Currency&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCurrencyByCodeAsync</td>
+                            <td>Kod ile para birimi getirir</td>
+                            <td>Task&lt;Currency&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetAllCurrenciesAsync</td>
+                            <td>Tüm para birimlerini getirir</td>
+                            <td>Task&lt;List&lt;Currency&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetActiveCurrenciesAsync</td>
+                            <td>Aktif para birimlerini getirir</td>
+                            <td>Task&lt;List&lt;Currency&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>ConvertCurrencyAsync</td>
+                            <td>Para birimi çevirir</td>
+                            <td>Task&lt;decimal&gt;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>⚡ Dependency Injection Kurulumu</h2>
+                
+                <h3>Program.cs / Startup.cs</h3>
+                <pre><code><span class="comment">// Servis kayıtları</span>
+builder.Services.AddScoped&lt;IChannelService, ChannelService&gt;();
+builder.Services.AddScoped&lt;IStatusService, StatusService&gt;();
+builder.Services.AddScoped&lt;ICurrencyService, CurrencyService&gt;();</code></pre>
+
+                <h3>Constructor Injection Kullanımı</h3>
+                <pre><code><span class="comment">// Web API Controller</span>
+<span class="keyword">public class</span> <span class="type">LookupController</span> : ControllerBase
+{
+    <span class="keyword">private readonly</span> IChannelService _channelService;
+    <span class="keyword">private readonly</span> IStatusService _statusService;
+    <span class="keyword">private readonly</span> ICurrencyService _currencyService;
+    
+    <span class="keyword">public</span> LookupController(
+        IChannelService channelService,
+        IStatusService statusService,
+        ICurrencyService currencyService)
+    {
+        _channelService = channelService;
+        _statusService = statusService;
+        _currencyService = currencyService;
+    }
+}
+
+<span class="comment">// Blazor Component</span>
+@inject IChannelService ChannelService
+@inject IStatusService StatusService
+@inject ICurrencyService CurrencyService
+
+<span class="comment">// WinForms</span>
+<span class="keyword">public class</span> <span class="type">CompanyForm</span> : Form
+{
+    <span class="keyword">private readonly</span> IChannelService _channelService;
+    <span class="keyword">private readonly</span> IStatusService _statusService;
+    
+    <span class="keyword">public</span> CompanyForm(
+        IChannelService channelService,
+        IStatusService statusService)
+    {
+        _channelService = channelService;
+        _statusService = statusService;
+        InitializeComponent();
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>🔒 Güvenlik ve En İyi Pratikler</h2>
+                
+                <div class="warning">
+                    <h4>1. Lookup Tabloları Seed Data</h4>
+                    <p>Uygulama ilk çalıştırıldığında temel lookup verileri otomatik oluşturulmalıdır:</p>
+                    <pre><code><span class="keyword">public class</span> <span class="type">LookupDataSeeder</span>
+{
+    <span class="keyword">private readonly</span> ApplicationDbContext _context;
+    
+    <span class="keyword">public async</span> Task <span class="method">SeedAsync</span>()
+    {
+        <span class="comment">// Kanallar</span>
+        <span class="keyword">if</span> (!<span class="keyword">await</span> _context.Channels.AnyAsync())
+        {
+            <span class="keyword">var</span> channels = <span class="keyword">new</span> List&lt;Channel&gt;
+            {
+                <span class="keyword">new</span> Channel { Name = <span class="string">"Web Sitesi"</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Channel { Name = <span class="string">"Telefon"</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Channel { Name = <span class="string">"E-posta"</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Channel { Name = <span class="string">"Sosyal Medya"</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Channel { Name = <span class="string">"Referans"</span>, IsActive = <span class="keyword">true</span> }
+            };
+            
+            <span class="comment">// ❌ ESKİ (Kullanılmıyor - Interceptor ile yönetiliyor):</span>
+            <span class="comment">// foreach (var channel in channels)</span>
+            <span class="comment">// {</span>
+            <span class="comment">//     channel.SetCreated(1); // System user</span>
+            <span class="comment">// }</span>
+
+            <span class="comment">// ✅ YENİ: Interceptor otomatik CreatedBy, CreatedAt ayarlıyor</span>
+            _context.Channels.AddRange(channels);
+        }
+        
+        <span class="comment">// Para birimleri</span>
+        <span class="keyword">if</span> (!<span class="keyword">await</span> _context.Currencies.AnyAsync())
+        {
+            <span class="keyword">var</span> currencies = <span class="keyword">new</span> List&lt;Currency&gt;
+            {
+                <span class="keyword">new</span> Currency { Code = <span class="string">"TRY"</span>, Name = <span class="string">"Türk Lirası"</span>, Symbol = <span class="string">"₺"</span>, ExchangeRate = <span class="number">1.00m</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Currency { Code = <span class="string">"USD"</span>, Name = <span class="string">"Amerikan Doları"</span>, Symbol = <span class="string">"$"</span>, ExchangeRate = <span class="number">34.50m</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Currency { Code = <span class="string">"EUR"</span>, Name = <span class="string">"Euro"</span>, Symbol = <span class="string">"€"</span>, ExchangeRate = <span class="number">37.25m</span>, IsActive = <span class="keyword">true</span> }
+            };
+            
+            <span class="comment">// ❌ ESKİ (Kullanılmıyor - Interceptor ile yönetiliyor):</span>
+            <span class="comment">// foreach (var currency in currencies)</span>
+            <span class="comment">// {</span>
+            <span class="comment">//     currency.SetCreated(1);</span>
+            <span class="comment">// }</span>
+
+            <span class="comment">// ✅ YENİ: Interceptor otomatik CreatedBy, CreatedAt ayarlıyor</span>
+            _context.Currencies.AddRange(currencies);
+        }
+        
+        <span class="comment">// Durumlar</span>
+        <span class="keyword">if</span> (!<span class="keyword">await</span> _context.Statuses.AnyAsync())
+        {
+            <span class="keyword">var</span> statuses = <span class="keyword">new</span> List&lt;Status&gt;
+            {
+                <span class="comment">// Company statuses</span>
+                <span class="keyword">new</span> Status { Name = <span class="string">"Potansiyel Müşteri"</span>, EntityType = <span class="string">"Company"</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Status { Name = <span class="string">"Aktif Müşteri"</span>, EntityType = <span class="string">"Company"</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Status { Name = <span class="string">"Pasif Müşteri"</span>, EntityType = <span class="string">"Company"</span>, IsActive = <span class="keyword">true</span> },
+                
+                <span class="comment">// Offer statuses</span>
+                <span class="keyword">new</span> Status { Name = <span class="string">"Taslak"</span>, EntityType = <span class="string">"Offer"</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Status { Name = <span class="string">"Gönderildi"</span>, EntityType = <span class="string">"Offer"</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Status { Name = <span class="string">"Kabul Edildi"</span>, EntityType = <span class="string">"Offer"</span>, IsActive = <span class="keyword">true</span> },
+                <span class="keyword">new</span> Status { Name = <span class="string">"Reddedildi"</span>, EntityType = <span class="string">"Offer"</span>, IsActive = <span class="keyword">true</span> }
+            };
+            
+            <span class="comment">// ❌ ESKİ (Kullanılmıyor - Interceptor ile yönetiliyor):</span>
+            <span class="comment">// foreach (var status in statuses)</span>
+            <span class="comment">// {</span>
+            <span class="comment">//     status.SetCreated(1);</span>
+            <span class="comment">// }</span>
+
+            <span class="comment">// ✅ YENİ: Interceptor otomatik CreatedBy, CreatedAt ayarlıyor</span>
+            _context.Statuses.AddRange(statuses);
+        }
+        
+        <span class="keyword">await</span> _context.SaveChangesAsync();
+    }
+}</code></pre>
+                </div>
+
+                <div class="warning">
+                    <h4>2. EntityType Enum Kullanımı</h4>
+                    <p>EntityType sabit string yerine enum kullanılmalı:</p>
+                    <pre><code><span class="keyword">public enum</span> <span class="type">EntityType</span>
+{
+    Company,
+    Offer,
+    Contact,
+    Lead,
+    Contract
+}
+
+<span class="comment">// Status servisinde kullanım</span>
+<span class="keyword">var</span> companyStatuses = <span class="keyword">await</span> _statusService.GetStatusesByEntityTypeAsync(
+    EntityType.Company.ToString());</code></pre>
+                </div>
+
+                <div class="warning">
+                    <h4>3. Currency Code Validation</h4>
+                    <p>Para birimi kodu ISO 4217 standardına uymalı (3 karakter):</p>
+                    <pre><code><span class="keyword">public async</span> Task&lt;Currency&gt; <span class="method">CreateCurrencyAsync</span>(CreateCurrencyDto dto, <span class="keyword">int</span> createdBy)
+{
+    <span class="keyword">if</span> (dto.Code.Length != <span class="number">3</span>)
+        <span class="keyword">throw new</span> InvalidOperationException(<span class="string">"Para birimi kodu 3 karakter olmalıdır"</span>);
+    
+    <span class="keyword">if</span> (<span class="keyword">await</span> _context.Currencies.AnyAsync(c => c.Code == dto.Code))
+        <span class="keyword">throw new</span> InvalidOperationException(<span class="string">"Bu para birimi kodu zaten mevcut"</span>);
+    
+    <span class="comment">// ...</span>
+}</code></pre>
+                </div>
+
+                <div class="note">
+                    <h4>4. Cache Kullanımı</h4>
+                    <p>Lookup verileri sıklıkla kullanıldığı için cache'lenebilir:</p>
+                    <pre><code><span class="keyword">private</span> IMemoryCache _cache;
+
+<span class="keyword">public async</span> Task&lt;List&lt;Channel&gt;&gt; <span class="method">GetActiveChannelsCached</span>()
+{
+    <span class="keyword">const string</span> cacheKey = <span class="string">"active_channels"</span>;
+    
+    <span class="keyword">if</span> (!_cache.TryGetValue(cacheKey, <span class="keyword">out</span> List&lt;Channel&gt; channels))
+    {
+        channels = <span class="keyword">await</span> _channelService.GetActiveChannelsAsync();
+        
+        <span class="keyword">var</span> cacheOptions = <span class="keyword">new</span> MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromHours(<span class="number">24</span>));
+        
+        _cache.Set(cacheKey, channels, cacheOptions);
+    }
+    
+    <span class="keyword">return</span> channels;
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <h4>5. İş Kuralları</h4>
+                    <ul>
+                        <li>Lookup tabloları nadiren değişir, cache kullanılabilir</li>
+                        <li>Silme işlemleri soft delete olmalı (referans bütünlüğü için)</li>
+                        <li>Para birimi kurları günlük güncellenmeli</li>
+                        <li>EntityType değerleri enum ile kontrol altında tutulmalı</li>
+                        <li>Varsayılan kayıtlar seed data ile oluşturulmalı</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>💡 İpuçları ve Püf Noktaları</h2>
+                
+                <div class="success">
+                    <h4>1. Dropdown Helper Extension</h4>
+                    <p>Blazor için yardımcı component:</p>
+                    <pre><code>@typeparam TItem
+@typeparam TValue
+
+&lt;select @bind="SelectedValue" class="form-select"&gt;
+    &lt;option value="@default(TValue)"&gt;@Placeholder&lt;/option&gt;
+    @foreach (var item in Items)
+    {
+        &lt;option value="@ValueSelector(item)"&gt;@TextSelector(item)&lt;/option&gt;
+    }
+&lt;/select&gt;
+
+@code {
+    [Parameter] public List&lt;TItem&gt; Items { get; set; }
+    [Parameter] public TValue SelectedValue { get; set; }
+    [Parameter] public EventCallback&lt;TValue&gt; SelectedValueChanged { get; set; }
+    [Parameter] public Func&lt;TItem, TValue&gt; ValueSelector { get; set; }
+    [Parameter] public Func&lt;TItem, string&gt; TextSelector { get; set; }
+    [Parameter] public string Placeholder { get; set; } = "Seçiniz...";
+}
+
+<span class="comment">// Kullanım</span>
+&lt;LookupDropdown TItem="Channel" TValue="int"
+    Items="@channels"
+    @bind-SelectedValue="selectedChannelId"
+    ValueSelector="@(c => c.Id)"
+    TextSelector="@(c => c.Name)"
+    Placeholder="Kanal Seçiniz" /&gt;</code></pre>
+                </div>
+
+                <div class="success">
+                    <h4>2. WinForms ComboBox Extension</h4>
+                    <pre><code><span class="keyword">public static class</span> <span class="type">ComboBoxExtensions</span>
+{
+    <span class="keyword">public static void</span> <span class="method">BindLookup</span>&lt;T&gt;(
+        <span class="keyword">this</span> ComboBox comboBox, 
+        List&lt;T&gt; items, 
+        <span class="keyword">string</span> displayMember = <span class="string">"Name"</span>, 
+        <span class="keyword">string</span> valueMember = <span class="string">"Id"</span>)
+    {
+        comboBox.DataSource = items;
+        comboBox.DisplayMember = displayMember;
+        comboBox.ValueMember = valueMember;
+        comboBox.SelectedIndex = -<span class="number">1</span>;
+    }
+}
+
+<span class="comment">// Kullanım</span>
+<span class="keyword">var</span> channels = <span class="keyword">await</span> _channelService.GetActiveChannelsAsync();
+cmbChannel.BindLookup(channels);</code></pre>
+                </div>
+
+                <div class="success">
+                    <h4>3. Generic Lookup Service</h4>
+                    <p>Tüm lookup servisleri için ortak interface:</p>
+                    <pre><code><span class="keyword">public interface</span> <span class="type">ILookupService</span>&lt;T&gt; <span class="keyword">where</span> T : <span class="keyword">class</span>
+{
+    Task&lt;List&lt;T&gt;&gt; GetAllAsync();
+    Task&lt;List&lt;T&gt;&gt; GetActiveAsync();
+    Task&lt;T&gt; GetByIdAsync(<span class="keyword">int</span> id);
+}
+
+<span class="comment">// Kullanım</span>
+<span class="keyword">public class</span> <span class="type">ChannelService</span> : ILookupService&lt;Channel&gt;, IChannelService
+{
+    <span class="comment">// Implementation</span>
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <h4>4. Currency Extension Methods</h4>
+                    <pre><code><span class="keyword">public static class</span> <span class="type">CurrencyExtensions</span>
+{
+    <span class="keyword">public static string</span> <span class="method">FormatWithCurrency</span>(<span class="keyword">this decimal</span> amount, Currency currency)
+    {
+        <span class="keyword">return</span> <span class="string">$"{currency.Symbol}{amount:N2}"</span>;
+    }
+    
+    <span class="keyword">public static string</span> <span class="method">FormatWithCurrency</span>(<span class="keyword">this decimal</span> amount, <span class="keyword">string</span> currencyCode)
+    {
+        <span class="keyword">var</span> symbols = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">string</span>, <span class="keyword">string</span>&gt;
+        {
+            { <span class="string">"TRY"</span>, <span class="string">"₺"</span> },
+            { <span class="string">"USD"</span>, <span class="string">"$"</span> },
+            { <span class="string">"EUR"</span>, <span class="string">"€"</span> },
+            { <span class="string">"GBP"</span>, <span class="string">"£"</span> }
+        };
+        
+        <span class="keyword">var</span> symbol = symbols.GetValueOrDefault(currencyCode, currencyCode);
+        <span class="keyword">return</span> <span class="string">$"{symbol}{amount:N2}"</span>;
+    }
+}
+
+<span class="comment">// Kullanım</span>
+<span class="keyword">decimal</span> price = <span class="number">999.99m</span>;
+Console.WriteLine(price.FormatWithCurrency(<span class="string">"USD"</span>)); <span class="comment">// $999.99</span></code></pre>
+                </div>
+
+                <div class="success">
+                    <h4>5. API Endpoint Örnekleri</h4>
+                    <pre><code>[<span class="type">ApiController</span>]
+[<span class="type">Route</span>(<span class="string">"api/[controller]"</span>)]
+<span class="keyword">public class</span> <span class="type">LookupsController</span> : ControllerBase
+{
+    <span class="keyword">private readonly</span> IChannelService _channelService;
+    <span class="keyword">private readonly</span> IStatusService _statusService;
+    <span class="keyword">private readonly</span> ICurrencyService _currencyService;
+    
+    [<span class="type">HttpGet</span>(<span class="string">"channels"</span>)]
+    <span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">GetChannels</span>()
+    {
+        <span class="keyword">var</span> channels = <span class="keyword">await</span> _channelService.GetActiveChannelsAsync();
+        <span class="keyword">return</span> Ok(channels);
+    }
+    
+    [<span class="type">HttpGet</span>(<span class="string">"statuses/{entityType}"</span>)]
+    <span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">GetStatuses</span>(<span class="keyword">string</span> entityType)
+    {
+        <span class="keyword">var</span> statuses = <span class="keyword">await</span> _statusService.GetStatusesByEntityTypeAsync(entityType);
+        <span class="keyword">return</span> Ok(statuses);
+    }
+    
+    [<span class="type">HttpGet</span>(<span class="string">"currencies"</span>)]
+    <span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">GetCurrencies</span>()
+    {
+        <span class="keyword">var</span> currencies = <span class="keyword">await</span> _currencyService.GetActiveCurrenciesAsync();
+        <span class="keyword">return</span> Ok(currencies);
+    }
+    
+    [<span class="type">HttpPost</span>(<span class="string">"currencies/convert"</span>)]
+    <span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">ConvertCurrency</span>([FromBody] ConvertCurrencyRequest request)
+    {
+        <span class="keyword">var</span> result = <span class="keyword">await</span> _currencyService.ConvertCurrencyAsync(
+            request.Amount, 
+            request.FromCurrencyId, 
+            request.ToCurrencyId);
+        
+        <span class="keyword">return</span> Ok(<span class="keyword">new</span> { convertedAmount = result });
+    }
+}</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>🎯 Gerçek Kullanım Senaryoları</h2>
+                
+                <h3>1. Firma Oluşturma - Tüm Lookup'ları Birlikte Kullanma</h3>
+                <pre><code><span class="comment">// Blazor Component</span>
+@page "/companies/create"
+@inject ICompanyService CompanyService
+@inject IChannelService ChannelService
+@inject IStatusService StatusService
+
+&lt;h3&gt;Yeni Firma Ekle&lt;/h3&gt;
+
+&lt;EditForm Model="@model" OnValidSubmit="HandleSubmit"&gt;
+    &lt;div class="mb-3"&gt;
+        &lt;label&gt;Firma Adı&lt;/label&gt;
+        &lt;InputText @bind-Value="model.Title" class="form-control" /&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="mb-3"&gt;
+        &lt;label&gt;Kanal&lt;/label&gt;
+        &lt;InputSelect @bind-Value="model.ChannelId" class="form-select"&gt;
+            &lt;option value="0"&gt;Kanal Seçiniz&lt;/option&gt;
+            @foreach (var channel in channels)
+            {
+                &lt;option value="@channel.Id"&gt;@channel.Name&lt;/option&gt;
+            }
+        &lt;/InputSelect&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="mb-3"&gt;
+        &lt;label&gt;Durum&lt;/label&gt;
+        &lt;InputSelect @bind-Value="model.StatusId" class="form-select"&gt;
+            &lt;option value="0"&gt;Durum Seçiniz&lt;/option&gt;
+            @foreach (var status in statuses)
+            {
+                &lt;option value="@status.Id"&gt;@status.Name&lt;/option&gt;
+            }
+        &lt;/InputSelect&gt;
+    &lt;/div&gt;
+    
+    &lt;button type="submit" class="btn btn-primary"&gt;Kaydet&lt;/button&gt;
+&lt;/EditForm&gt;
+
+@code {
+    <span class="keyword">private</span> CreateCompanyDto model = <span class="keyword">new</span>();
+    <span class="keyword">private</span> List&lt;Channel&gt; channels = <span class="keyword">new</span>();
+    <span class="keyword">private</span> List&lt;Status&gt; statuses = <span class="keyword">new</span>();
+    
+    <span class="keyword">protected override async</span> Task <span class="method">OnInitializedAsync</span>()
+    {
+        channels = <span class="keyword">await</span> ChannelService.GetActiveChannelsAsync();
+        statuses = <span class="keyword">await</span> StatusService.GetStatusesByEntityTypeAsync(<span class="string">"Company"</span>);
+    }
+    
+    <span class="keyword">private async</span> Task <span class="method">HandleSubmit</span>()
+    {
+        <span class="keyword">await</span> CompanyService.CreateCompanyAsync(model, currentUserId);
+        NavigationManager.NavigateTo(<span class="string">"/companies"</span>);
+    }
+}</code></pre>
+
+                <h3>2. Teklif Oluşturma - Para Birimi Dönüşümü</h3>
+                <pre><code><span class="comment">// Web API Controller</span>
+[<span class="type">HttpPost</span>(<span class="string">"create-offer"</span>)]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">CreateOffer</span>([FromBody] CreateOfferDto dto)
+{
+    <span class="comment">// Seçilen para birimini al</span>
+    <span class="keyword">var</span> currency = <span class="keyword">await</span> _currencyService.GetCurrencyByIdAsync(dto.CurrencyId);
+    
+    <span class="comment">// Fiyatı TRY'ye çevir (raporlama için)</span>
+    <span class="keyword">var</span> tryc = <span class="keyword">await</span> _currencyService.GetCurrencyByCodeAsync(<span class="string">"TRY"</span>);
+    <span class="keyword">var</span> priceInTRY = <span class="keyword">await</span> _currencyService.ConvertCurrencyAsync(
+        dto.Price, 
+        dto.CurrencyId, 
+        tryc.Id);
+    
+    <span class="comment">// Teklif oluştur</span>
+    <span class="keyword">var</span> offer = <span class="keyword">new</span> Offer
+    {
+        CompanyId = dto.CompanyId,
+        PackageId = dto.PackageId,
+        Price = dto.Price,
+        CurrencyId = dto.CurrencyId,
+        PriceInTRY = priceInTRY,
+        StatusId = <span class="keyword">await</span> GetDefaultOfferStatusId()
+    };
+    
+    <span class="comment">// ...</span>
+    <span class="keyword">return</span> Ok(offer);
+}
+
+<span class="keyword">private async</span> Task&lt;<span class="keyword">int</span>&gt; <span class="method">GetDefaultOfferStatusId</span>()
+{
+    <span class="keyword">var</span> statuses = <span class="keyword">await</span> _statusService.GetStatusesByEntityTypeAsync(<span class="string">"Offer"</span>);
+    <span class="keyword">return</span> statuses.First(s => s.Name == <span class="string">"Taslak"</span>).Id;
+}</code></pre>
+
+                <h3>3. Dashboard Widget - Firma Durum Dağılımı</h3>
+                <pre><code><span class="comment">// Blazor Dashboard Component</span>
+@page "/dashboard"
+@inject ICompanyService CompanyService
+@inject IStatusService StatusService
+
+&lt;div class="card"&gt;
+    &lt;div class="card-header"&gt;
+        &lt;h5&gt;Firma Durum Dağılımı&lt;/h5&gt;
+    &lt;/div&gt;
+    &lt;div class="card-body"&gt;
+        @foreach (var stat in statusStats)
+        {
+            &lt;div class="status-item"&gt;
+                &lt;span class="status-name"&gt;@stat.StatusName&lt;/span&gt;
+                &lt;span class="status-count"&gt;@stat.Count&lt;/span&gt;
+                &lt;div class="progress"&gt;
+                    &lt;div class="progress-bar" style="width: @stat.Percentage%"&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        }
+    &lt;/div&gt;
+&lt;/div&gt;
+
+@code {
+    <span class="keyword">private</span> List&lt;StatusStatDto&gt; statusStats = <span class="keyword">new</span>();
+    
+    <span class="keyword">protected override async</span> Task <span class="method">OnInitializedAsync</span>()
+    {
+        <span class="keyword">var</span> companies = <span class="keyword">await</span> CompanyService.GetAllCompaniesAsync();
+        <span class="keyword">var</span> statuses = <span class="keyword">await</span> StatusService.GetStatusesByEntityTypeAsync(<span class="string">"Company"</span>);
+        
+        <span class="keyword">var</span> total = companies.Count;
+        
+        statusStats = statuses.Select(status => <span class="keyword">new</span> StatusStatDto
+        {
+            StatusName = status.Name,
+            Count = companies.Count(c => c.StatusId == status.Id),
+            Percentage = total > <span class="number">0</span> ? (companies.Count(c => c.StatusId == status.Id) * <span class="number">100.0</span> / total) : <span class="number">0</span>
+        }).ToList();
+    }
+}</code></pre>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Ödüyo CRM - Lookup Servisleri Dokümantasyonu</p>
+        </footer>
+    </div>
+
+    <script>
+        function showPlatform(section, platform) {
+            const tabs = document.querySelectorAll(`#${section} .platform-tab`);
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const contents = document.querySelectorAll(`[id^="${section}-"]`);
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${section}-${platform}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

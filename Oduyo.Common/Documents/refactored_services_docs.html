@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🆕 Yeni Servisler - V2.0 Refactor Dokümantasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        nav {
+            background: #2c3e50;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #3498db;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+        }
+
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .keyword { color: #c678dd; }
+        .string { color: #98c379; }
+        .comment { color: #5c6370; font-style: italic; }
+        .method { color: #61afef; }
+        .type { color: #e5c07b; }
+        .number { color: #d19a66; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .new-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🆕 V2.0 Refactor - Yeni Servisler ve Özellikler</h1>
+            <p>Phase 5 ile Eklenen Yeni Servisler ve Güncellemeler</p>
+            <span class="version-badge">v2.0-refactor</span>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#overview">Genel Bakış</a></li>
+                <li><a href="#license-updates">License Güncellemeleri</a></li>
+                <li><a href="#credit-usage">Credit Usage</a></li>
+                <li><a href="#dealer-commission">Dealer Commission</a></li>
+                <li><a href="#offer-pricing">Offer Pricing</a></li>
+                <li><a href="#offer-updates">Offer Güncellemeleri</a></li>
+                <li><a href="#payment-updates">Payment Güncellemeleri</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section id="overview">
+                <h2>📋 Genel Bakış</h2>
+
+                <div class="note">
+                    <strong>💡 V2.0 Refactor:</strong> Bu dokümantasyon Phase 5 ile eklenen yeni servisleri ve mevcut servislere eklenen yeni özellikleri içerir.
+                </div>
+
+                <h3>Yeni Servisler</h3>
+                <ul>
+                    <li><strong>CreditUsageService:</strong> FIFO kredi yönetimi ve kullanım takibi</li>
+                    <li><strong>DealerCommissionService:</strong> Bayi komisyon hesaplama ve ödeme yönetimi</li>
+                    <li><strong>OfferPricingService:</strong> Gelişmiş fiyatlandırma ve kampanya yönetimi</li>
+                </ul>
+
+                <h3>Güncellenen Servisler</h3>
+                <ul>
+                    <li><strong>LicenseService:</strong> Grace period, trial lisans, master lisans senkronizasyonu</li>
+                    <li><strong>OfferService:</strong> OTP doğrulama, kampanya freeze period</li>
+                    <li><strong>PaymentService:</strong> Gelişmiş hata yönetimi, provider transaction tracking</li>
+                </ul>
+
+                <h3>Yeni Teknolojiler</h3>
+                <ul>
+                    <li><strong>MassTransit:</strong> Asenkron mesajlaşma (SMS, Email, PDF, Calendar)</li>
+                    <li><strong>Hangfire:</strong> Background jobs (Lisans kontrolü, teklif hatırlatma, kredi takibi)</li>
+                </ul>
+            </section>
+
+            <section id="license-updates">
+                <h2>🔐 LicenseService Güncellemeleri <span class="new-badge">UPDATED</span></h2>
+
+                <h3>1. Grace Period Desteği</h3>
+                <div class="success">
+                    <strong>✓ Yeni Özellik:</strong> Lisans süresi dolduktan sonra 7 günlük kullanım süresi
+                </div>
+
+                <pre><code><span class="comment">// Grace period ile lisans doğrulama</span>
+<span class="keyword">var</span> result = <span class="keyword">await</span> _licenseService.ValidateLicenseAsync(licenseId);
+
+<span class="keyword">if</span> (result.IsValid)
+{
+    <span class="keyword">if</span> (result.IsInGracePeriod)
+    {
+        Console.WriteLine(<span class="string">$"Uyarı: Grace period içindesiniz. {result.DaysRemaining} gün kaldı"</span>);
+    }
+    <span class="comment">// Lisans geçerli, işleme devam et</span>
+}
+<span class="keyword">else</span>
+{
+    Console.WriteLine(<span class="string">$"Lisans geçersiz: {result.Reason}"</span>);
+}</code></pre>
+
+                <h3>2. Trial Lisans Oluşturma</h3>
+                <pre><code><span class="comment">// 30 günlük deneme lisansı</span>
+<span class="keyword">var</span> trialLicense = <span class="keyword">await</span> _licenseService.CreateTrialLicenseAsync(
+    companyId: <span class="number">10</span>,
+    productId: <span class="number">1</span>,
+    packageId: <span class="number">2</span>,
+    trialDays: <span class="number">30</span>,
+    createdBy: currentUserId
+);
+
+<span class="comment">// Otomatik email gönderilir: "Deneme lisansınız aktif"</span></code></pre>
+
+                <h3>3. Master Lisans Senkronizasyonu</h3>
+                <div class="note">
+                    <strong>💡 Kullanım Senaryosu:</strong> Müşteri yeni paket alırken, mevcut lisanslarıyla aynı bitiş tarihine sahip olmalı.
+                </div>
+
+                <pre><code><span class="comment">// Yeni paket eklerken bitiş tarihini senkronize et</span>
+<span class="keyword">var</span> newLicense = <span class="keyword">await</span> _licenseService.SynchronizeLicenseEndDateAsync(
+    companyId: <span class="number">10</span>,
+    productId: <span class="number">2</span>,
+    packageId: <span class="number">5</span>,
+    createdBy: currentUserId
+);
+
+<span class="comment">// Yeni lisans, firmanın master lisansı ile aynı EndDate'e sahip olur</span></code></pre>
+
+                <h3>Yeni Entity Alanları</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Alan</th>
+                            <th>Tip</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>IsTrial</td>
+                            <td>bool</td>
+                            <td>Deneme lisansı mı? (IsTrialPeriod yerine)</td>
+                        </tr>
+                        <tr>
+                            <td>TrialDays</td>
+                            <td>int?</td>
+                            <td>Deneme süresi (gün)</td>
+                        </tr>
+                        <tr>
+                            <td>GracePeriodDays</td>
+                            <td>int</td>
+                            <td>Grace period süresi (default: 7)</td>
+                        </tr>
+                        <tr>
+                            <td>GracePeriodStartDate</td>
+                            <td>DateTime?</td>
+                            <td>Grace period başlangıç tarihi</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="warning">
+                    <strong>⚠️ Breaking Change:</strong> <code>IsTrialPeriod</code> → <code>IsTrial</code> olarak değiştirildi.
+                </div>
+            </section>
+
+            <section id="credit-usage">
+                <h2>💳 CreditUsageService <span class="new-badge">NEW</span></h2>
+
+                <div class="note">
+                    <strong>💡 Ne İşe Yarar?</strong> Müşteri kredilerinin FIFO (First In First Out) mantığıyla tüketilmesini ve takibini sağlar.
+                </div>
+
+                <h3>FIFO Kredi Tüketimi</h3>
+                <pre><code><span class="comment">// 100 birim kredi tüket (en eski krediden başlayarak)</span>
+<span class="keyword">var</span> success = <span class="keyword">await</span> _creditUsageService.ConsumeCreditsAsync(
+    companyId: <span class="number">10</span>,
+    amount: <span class="number">100</span>,
+    description: <span class="string">"100 SMS gönderimi"</span>
+);
+
+<span class="keyword">if</span> (!success)
+{
+    <span class="keyword">return</span> BadRequest(<span class="string">"Yetersiz kredi"</span>);
+}
+
+<span class="comment">// Low credit warning otomatik gönderilir (< 100 kalan)</span></code></pre>
+
+                <h3>Kredi Kontrolü</h3>
+                <pre><code><span class="comment">// İşlem öncesi kredi kontrolü</span>
+<span class="keyword">var</span> hasSufficientCredit = <span class="keyword">await</span> _creditUsageService.HasSufficientCreditsAsync(
+    companyId: <span class="number">10</span>,
+    required: <span class="number">500</span>
+);
+
+<span class="keyword">if</span> (!hasSufficientCredit)
+{
+    <span class="keyword">throw new</span> InsufficientCreditException(<span class="string">"Yetersiz kredi bakiyesi"</span>);
+}</code></pre>
+
+                <h3>Kredi Özeti</h3>
+                <pre><code><span class="comment">// Firma kredi durumu özeti</span>
+<span class="keyword">var</span> summary = <span class="keyword">await</span> _creditUsageService.GetCreditUsageSummaryAsync(companyId);
+
+Console.WriteLine(<span class="string">$"Toplam Kredi: {summary.TotalCredits}"</span>);
+Console.WriteLine(<span class="string">$"Kullanılan: {summary.UsedCredits}"</span>);
+Console.WriteLine(<span class="string">$"Kalan: {summary.RemainingCredits}"</span>);
+Console.WriteLine(<span class="string">$"Süresi Dolmuş: {summary.ExpiredCredits}"</span>);</code></pre>
+
+                <h3>Kullanım Geçmişi</h3>
+                <pre><code><span class="comment">// Son 30 günün kredi kullanım geçmişi</span>
+<span class="keyword">var</span> history = <span class="keyword">await</span> _creditUsageService.GetCreditUsageHistoryAsync(
+    companyId: <span class="number">10</span>,
+    from: DateTime.UtcNow.AddDays(-<span class="number">30</span>),
+    to: DateTime.UtcNow
+);
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> usage <span class="keyword">in</span> history)
+{
+    Console.WriteLine(<span class="string">$"{usage.UsedAt:dd.MM.yyyy} - {usage.Amount} kredi - {usage.Description}"</span>);
+}</code></pre>
+
+                <h3>Yeni Entity: CreditUsage</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Alan</th>
+                            <th>Tip</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CreditId</td>
+                            <td>int</td>
+                            <td>Hangi kredi paketinden kullanıldı</td>
+                        </tr>
+                        <tr>
+                            <td>CompanyId</td>
+                            <td>int</td>
+                            <td>Firma ID</td>
+                        </tr>
+                        <tr>
+                            <td>Amount</td>
+                            <td>int</td>
+                            <td>Kullanılan miktar</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>string</td>
+                            <td>Ne için kullanıldı</td>
+                        </tr>
+                        <tr>
+                            <td>UsedAt</td>
+                            <td>DateTime</td>
+                            <td>Kullanım zamanı</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="success">
+                    <strong>✓ Otomatik Özellikler:</strong>
+                    <ul>
+                        <li>FIFO mantığıyla en eski krediden tüketir</li>
+                        <li>Kredi < 100 olunca otomatik email uyarısı</li>
+                        <li>Süresi dolmuş krediler kullanılamaz</li>
+                        <li>Tüm işlemler MassTransit ile asenkron</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="dealer-commission">
+                <h2>💼 DealerCommissionService <span class="new-badge">NEW</span></h2>
+
+                <div class="note">
+                    <strong>💡 Ne İşe Yarar?</strong> Bayi komisyonlarının otomatik hesaplanması, onaylanması ve ödeme takibi.
+                </div>
+
+                <h3>Komisyon Oluşturma</h3>
+                <pre><code><span class="comment">// Ödeme tamamlandıktan sonra otomatik komisyon oluştur</span>
+<span class="keyword">var</span> commission = <span class="keyword">await</span> _dealerCommissionService.CreateCommissionAsync(
+    <span class="keyword">new</span> CreateDealerCommissionDto
+    {
+        DealerId = <span class="number">5</span>,
+        CompanyId = <span class="number">10</span>,
+        OfferId = <span class="number">123</span>,
+        PaymentId = <span class="number">456</span>,
+        BaseAmount = <span class="number">10000</span>, <span class="comment">// Ödeme tutarı</span>
+        CommissionRate = <span class="number">15</span>, <span class="comment">// %15 komisyon</span>
+        Notes = <span class="string">"Teklif #123 için komisyon"</span>
+    },
+    createdBy: currentUserId
+);
+
+<span class="comment">// CommissionAmount otomatik hesaplanır: 10000 * 0.15 = 1500</span></code></pre>
+
+                <h3>Komisyon Onaylama</h3>
+                <pre><code><span class="comment">// Komisyonu onayla</span>
+<span class="keyword">var</span> approved = <span class="keyword">await</span> _dealerCommissionService.ApproveCommissionAsync(
+    commissionId: <span class="number">789</span>,
+    approvedBy: managerUserId
+);
+
+<span class="comment">// Otomatik email: "Hak ediş onaylandı"</span></code></pre>
+
+                <h3>Komisyon Ödeme</h3>
+                <pre><code><span class="comment">// Komisyonu ödenmiş işaretle</span>
+<span class="keyword">var</span> paid = <span class="keyword">await</span> _dealerCommissionService.PayCommissionAsync(
+    commissionId: <span class="number">789</span>,
+    paidBy: financeUserId
+);
+
+<span class="comment">// Otomatik email: "Hak ediş ödendi - Tarih: dd.MM.yyyy"</span></code></pre>
+
+                <h3>Bayi Komisyon Raporu</h3>
+                <pre><code><span class="comment">// Bayinin toplam komisyon raporu</span>
+<span class="keyword">var</span> report = <span class="keyword">await</span> _dealerCommissionService.GetDealerReportAsync(
+    dealerId: <span class="number">5</span>,
+    from: DateTime.UtcNow.AddMonths(-<span class="number">1</span>)
+);
+
+Console.WriteLine(<span class="string">$"Toplam Komisyon: {report.TotalCommissionAmount:C}"</span>);
+Console.WriteLine(<span class="string">$"Bekleyen: {report.PendingAmount:C}"</span>);
+Console.WriteLine(<span class="string">$"Onaylanan: {report.ApprovedAmount:C}"</span>);
+Console.WriteLine(<span class="string">$"Ödenen: {report.PaidAmount:C}"</span>);
+Console.WriteLine(<span class="string">$"İşlem Sayısı: {report.CommissionCount}"</span>);</code></pre>
+
+                <h3>Yeni Entity: DealerCommission</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Alan</th>
+                            <th>Tip</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>DealerId</td>
+                            <td>int</td>
+                            <td>Bayi ID</td>
+                        </tr>
+                        <tr>
+                            <td>CompanyId</td>
+                            <td>int</td>
+                            <td>Müşteri firma ID</td>
+                        </tr>
+                        <tr>
+                            <td>OfferId</td>
+                            <td>int?</td>
+                            <td>İlgili teklif</td>
+                        </tr>
+                        <tr>
+                            <td>PaymentId</td>
+                            <td>int?</td>
+                            <td>İlgili ödeme</td>
+                        </tr>
+                        <tr>
+                            <td>BaseAmount</td>
+                            <td>decimal</td>
+                            <td>Ana tutar (ödeme)</td>
+                        </tr>
+                        <tr>
+                            <td>CommissionRate</td>
+                            <td>decimal</td>
+                            <td>Komisyon oranı (%)</td>
+                        </tr>
+                        <tr>
+                            <td>CommissionAmount</td>
+                            <td>decimal</td>
+                            <td>Komisyon tutarı (otomatik hesaplanan)</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>enum</td>
+                            <td>Pending, Approved, Paid, Cancelled</td>
+                        </tr>
+                        <tr>
+                            <td>PaidAt</td>
+                            <td>DateTime?</td>
+                            <td>Ödeme tarihi</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Komisyon Durumları (CommissionStatus)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Durum</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Pending</td>
+                            <td>Beklemede - Oluşturuldu, onay bekliyor</td>
+                        </tr>
+                        <tr>
+                            <td>Approved</td>
+                            <td>Onaylandı - Ödeme yapılabilir</td>
+                        </tr>
+                        <tr>
+                            <td>Paid</td>
+                            <td>Ödendi - Bayi ödemesi yapıldı</td>
+                        </tr>
+                        <tr>
+                            <td>Cancelled</td>
+                            <td>İptal - İade vs. nedeniyle iptal</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="offer-pricing">
+                <h2>💰 OfferPricingService <span class="new-badge">NEW</span></h2>
+
+                <div class="note">
+                    <strong>💡 Ne İşe Yarar?</strong> Teklif fiyatlandırmasını kampanya, manuel indirim ve çapraz satış kurallarıyla hesaplar.
+                </div>
+
+                <h3>Fiyat Hesaplama</h3>
+                <pre><code><span class="comment">// Teklif fiyatını hesapla</span>
+<span class="keyword">var</span> pricing = <span class="keyword">await</span> _offerPricingService.CalculatePricingAsync(
+    <span class="keyword">new</span> OfferPricingRequest
+    {
+        Details = <span class="keyword">new</span>[]
+        {
+            <span class="keyword">new</span> OfferDetailDto { PackageId = <span class="number">1</span>, Quantity = <span class="number">1</span>, UnitPrice = <span class="number">5000</span> },
+            <span class="keyword">new</span> OfferDetailDto { ModuleId = <span class="number">3</span>, Quantity = <span class="number">2</span>, UnitPrice = <span class="number">1500</span> }
+        },
+        CampaignId = <span class="number">10</span>,
+        ManualDiscountRate = <span class="number">5</span>, <span class="comment">// %5 manuel indirim</span>
+        UserId = currentUserId
+    }
+);
+
+Console.WriteLine(<span class="string">$"Alt Toplam: {pricing.SubTotal:C}"</span>);
+Console.WriteLine(<span class="string">$"Kampanya İndirimi: -{pricing.CampaignDiscount:C}"</span>);
+Console.WriteLine(<span class="string">$"Çapraz Satış İndirimi: -{pricing.CrossSellDiscount:C}"</span>);
+Console.WriteLine(<span class="string">$"Manuel İndirim: -{pricing.ManualDiscount:C}"</span>);
+Console.WriteLine(<span class="string">$"<strong>Toplam: {pricing.FinalPrice:C}</strong>"</span>);</code></pre>
+
+                <h3>Kampanya Freeze Period</h3>
+                <div class="warning">
+                    <strong>⚠️ Önemli:</strong> Kampanya bitiş tarihinden 7 gün öncesi "freeze period"dur. Bu sürede kampanya değiştirilemez ama uygulanmaya devam eder.
+                </div>
+
+                <pre><code><span class="keyword">if</span> (pricing.IsCampaignFrozen)
+{
+    Console.WriteLine(<span class="string">"Kampanya freeze period içinde - değiştirilemez"</span>);
+}
+
+<span class="keyword">if</span> (pricing.IsCampaignActive)
+{
+    Console.WriteLine(<span class="string">"Kampanya aktif ve uygulandı"</span>);
+}</code></pre>
+
+                <h3>Manuel İndirim Yetki Kontrolü</h3>
+                <pre><code><span class="comment">// Kullanıcının indirim yetkisi otomatik kontrol edilir</span>
+<span class="keyword">try</span>
+{
+    <span class="keyword">var</span> pricing = <span class="keyword">await</span> _offerPricingService.CalculatePricingAsync(request);
+}
+<span class="keyword">catch</span> (UnauthorizedAccessException ex)
+{
+    <span class="comment">// Kullanıcının %X indirim yetkisi yok</span>
+    Console.WriteLine(ex.Message);
+}</code></pre>
+
+                <h3>Çapraz Satış Perkleri</h3>
+                <div class="success">
+                    <strong>✓ Otomatik Kurallar:</strong>
+                    <ul>
+                        <li>Enterprise Tahsilat paketi → Ekstre Lite modülü bedava</li>
+                        <li>Daha fazla kural eklenebilir</li>
+                    </ul>
+                </div>
+
+                <pre><code><span class="comment">// Cross-sell perkleri otomatik uygulanır</span>
+<span class="keyword">var</span> crossSell = <span class="keyword">await</span> _offerPricingService.CalculateCrossSellPerksAsync(details);
+Console.WriteLine(<span class="string">$"Çapraz Satış İndirimi: {crossSell:C}"</span>);</code></pre>
+
+                <h3>OfferPriceCalculation Model</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Alan</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SubTotal</td>
+                            <td>Alt toplam (indirim öncesi)</td>
+                        </tr>
+                        <tr>
+                            <td>CampaignDiscount</td>
+                            <td>Kampanya indirimi</td>
+                        </tr>
+                        <tr>
+                            <td>CrossSellDiscount</td>
+                            <td>Çapraz satış indirimi</td>
+                        </tr>
+                        <tr>
+                            <td>ManualDiscount</td>
+                            <td>Manuel indirim (yetki kontrolü ile)</td>
+                        </tr>
+                        <tr>
+                            <td>FinalPrice</td>
+                            <td>Nihai fiyat</td>
+                        </tr>
+                        <tr>
+                            <td>IsCampaignActive</td>
+                            <td>Kampanya aktif mi?</td>
+                        </tr>
+                        <tr>
+                            <td>IsCampaignFrozen</td>
+                            <td>Freeze period içinde mi?</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="offer-updates">
+                <h2>💰 Offer Entity Güncellemeleri <span class="new-badge">UPDATED</span></h2>
+
+                <h3>1. Fiyatlandırma Breakdown</h3>
+                <div class="note">
+                    <strong>💡 Değişiklik:</strong> Tek bir <code>Total</code> yerine detaylı fiyat ayrımı
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Eski</th>
+                            <th>Yeni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SubTotal</td>
+                            <td>SubTotal (aynı)</td>
+                        </tr>
+                        <tr>
+                            <td>DiscountAmount</td>
+                            <td>❌ Kaldırıldı</td>
+                        </tr>
+                        <tr>
+                            <td>DiscountRate</td>
+                            <td>❌ Kaldırıldı</td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td>❌ Kaldırıldı</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>✅ CampaignDiscount</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>✅ ManualDiscount</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>✅ ManualDiscountRate</td>
+                        </tr>
+                        <tr>
+                            <td>-</td>
+                            <td>✅ TotalAmount</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>2. Kampanya Desteği</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Alan</th>
+                            <th>Tip</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CampaignId</td>
+                            <td>int?</td>
+                            <td>Uygulanan kampanya</td>
+                        </tr>
+                        <tr>
+                            <td>IsCampaignLocked</td>
+                            <td>bool</td>
+                            <td>Freeze period kilidi (7 gün)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>3. OTP Doğrulama</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Alan</th>
+                            <th>Tip</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>OtpCodeHash</td>
+                            <td>string</td>
+                            <td>Hash'lenmiş OTP kodu</td>
+                        </tr>
+                        <tr>
+                            <td>OtpSentAt</td>
+                            <td>DateTime?</td>
+                            <td>OTP gönderim zamanı</td>
+                        </tr>
+                        <tr>
+                            <td>OtpVerifiedAt</td>
+                            <td>DateTime?</td>
+                            <td>OTP doğrulama zamanı</td>
+                        </tr>
+                        <tr>
+                            <td>IsOtpVerified</td>
+                            <td>bool</td>
+                            <td>OTP doğrulandı mı?</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>OTP Kullanımı</h3>
+                <pre><code><span class="comment">// 1. Teklif gönderirken OTP oluştur ve SMS ile gönder</span>
+<span class="keyword">var</span> otpSent = <span class="keyword">await</span> _offerService.SendOfferOtpAsync(offerId);
+
+<span class="comment">// 2. Müşteri OTP ile doğrula</span>
+<span class="keyword">var</span> verified = <span class="keyword">await</span> _offerService.VerifyOfferOtpAsync(
+    offerId,
+    otpCode: <span class="string">"123456"</span>
+);
+
+<span class="keyword">if</span> (verified)
+{
+    <span class="comment">// Teklif kabul edilebilir</span>
+}</code></pre>
+            </section>
+
+            <section id="payment-updates">
+                <h2>💳 Payment Entity Güncellemeleri <span class="new-badge">UPDATED</span></h2>
+
+                <h3>Yeni Alanlar</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Alan</th>
+                            <th>Tip</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ProviderTransactionId</td>
+                            <td>string</td>
+                            <td>Sanal POS provider'dan gelen TXN ID</td>
+                        </tr>
+                        <tr>
+                            <td>PaymentDate</td>
+                            <td>DateTime</td>
+                            <td>Ödeme başlatma tarihi</td>
+                        </tr>
+                        <tr>
+                            <td>CompletedAt</td>
+                            <td>DateTime?</td>
+                            <td>Ödeme tamamlanma zamanı</td>
+                        </tr>
+                        <tr>
+                            <td>FailureReason</td>
+                            <td>string</td>
+                            <td>Başarısızlık nedeni</td>
+                        </tr>
+                        <tr>
+                            <td>FailureCode</td>
+                            <td>string</td>
+                            <td>Hata kodu (provider'dan)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Gelişmiş Hata Yönetimi</h3>
+                <pre><code><span class="comment">// Ödeme başarısız olduğunda detaylı hata kaydet</span>
+<span class="keyword">await</span> _paymentService.FailPaymentAsync(
+    paymentId,
+    failureReason: <span class="string">"Yetersiz bakiye"</span>,
+    failureCode: <span class="string">"INSUFFICIENT_FUNDS"</span>
+);
+
+<span class="comment">// Payment.FailureReason ve FailureCode kaydedilir</span></code></pre>
+
+                <h3>Provider Transaction Tracking</h3>
+                <pre><code><span class="comment">// Ödeme tamamlandığında provider TXN ID'yi kaydet</span>
+<span class="keyword">await</span> _paymentService.CompletePaymentAsync(
+    paymentId,
+    providerTxnId: <span class="string">"IBANK_TXN_987654321"</span>,
+    completedBy: currentUserId
+);
+
+<span class="comment">// Daha sonra provider TXN ile ödeme sorgulanabilir</span></code></pre>
+            </section>
+
+            <section>
+                <h2>🔄 MassTransit Entegrasyonu</h2>
+
+                <div class="success">
+                    <strong>✓ Asenkron İşlemler:</strong> Tüm email, SMS, PDF ve calendar işlemleri artık asenkron yapılıyor.
+                </div>
+
+                <h3>Otomatik Tetiklenen İşlemler</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Olay</th>
+                            <th>Mesaj</th>
+                            <th>Sonuç</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Trial Lisans Oluşturma</td>
+                            <td>SendEmailMessage</td>
+                            <td>Email: "Deneme lisansınız aktif"</td>
+                        </tr>
+                        <tr>
+                            <td>Kredi < 100</td>
+                            <td>SendEmailMessage</td>
+                            <td>Email: "Kredi azaldı"</td>
+                        </tr>
+                        <tr>
+                            <td>Komisyon Onaylandı</td>
+                            <td>SendEmailMessage</td>
+                            <td>Email: "Hak ediş onaylandı"</td>
+                        </tr>
+                        <tr>
+                            <td>Komisyon Ödendi</td>
+                            <td>SendEmailMessage</td>
+                            <td>Email: "Hak ediş ödendi"</td>
+                        </tr>
+                        <tr>
+                            <td>Teklif PDF İsteği</td>
+                            <td>GenerateOfferPdfMessage</td>
+                            <td>PDF oluştur ve email ekinde gönder</td>
+                        </tr>
+                        <tr>
+                            <td>Demo Oluşturma</td>
+                            <td>SyncCalendarMessage</td>
+                            <td>Google Calendar'a ekle</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Message Örnekleri</h3>
+                <pre><code><span class="comment">// Email gönderme (template ile)</span>
+<span class="keyword">await</span> _bus.Publish(<span class="keyword">new</span> SendEmailMessage
+{
+    To = <span class="string">"user@example.com"</span>,
+    Subject = <span class="string">"Lisansınız Dolmak Üzere"</span>,
+    TemplateId = <span class="string">"license-expiring"</span>,
+    TemplateData = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">string</span>, <span class="keyword">string</span>&gt;
+    {
+        [<span class="string">"DaysRemaining"</span>] = <span class="string">"7"</span>
+    }
+});
+
+<span class="comment">// SMS gönderme</span>
+<span class="keyword">await</span> _bus.Publish(<span class="keyword">new</span> SendSmsMessage
+{
+    Phone = <span class="string">"5551234567"</span>,
+    Message = <span class="string">"Teklif OTP kodunuz: 123456"</span>,
+    EntityType = <span class="string">"Offer"</span>,
+    RelatedEntityId = offerId
+});</code></pre>
+            </section>
+
+            <section>
+                <h2>⏰ Hangfire Background Jobs</h2>
+
+                <h3>Zamanlanmış Job'lar</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Job</th>
+                            <th>Çalışma Sıklığı</th>
+                            <th>Görev</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>OfferExpiryJob</td>
+                            <td>Saatlik</td>
+                            <td>Süresi dolan teklifleri Expired durumuna alır</td>
+                        </tr>
+                        <tr>
+                            <td>OfferReminderJob</td>
+                            <td>Günlük 09:00</td>
+                            <td>5 gün içinde dolacak teklifler için hatırlatma</td>
+                        </tr>
+                        <tr>
+                            <td>LicenseMonitorJob</td>
+                            <td>Günlük 02:00</td>
+                            <td>Grace period aktivasyon, süresi dolan lisansları deaktive et</td>
+                        </tr>
+                        <tr>
+                            <td>CreditExpiryJob</td>
+                            <td>Günlük 03:00</td>
+                            <td>Süresi dolan krediler için bildirim, 7 gün önceden uyarı</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Dashboard</h3>
+                <pre><code><span class="comment">// Hangfire Dashboard</span>
+<span class="comment">// URL: https://yourdomain.com/hangfire</span>
+
+<span class="comment">// Recurring Jobs sekmesinde tüm job'ları görebilirsiniz</span>
+<span class="comment">// "Trigger Now" ile manuel tetikleyebilirsiniz</span></code></pre>
+            </section>
+
+            <section>
+                <h2>📦 Migration Checklist</h2>
+
+                <div class="warning">
+                    <strong>⚠️ Önemli:</strong> Production'a geçmeden önce tüm adımları tamamlayın!
+                </div>
+
+                <h3>Database Değişiklikleri</h3>
+                <ul>
+                    <li>✅ License: IsTrial, TrialDays, GracePeriodDays, GracePeriodStartDate</li>
+                    <li>✅ Offer: CampaignDiscount, ManualDiscount, TotalAmount, CampaignId, IsCampaignLocked, OTP alanları</li>
+                    <li>✅ Payment: ProviderTransactionId, PaymentDate, CompletedAt, FailureReason, FailureCode</li>
+                    <li>✅ Company: ContactName, Phone, Email, Address, ProductInterests</li>
+                    <li>✅ Demo: DemoEndTime, ReferenceCode, ChannelId, LocationType, CalendarEventId</li>
+                    <li>✅ Campaign: IsPublic, computed properties (IsCurrentlyActive, IsWithinFreezePeriod)</li>
+                    <li>✅ YENİ: DealerCommission tablosu</li>
+                    <li>✅ YENİ: DiscountRate tablosu</li>
+                    <li>✅ YENİ: CreditUsage tablosu</li>
+                </ul>
+
+                <h3>Servis Kayıtları (Program.cs)</h3>
+                <pre><code><span class="comment">// Yeni servisler</span>
+builder.Services.AddScoped&lt;ICreditUsageService, CreditUsageService&gt;();
+builder.Services.AddScoped&lt;IDealerCommissionService, DealerCommissionService&gt;();
+builder.Services.AddScoped&lt;IOfferPricingService, OfferPricingService&gt;();
+
+<span class="comment">// MassTransit</span>
+builder.Services.AddMassTransit(x => { <span class="comment">/* config */</span> });
+
+<span class="comment">// Hangfire</span>
+builder.Services.AddHangfire(config => { <span class="comment">/* config */</span> });
+builder.Services.AddHangfireServer();</code></pre>
+            </section>
+
+            <section>
+                <h2>📚 Kaynaklar</h2>
+
+                <ul>
+                    <li><strong>REFACTOR_SUMMARY.md</strong> - Tüm değişikliklerin özeti</li>
+                    <li><strong>PHASE_6_IMPLEMENTATION_GUIDE.md</strong> - Adım adım uygulama kılavuzu</li>
+                    <li><strong>oduyo_refactor_plan_rev1.md</strong> - Orijinal refactor planı</li>
+                </ul>
+
+                <div class="note">
+                    <strong>💡 Sorularınız için:</strong> PHASE_6_IMPLEMENTATION_GUIDE.md dosyasına bakın veya teknik liderle görüşün.
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Ödüyo CRM - V2.0 Refactor Dokümantasyonu</p>
+            <p><strong>Versiyon:</strong> 2.0-refactor | <strong>Güncelleme Tarihi:</strong> 2025-10-08</p>
+        </footer>
+    </div>
+</body>
+</html>

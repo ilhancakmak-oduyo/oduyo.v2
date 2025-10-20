@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kampanya Yönetimi Servis Dokümantasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #3498db;
+        }
+        
+        main {
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+        }
+        
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .keyword { color: #c678dd; }
+        .string { color: #98c379; }
+        .comment { color: #5c6370; font-style: italic; }
+        .method { color: #61afef; }
+        .type { color: #e5c07b; }
+        .number { color: #d19a66; }
+        
+        .platform-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .platform-tab {
+            padding: 0.75rem 1.5rem;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .platform-tab:hover {
+            background: #e9ecef;
+        }
+        
+        .platform-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .platform-content {
+            display: none;
+        }
+        
+        .platform-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Kampanya Yönetimi Servis Dokümantasyonu</h1>
+            <p>Web API • Blazor • WinForms • Mobile için Kampanya Servisleri</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#campaign-service">CampaignService</a></li>
+                <li><a href="#campaign-package-service">CampaignPackageService</a></li>
+                <li><a href="#campaign-module-service">CampaignModuleService</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <section id="campaign-service">
+                <h2>🎯 ICampaignService</h2>
+                
+                <div class="note">
+                    <strong>💡 Kampanya Nedir?</strong> Belirli bir tarih aralığında paket ve modüller üzerinde indirim sağlayan promosyonlardır. Kampanyalar miktar veya oran bazlı indirim sunabilir.
+                </div>
+
+                <h3>Kampanya Oluşturma - CreateCampaignAsync</h3>
+                
+                <div class="platform-tabs">
+                    <button class="platform-tab active" onclick="showPlatform('campaign-create', 'webapi')">Web API</button>
+                    <button class="platform-tab" onclick="showPlatform('campaign-create', 'blazor')">Blazor</button>
+                    <button class="platform-tab" onclick="showPlatform('campaign-create', 'winforms')">WinForms</button>
+                    <button class="platform-tab" onclick="showPlatform('campaign-create', 'mobile')">Mobile</button>
+                </div>
+                
+                <div id="campaign-create-webapi" class="platform-content active">
+                    <h4>Web API Controller</h4>
+                    <pre><code>[<span class="type">HttpPost</span>]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">CreateCampaign</span>([FromBody] CreateCampaignDto dto)
+{
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">var</span> campaign = <span class="keyword">await</span> _campaignService.CreateCampaignAsync(dto, currentUserId);
+    <span class="keyword">return</span> Ok(<span class="keyword">new</span> { message = <span class="string">"Kampanya oluşturuldu"</span>, data = campaign });
+}</code></pre>
+                </div>
+                
+                <div id="campaign-create-blazor" class="platform-content">
+                    <h4>Blazor Component</h4>
+                    <pre><code>@inject ICampaignService CampaignService
+@inject AuthenticationStateProvider AuthStateProvider
+
+<span class="keyword">private async</span> Task <span class="method">CreateCampaign</span>()
+{
+    <span class="keyword">var</span> authState = <span class="keyword">await</span> AuthStateProvider.GetAuthenticationStateAsync();
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(authState.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateCampaignDto
+    {
+        Name = campaignName,
+        StartDate = startDate,
+        EndDate = endDate,
+        DiscountRate = discountRate,
+        Description = description
+    };
+    
+    <span class="keyword">var</span> campaign = <span class="keyword">await</span> CampaignService.CreateCampaignAsync(dto, currentUserId);
+    <span class="keyword">await</span> JSRuntime.InvokeVoidAsync(<span class="string">"alert"</span>, <span class="string">"Kampanya oluşturuldu"</span>);
+    NavigationManager.NavigateTo(<span class="string">"/campaigns"</span>);
+}</code></pre>
+                </div>
+                
+                <div id="campaign-create-winforms" class="platform-content">
+                    <h4>WinForms</h4>
+                    <pre><code><span class="keyword">private readonly</span> ICampaignService _campaignService;
+<span class="keyword">private readonly int</span> _currentUserId;
+
+<span class="keyword">private async void</span> <span class="method">btnCreateCampaign_Click</span>(<span class="keyword">object</span> sender, EventArgs e)
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateCampaignDto
+    {
+        Name = txtName.Text,
+        StartDate = dtpStartDate.Value,
+        EndDate = dtpEndDate.Value,
+        DiscountRate = numDiscountRate.Value,
+        Description = txtDescription.Text
+    };
+    
+    <span class="keyword">var</span> campaign = <span class="keyword">await</span> _campaignService.CreateCampaignAsync(dto, _currentUserId);
+    MessageBox.Show(<span class="string">"Kampanya başarıyla oluşturuldu"</span>, <span class="string">"Başarılı"</span>, 
+        MessageBoxButtons.OK, MessageBoxIcon.Information);
+    <span class="keyword">this</span>.Close();
+}</code></pre>
+                </div>
+                
+                <div id="campaign-create-mobile" class="platform-content">
+                    <h4>Mobile (MAUI/Xamarin)</h4>
+                    <pre><code><span class="keyword">private readonly</span> ICampaignService _campaignService;
+<span class="keyword">private readonly int</span> _currentUserId;
+
+<span class="keyword">private async</span> Task <span class="method">CreateCampaign</span>()
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateCampaignDto
+    {
+        Name = CampaignName,
+        StartDate = StartDate,
+        EndDate = EndDate,
+        DiscountRate = DiscountRate,
+        Description = Description
+    };
+    
+    <span class="keyword">var</span> campaign = <span class="keyword">await</span> _campaignService.CreateCampaignAsync(dto, _currentUserId);
+    <span class="keyword">await</span> Application.Current.MainPage.DisplayAlert(<span class="string">"Başarılı"</span>, 
+        <span class="string">"Kampanya oluşturuldu"</span>, <span class="string">"Tamam"</span>);
+    <span class="keyword">await</span> Shell.Current.GoToAsync(<span class="string">".."</span>);
+}</code></pre>
+                </div>
+
+                <h3>Kampanya Güncelleme - UpdateCampaignAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateCampaignDto
+{
+    Name = <span class="string">"Yaz Kampanyası 2025"</span>,
+    StartDate = <span class="keyword">new</span> DateTime(<span class="number">2025</span>, <span class="number">6</span>, <span class="number">1</span>),
+    EndDate = <span class="keyword">new</span> DateTime(<span class="number">2025</span>, <span class="number">8</span>, <span class="number">31</span>),
+    DiscountRate = <span class="number">25m</span>,
+    Description = <span class="string">"Yaz aylarına özel %25 indirim"</span>,
+    IsActive = <span class="keyword">true</span>
+};
+
+<span class="keyword">var</span> campaign = <span class="keyword">await</span> _campaignService.UpdateCampaignAsync(campaignId, dto, currentUserId);</code></pre>
+
+                <h3>Kampanya Silme - DeleteCampaignAsync</h3>
+                <pre><code><span class="comment">// Soft delete</span>
+<span class="keyword">var</span> success = <span class="keyword">await</span> _campaignService.DeleteCampaignAsync(campaignId, currentUserId);
+
+<span class="keyword">if</span> (success)
+{
+    <span class="comment">// Kampanya başarıyla silindi</span>
+}</code></pre>
+
+                <h3>Kampanya Getirme İşlemleri</h3>
+                <pre><code><span class="comment">// ID ile kampanya getir</span>
+<span class="keyword">var</span> campaign = <span class="keyword">await</span> _campaignService.GetCampaignByIdAsync(campaignId);
+
+<span class="comment">// Tüm kampanyaları getir</span>
+<span class="keyword">var</span> allCampaigns = <span class="keyword">await</span> _campaignService.GetAllCampaignsAsync();
+
+<span class="comment">// Sadece aktif kampanyaları getir</span>
+<span class="keyword">var</span> activeCampaigns = <span class="keyword">await</span> _campaignService.GetActiveCampaignsAsync();
+
+<span class="comment">// Şu anda geçerli olan kampanyaları getir</span>
+<span class="keyword">var</span> currentCampaigns = <span class="keyword">await</span> _campaignService.GetCurrentCampaignsAsync();</code></pre>
+
+                <div class="warning">
+                    <strong>⚠️ Önemli:</strong> GetCurrentCampaignsAsync metodu, StartDate ve EndDate arasında olan ve IsActive=true olan kampanyaları döner. Bu sayede geçmişte veya gelecekte olan kampanyalar listelenmez.
+                </div>
+            </section>
+
+            <section id="campaign-package-service">
+                <h2>📦 ICampaignPackageService</h2>
+                
+                <div class="note">
+                    <strong>💡 Kampanya-Paket İlişkisi:</strong> Bir kampanyanın hangi paketlere uygulanacağını belirler. Birden fazla paket bir kampanyaya dahil edilebilir.
+                </div>
+
+                <h3>Kampanyaya Paket Ekleme - AssignPackageToCampaignAsync</h3>
+                <pre><code><span class="comment">// Kampanyaya paket ekle</span>
+<span class="keyword">var</span> success = <span class="keyword">await</span> _campaignPackageService.AssignPackageToCampaignAsync(
+    campaignId: <span class="number">1</span>, 
+    packageId: <span class="number">5</span>, 
+    createdBy: currentUserId
+);
+
+<span class="keyword">if</span> (success)
+{
+    <span class="comment">// Paket kampanyaya başarıyla eklendi</span>
+}
+<span class="keyword">else</span>
+{
+    <span class="comment">// Bu paket zaten kampanyada var</span>
+}</code></pre>
+
+                <h3>Kampanyadan Paket Kaldırma - RemovePackageFromCampaignAsync</h3>
+                <pre><code><span class="keyword">var</span> success = <span class="keyword">await</span> _campaignPackageService.RemovePackageFromCampaignAsync(
+    campaignId: <span class="number">1</span>, 
+    packageId: <span class="number">5</span>, 
+    deletedBy: currentUserId
+);</code></pre>
+
+                <h3>Kampanya Paketlerini Getirme</h3>
+                <pre><code><span class="comment">// Bir kampanyanın tüm paketlerini getir</span>
+<span class="keyword">var</span> campaignPackages = <span class="keyword">await</span> _campaignPackageService.GetCampaignPackagesAsync(campaignId);
+
+<span class="comment">// Bir paketin kampanyada olup olmadığını kontrol et</span>
+<span class="keyword">var</span> isInCampaign = <span class="keyword">await</span> _campaignPackageService.IsPackageInCampaignAsync(campaignId, packageId);</code></pre>
+
+                <div class="success">
+                    <strong>✓ Örnek Senaryo - Kampanya Paketi Oluşturma:</strong>
+                    <pre><code><span class="comment">// Yaz kampanyası için Enterprise ve Standard paketleri ekle</span>
+<span class="keyword">var</span> campaignId = <span class="number">10</span>;
+
+<span class="comment">// Enterprise paketi ekle</span>
+<span class="keyword">await</span> _campaignPackageService.AssignPackageToCampaignAsync(
+    campaignId, <span class="number">3</span>, currentUserId); <span class="comment">// Enterprise</span>
+
+<span class="comment">// Standard paketi ekle</span>
+<span class="keyword">await</span> _campaignPackageService.AssignPackageToCampaignAsync(
+    campaignId, <span class="number">2</span>, currentUserId); <span class="comment">// Standard</span>
+
+<span class="comment">// Kampanyaya dahil paketleri listele</span>
+<span class="keyword">var</span> packages = <span class="keyword">await</span> _campaignPackageService.GetCampaignPackagesAsync(campaignId);
+Console.WriteLine(<span class="string">$"Kampanyada {packages.Count} paket var"</span>);</code></pre>
+                </div>
+            </section>
+
+            <section id="campaign-module-service">
+                <h2>🧩 ICampaignModuleService</h2>
+                
+                <div class="note">
+                    <strong>💡 Kampanya-Modül İlişkisi:</strong> Bir kampanyanın hangi modüllere uygulanacağını belirler. Modül kampanyaları genellikle ek modüllerde indirim sağlamak için kullanılır.
+                </div>
+
+                <h3>Kampanyaya Modül Ekleme - AssignModuleToCampaignAsync</h3>
+                <pre><code><span class="comment">// Kampanyaya modül ekle</span>
+<span class="keyword">var</span> success = <span class="keyword">await</span> _campaignModuleService.AssignModuleToCampaignAsync(
+    campaignId: <span class="number">1</span>, 
+    moduleId: <span class="number">8</span>, 
+    createdBy: currentUserId
+);</code></pre>
+
+                <h3>Kampanyadan Modül Kaldırma - RemoveModuleFromCampaignAsync</h3>
+                <pre><code><span class="keyword">var</span> success = <span class="keyword">await</span> _campaignModuleService.RemoveModuleFromCampaignAsync(
+    campaignId: <span class="number">1</span>, 
+    moduleId: <span class="number">8</span>, 
+    deletedBy: currentUserId
+);</code></pre>
+
+                <h3>Kampanya Modüllerini Getirme</h3>
+                <pre><code><span class="comment">// Bir kampanyanın tüm modüllerini getir</span>
+<span class="keyword">var</span> campaignModules = <span class="keyword">await</span> _campaignModuleService.GetCampaignModulesAsync(campaignId);
+
+<span class="comment">// Bir modülün kampanyada olup olmadığını kontrol et</span>
+<span class="keyword">var</span> isInCampaign = <span class="keyword">await</span> _campaignModuleService.IsModuleInCampaignAsync(campaignId, moduleId);</code></pre>
+            </section>
+
+            <section>
+                <h2>🎯 Gerçek Kullanım Senaryoları</h2>
+                
+                <h3>1. Yeni Yıl Kampanyası Oluşturma</h3>
+                <pre><code><span class="comment">// Senaryo: Yeni yıla özel tüm paketlerde %20 indirim</span>
+
+<span class="comment">// 1. Kampanya oluştur</span>
+<span class="keyword">var</span> campaign = <span class="keyword">await</span> _campaignService.CreateCampaignAsync(<span class="keyword">new</span> CreateCampaignDto
+{
+    Name = <span class="string">"Yeni Yıl Kampanyası 2025"</span>,
+    StartDate = <span class="keyword">new</span> DateTime(<span class="number">2025</span>, <span class="number">1</span>, <span class="number">1</span>),
+    EndDate = <span class="keyword">new</span> DateTime(<span class="number">2025</span>, <span class="number">1</span>, <span class="number">31</span>),
+    DiscountRate = <span class="number">20m</span>,
+    Description = <span class="string">"Yeni yıla özel tüm paketlerde %20 indirim"</span>
+}, currentUserId);
+
+<span class="comment">// 2. Tüm paketleri kampanyaya ekle</span>
+<span class="keyword">var</span> allPackages = <span class="keyword">await</span> _packageService.GetActivePackagesAsync();
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> package <span class="keyword">in</span> allPackages)
+{
+    <span class="keyword">await</span> _campaignPackageService.AssignPackageToCampaignAsync(
+        campaign.Id, package.Id, currentUserId);
+}</code></pre>
+
+                <h3>2. Modül Kampanyası</h3>
+                <pre><code><span class="comment">// Senaryo: SMS ve API modüllerinde özel kampanya</span>
+
+<span class="keyword">var</span> campaign = <span class="keyword">await</span> _campaignService.CreateCampaignAsync(<span class="keyword">new</span> CreateCampaignDto
+{
+    Name = <span class="string">"Modül İndirimi"</span>,
+    StartDate = DateTime.UtcNow,
+    EndDate = DateTime.UtcNow.AddMonths(<span class="number">1</span>),
+    DiscountAmount = <span class="number">50m</span>, <span class="comment">// 50 TL indirim</span>
+    Description = <span class="string">"SMS ve API modüllerinde 50 TL indirim"</span>
+}, currentUserId);
+
+<span class="comment">// SMS modülü ekle</span>
+<span class="keyword">await</span> _campaignModuleService.AssignModuleToCampaignAsync(
+    campaign.Id, <span class="number">4</span>, currentUserId); <span class="comment">// SMS modülü</span>
+
+<span class="comment">// API modülü ekle</span>
+<span class="keyword">await</span> _campaignModuleService.AssignModuleToCampaignAsync(
+    campaign.Id, <span class="number">5</span>, currentUserId); <span class="comment">// API modülü</span></code></pre>
+
+                <h3>3. Teklif Hazırlarken Kampanya Kontrolü</h3>
+                <pre><code><span class="comment">// Müşteriye teklif hazırlarken geçerli kampanyaları kontrol et</span>
+
+<span class="keyword">var</span> packageId = <span class="number">2</span>; <span class="comment">// Standard Paket</span>
+<span class="keyword">var</span> originalPrice = <span class="number">999.99m</span>;
+
+<span class="comment">// Geçerli kampanyaları getir</span>
+<span class="keyword">var</span> currentCampaigns = <span class="keyword">await</span> _campaignService.GetCurrentCampaignsAsync();
+
+<span class="keyword">decimal</span> finalPrice = originalPrice;
+<span class="keyword">string</span> appliedCampaign = <span class="keyword">null</span>;
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> campaign <span class="keyword">in</span> currentCampaigns)
+{
+    <span class="comment">// Bu paket kampanyada var mı?</span>
+    <span class="keyword">var</span> isInCampaign = <span class="keyword">await</span> _campaignPackageService.IsPackageInCampaignAsync(
+        campaign.Id, packageId);
+    
+    <span class="keyword">if</span> (isInCampaign)
+    {
+        <span class="comment">// İndirim uygula</span>
+        <span class="keyword">if</span> (campaign.DiscountRate.HasValue)
+        {
+            finalPrice = originalPrice * (<span class="number">1</span> - campaign.DiscountRate.Value / <span class="number">100</span>);
+        }
+        <span class="keyword">else if</span> (campaign.DiscountAmount.HasValue)
+        {
+            finalPrice = originalPrice - campaign.DiscountAmount.Value;
+        }
+        
+        appliedCampaign = campaign.Name;
+        <span class="keyword">break</span>; <span class="comment">// İlk bulunan kampanyayı uygula</span>
+    }
+}
+
+Console.WriteLine(<span class="string">$"Orijinal Fiyat: ₺{originalPrice}"</span>);
+<span class="keyword">if</span> (appliedCampaign != <span class="keyword">null</span>)
+{
+    Console.WriteLine(<span class="string">$"Kampanya: {appliedCampaign}"</span>);
+    Console.WriteLine(<span class="string">$"İndirimli Fiyat: ₺{finalPrice}"</span>);
+}</code></pre>
+
+                <h3>4. Blazor - Aktif Kampanyalar Listesi</h3>
+                <pre><code>@page "/campaigns/active"
+@inject ICampaignService CampaignService
+@inject ICampaignPackageService CampaignPackageService
+
+&lt;h2&gt;Aktif Kampanyalar&lt;/h2&gt;
+
+@foreach (var campaign in currentCampaigns)
+{
+    &lt;div class="campaign-card"&gt;
+        &lt;h3&gt;@campaign.Name&lt;/h3&gt;
+        &lt;p&gt;@campaign.Description&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Geçerlilik:&lt;/strong&gt; @campaign.StartDate.ToString("dd.MM.yyyy") - @campaign.EndDate.ToString("dd.MM.yyyy")&lt;/p&gt;
+        
+        @if (campaign.DiscountRate.HasValue)
+        {
+            &lt;p class="discount"&gt;%@campaign.DiscountRate İndirim&lt;/p&gt;
+        }
+        else if (campaign.DiscountAmount.HasValue)
+        {
+            &lt;p class="discount"&gt;₺@campaign.DiscountAmount İndirim&lt;/p&gt;
+        }
+        
+        &lt;h4&gt;Kampanyaya Dahil Paketler:&lt;/h4&gt;
+        &lt;ul&gt;
+            @foreach (var package in campaignPackages[campaign.Id])
+            {
+                &lt;li&gt;@package.Name&lt;/li&gt;
+            }
+        &lt;/ul&gt;
+    &lt;/div&gt;
+}
+
+@code {
+    <span class="keyword">private</span> List&lt;Campaign&gt; currentCampaigns = <span class="keyword">new</span>();
+    <span class="keyword">private</span> Dictionary&lt;<span class="keyword">int</span>, List&lt;Package&gt;&gt; campaignPackages = <span class="keyword">new</span>();
+    
+    <span class="keyword">protected override async</span> Task <span class="method">OnInitializedAsync</span>()
+    {
+        currentCampaigns = <span class="keyword">await</span> CampaignService.GetCurrentCampaignsAsync();
+        
+        <span class="keyword">foreach</span> (<span class="keyword">var</span> campaign <span class="keyword">in</span> currentCampaigns)
+        {
+            campaignPackages[campaign.Id] = <span class="keyword">await</span> CampaignPackageService.GetCampaignPackagesAsync(campaign.Id);
+        }
+    }
+}</code></pre>
+
+                <h3>5. WinForms - Kampanya Yönetim Formu</h3>
+                <pre><code><span class="keyword">public partial class</span> <span class="type">CampaignManagementForm</span> : Form
+{
+    <span class="keyword">private readonly</span> ICampaignService _campaignService;
+    <span class="keyword">private readonly</span> ICampaignPackageService _campaignPackageService;
+    <span class="keyword">private readonly</span> IPackageService _packageService;
+    <span class="keyword">private readonly int</span> _currentUserId;
+    
+    <span class="keyword">private async void</span> <span class="method">LoadCampaignPackages</span>(<span class="keyword">int</span> campaignId)
+    {
+        <span class="comment">// Sol liste: Kampanyada olan paketler</span>
+        <span class="keyword">var</span> campaignPackages = <span class="keyword">await</span> _campaignPackageService.GetCampaignPackagesAsync(campaignId);
+        lstCampaignPackages.DataSource = campaignPackages;
+        lstCampaignPackages.DisplayMember = <span class="string">"Name"</span>;
+        lstCampaignPackages.ValueMember = <span class="string">"Id"</span>;
+        
+        <span class="comment">// Sağ liste: Kampanyada olmayan paketler</span>
+        <span class="keyword">var</span> allPackages = <span class="keyword">await</span> _packageService.GetActivePackagesAsync();
+        <span class="keyword">var</span> availablePackages = allPackages
+            .Where(p => !campaignPackages.Any(cp => cp.Id == p.Id))
+            .ToList();
+        
+        lstAvailablePackages.DataSource = availablePackages;
+        lstAvailablePackages.DisplayMember = <span class="string">"Name"</span>;
+        lstAvailablePackages.ValueMember = <span class="string">"Id"</span>;
+    }
+    
+    <span class="keyword">private async void</span> <span class="method">btnAddPackage_Click</span>(<span class="keyword">object</span> sender, EventArgs e)
+    {
+        <span class="keyword">if</span> (lstAvailablePackages.SelectedValue == <span class="keyword">null</span>) <span class="keyword">return</span>;
+        
+        <span class="keyword">var</span> campaignId = (<span class="keyword">int</span>)cmbCampaign.SelectedValue;
+        <span class="keyword">var</span> packageId = (<span class="keyword">int</span>)lstAvailablePackages.SelectedValue;
+        
+        <span class="keyword">var</span> success = <span class="keyword">await</span> _campaignPackageService.AssignPackageToCampaignAsync(
+            campaignId, packageId, _currentUserId);
+        
+        <span class="keyword">if</span> (success)
+        {
+            MessageBox.Show(<span class="string">"Paket kampanyaya eklendi"</span>);
+            LoadCampaignPackages(campaignId);
+        }
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>📋 Servis Özet Tablosu</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servis</th>
+                            <th>Metod</th>
+                            <th>Açıklama</th>
+                            <th>Dönüş Tipi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="7"><strong>ICampaignService</strong></td>
+                            <td>CreateCampaignAsync</td>
+                            <td>Yeni kampanya oluşturur</td>
+                            <td>Task&lt;Campaign&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateCampaignAsync</td>
+                            <td>Kampanya bilgilerini günceller</td>
+                            <td>Task&lt;Campaign&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteCampaignAsync</td>
+                            <td>Kampanyayı siler (soft delete)</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCampaignByIdAsync</td>
+                            <td>ID ile kampanya getirir</td>
+                            <td>Task&lt;Campaign&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetAllCampaignsAsync</td>
+                            <td>Tüm kampanyaları getirir</td>
+                            <td>Task&lt;List&lt;Campaign&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetActiveCampaignsAsync</td>
+                            <td>Aktif kampanyaları getirir</td>
+                            <td>Task&lt;List&lt;Campaign&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCurrentCampaignsAsync</td>
+                            <td>Şu anda geçerli kampanyaları getirir</td>
+                            <td>Task&lt;List&lt;Campaign&gt;&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="4"><strong>ICampaignPackageService</strong></td>
+                            <td>AssignPackageToCampaignAsync</td>
+                            <td>Kampanyaya paket atar</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>RemovePackageFromCampaignAsync</td>
+                            <td>Kampanyadan paket kaldırır</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCampaignPackagesAsync</td>
+                            <td>Kampanyanın paketlerini getirir</td>
+                            <td>Task&lt;List&lt;Package&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>IsPackageInCampaignAsync</td>
+                            <td>Paketin kampanyada olup olmadığını kontrol eder</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="4"><strong>ICampaignModuleService</strong></td>
+                            <td>AssignModuleToCampaignAsync</td>
+                            <td>Kampanyaya modül atar</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>RemoveModuleFromCampaignAsync</td>
+                            <td>Kampanyadan modül kaldırır</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCampaignModulesAsync</td>
+                            <td>Kampanyanın modüllerini getirir</td>
+                            <td>Task&lt;List&lt;Module&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>IsModuleInCampaignAsync</td>
+                            <td>Modülün kampanyada olup olmadığını kontrol eder</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>⚡ Dependency Injection Kurulumu</h2>
+                
+                <h3>Program.cs / Startup.cs</h3>
+                <pre><code><span class="comment">// Servis kayıtları</span>
+builder.Services.AddScoped&lt;ICampaignService, CampaignService&gt;();
+builder.Services.AddScoped&lt;ICampaignPackageService, CampaignPackageService&gt;();
+builder.Services.AddScoped&lt;ICampaignModuleService, CampaignModuleService&gt;();</code></pre>
+
+                <h3>Constructor Injection Kullanımı</h3>
+                <pre><code><span class="comment">// Web API Controller</span>
+<span class="keyword">public class</span> <span class="type">CampaignController</span> : ControllerBase
+{
+    <span class="keyword">private readonly</span> ICampaignService _campaignService;
+    <span class="keyword">private readonly</span> ICampaignPackageService _campaignPackageService;
+    
+    <span class="keyword">public</span> CampaignController(
+        ICampaignService campaignService,
+        ICampaignPackageService campaignPackageService)
+    {
+        _campaignService = campaignService;
+        _campaignPackageService = campaignPackageService;
+    }
+}
+
+<span class="comment">// Blazor Component</span>
+@inject ICampaignService CampaignService
+@inject ICampaignPackageService CampaignPackageService
+@inject ICampaignModuleService CampaignModuleService
+
+<span class="comment">// WinForms</span>
+<span class="keyword">public class</span> <span class="type">CampaignForm</span> : Form
+{
+    <span class="keyword">private readonly</span> ICampaignService _campaignService;
+    
+    <span class="keyword">public</span> CampaignForm(ICampaignService campaignService)
+    {
+        _campaignService = campaignService;
+        InitializeComponent();
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>🔒 Güvenlik ve En İyi Pratikler</h2>
+                
+                <div class="warning">
+                    <h4>1. Tarih Kontrolü</h4>
+                    <p>Kampanya oluştururken başlangıç tarihi bitiş tarihinden önce olmalıdır:</p>
+                    <pre><code><span class="keyword">if</span> (dto.StartDate >= dto.EndDate)
+{
+    <span class="keyword">throw new</span> InvalidOperationException(<span class="string">"Başlangıç tarihi bitiş tarihinden önce olmalıdır"</span>);
+}</code></pre>
+                </div>
+
+                <div class="warning">
+                    <h4>2. İndirim Kontrolü</h4>
+                    <p>Kampanyada hem miktar hem de oran bazlı indirim aynı anda olmamalı:</p>
+                    <pre><code><span class="keyword">if</span> (dto.DiscountAmount.HasValue && dto.DiscountRate.HasValue)
+{
+    <span class="keyword">throw new</span> InvalidOperationException(<span class="string">"Miktar veya oran indirimi seçilmelidir, ikisi birden olamaz"</span>);
+}
+
+<span class="keyword">if</span> (!dto.DiscountAmount.HasValue && !dto.DiscountRate.HasValue)
+{
+    <span class="keyword">throw new</span> InvalidOperationException(<span class="string">"Kampanya için indirim tanımlanmalıdır"</span>);
+}</code></pre>
+                </div>
+
+                <div class="warning">
+                    <h4>3. Çakışan Kampanyalar</h4>
+                    <p>Aynı paket üzerinde çakışan kampanyalar olmamalı veya öncelik sistemi kurulmalı:</p>
+                    <pre><code><span class="comment">// Pakete uygulanabilecek kampanyayı belirle (öncelik: en yüksek indirim)</span>
+<span class="keyword">var</span> applicableCampaigns = currentCampaigns
+    .Where(c => campaignPackageIds[c.Id].Contains(packageId))
+    .OrderByDescending(c => c.DiscountRate ?? <span class="number">0</span>)
+    .ThenByDescending(c => c.DiscountAmount ?? <span class="number">0</span>)
+    .FirstOrDefault();</code></pre>
+                </div>
+
+                <div class="note">
+                    <h4>4. Soft Delete Kullanımı</h4>
+                    <p>Kampanyalar soft delete ile silinir. Geçmiş kampanya kayıtları korunur.</p>
+                </div>
+
+                <div class="note">
+                    <h4>5. Audit Trail</h4>
+                    <p>Her işlemde CreatedBy, UpdatedBy, DeletedBy alanları otomatik güncellenir.</p>
+                </div>
+
+                <div class="success">
+                    <h4>6. İş Kuralları</h4>
+                    <ul>
+                        <li>Bir kampanya birden fazla pakete uygulanabilir</li>
+                        <li>Bir paket aynı anda birden fazla kampanyada olabilir (öncelik sistemi gerekir)</li>
+                        <li>Kampanya tarihleri geçtikten sonra otomatik devre dışı bırakılmalı</li>
+                        <li>GetCurrentCampaignsAsync metodu sadece geçerli kampanyaları döner</li>
+                        <li>Kampanya indirimleri teklif oluşturulurken otomatik uygulanmalı</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>💡 İpuçları ve Püf Noktaları</h2>
+                
+                <div class="success">
+                    <h4>1. Otomatik Kampanya Uygulama</h4>
+                    <p>Teklif oluştururken kampanyaları otomatik kontrol edin:</p>
+                    <pre><code><span class="keyword">public async</span> Task&lt;<span class="keyword">decimal</span>&gt; <span class="method">CalculatePriceWithCampaign</span>(<span class="keyword">int</span> packageId, <span class="keyword">decimal</span> originalPrice)
+{
+    <span class="keyword">var</span> currentCampaigns = <span class="keyword">await</span> _campaignService.GetCurrentCampaignsAsync();
+    
+    <span class="keyword">foreach</span> (<span class="keyword">var</span> campaign <span class="keyword">in</span> currentCampaigns)
+    {
+        <span class="keyword">var</span> isInCampaign = <span class="keyword">await</span> _campaignPackageService.IsPackageInCampaignAsync(
+            campaign.Id, packageId);
+        
+        <span class="keyword">if</span> (isInCampaign)
+        {
+            <span class="keyword">if</span> (campaign.DiscountRate.HasValue)
+                <span class="keyword">return</span> originalPrice * (<span class="number">1</span> - campaign.DiscountRate.Value / <span class="number">100</span>);
+            
+            <span class="keyword">if</span> (campaign.DiscountAmount.HasValue)
+                <span class="keyword">return</span> originalPrice - campaign.DiscountAmount.Value;
+        }
+    }
+    
+    <span class="keyword">return</span> originalPrice;
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <h4>2. Kampanya Süresi Dolan Bildirimi</h4>
+                    <p>Kampanya süresi dolmak üzere olan kampanyalar için bildirim gönderin:</p>
+                    <pre><code><span class="keyword">var</span> expiringCampaigns = <span class="keyword">await</span> _context.Campaigns
+    .Where(c => c.IsActive && 
+                c.EndDate >= DateTime.UtcNow && 
+                c.EndDate <= DateTime.UtcNow.AddDays(<span class="number">7</span>))
+    .ToListAsync();
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> campaign <span class="keyword">in</span> expiringCampaigns)
+{
+    <span class="comment">// Bildirim gönder</span>
+    <span class="keyword">await</span> SendNotification(<span class="string">$"{campaign.Name} kampanyası 7 gün içinde sona erecek"</span>);
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <h4>3. Cache Kullanımı</h4>
+                    <p>Geçerli kampanyaları cache'leyerek performans artırın:</p>
+                    <pre><code><span class="keyword">private</span> IMemoryCache _cache;
+
+<span class="keyword">public async</span> Task&lt;List&lt;Campaign&gt;&gt; <span class="method">GetCurrentCampaignsCached</span>()
+{
+    <span class="keyword">const string</span> cacheKey = <span class="string">"current_campaigns"</span>;
+    
+    <span class="keyword">if</span> (!_cache.TryGetValue(cacheKey, <span class="keyword">out</span> List&lt;Campaign&gt; campaigns))
+    {
+        campaigns = <span class="keyword">await</span> _campaignService.GetCurrentCampaignsAsync();
+        
+        <span class="keyword">var</span> cacheOptions = <span class="keyword">new</span> MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromHours(<span class="number">1</span>));
+        
+        _cache.Set(cacheKey, campaigns, cacheOptions);
+    }
+    
+    <span class="keyword">return</span> campaigns;
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <h4>4. Background Job - Kampanya Aktivasyonu</h4>
+                    <p>Planlı kampanyaları otomatik başlatın:</p>
+                    <pre><code><span class="comment">// Hangfire veya benzer bir background job kütüphanesi ile</span>
+<span class="keyword">public async</span> Task <span class="method">ActivateScheduledCampaigns</span>()
+{
+    <span class="keyword">var</span> now = DateTime.UtcNow;
+    
+    <span class="comment">// Başlama tarihi gelmiş ama pasif olan kampanyalar</span>
+    <span class="keyword">var</span> campaignsToActivate = <span class="keyword">await</span> _context.Campaigns
+        .Where(c => !c.IsActive && 
+                    c.StartDate <= now && 
+                    c.EndDate >= now)
+        .ToListAsync();
+    
+    <span class="keyword">foreach</span> (<span class="keyword">var</span> campaign <span class="keyword">in</span> campaignsToActivate)
+    {
+        campaign.IsActive = <span class="keyword">true</span>;
+    }
+    
+    <span class="keyword">await</span> _context.SaveChangesAsync();
+}</code></pre>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Ödüyo CRM - Kampanya Yönetimi Servis Dokümantasyonu</p>
+        </footer>
+    </div>
+
+    <script>
+        function showPlatform(section, platform) {
+            const tabs = document.querySelectorAll(`#${section} .platform-tab`);
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const contents = document.querySelectorAll(`[id^="${section}-"]`);
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${section}-${platform}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

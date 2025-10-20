@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Yönetimi Servis Dokümantasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #3498db;
+        }
+        
+        main {
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+        }
+        
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .keyword { color: #c678dd; }
+        .string { color: #98c379; }
+        .comment { color: #5c6370; font-style: italic; }
+        .method { color: #61afef; }
+        .type { color: #e5c07b; }
+        .number { color: #d19a66; }
+        
+        .platform-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .platform-tab {
+            padding: 0.75rem 1.5rem;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .platform-tab:hover {
+            background: #e9ecef;
+        }
+        
+        .platform-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .platform-content {
+            display: none;
+        }
+        
+        .platform-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Demo Yönetimi Servis Dokümantasyonu</h1>
+            <p>Web API • Blazor • WinForms • Mobile için Demo Servisleri</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#demo-service">DemoService</a></li>
+                <li><a href="#demo-feedback-service">DemoFeedbackService</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <section id="demo-service">
+                <h2>🎯 IDemoService</h2>
+                
+                <div class="note">
+                    <strong>💡 Demo Nedir?</strong> Potansiyel müşterilere yapılacak ürün tanıtım toplantılarının planlandığı ve takip edildiği sistemdir.
+                </div>
+
+                <h3>Demo Planlama - CreateDemoAsync</h3>
+                
+                <div class="platform-tabs">
+                    <button class="platform-tab active" onclick="showPlatform('demo-create', 'webapi')">Web API</button>
+                    <button class="platform-tab" onclick="showPlatform('demo-create', 'blazor')">Blazor</button>
+                    <button class="platform-tab" onclick="showPlatform('demo-create', 'winforms')">WinForms</button>
+                    <button class="platform-tab" onclick="showPlatform('demo-create', 'mobile')">Mobile</button>
+                </div>
+                
+                <div id="demo-create-webapi" class="platform-content active">
+                    <h4>Web API Controller</h4>
+                    <pre><code>[<span class="type">HttpPost</span>]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">CreateDemo</span>([FromBody] CreateDemoDto dto)
+{
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">var</span> demo = <span class="keyword">await</span> _demoService.CreateDemoAsync(dto, currentUserId);
+    <span class="keyword">return</span> Ok(<span class="keyword">new</span> { message = <span class="string">"Demo planlandı"</span>, data = demo });
+}</code></pre>
+                </div>
+                
+                <div id="demo-create-blazor" class="platform-content">
+                    <h4>Blazor Component</h4>
+                    <pre><code>@inject IDemoService DemoService
+@inject AuthenticationStateProvider AuthStateProvider
+
+<span class="keyword">private async</span> Task <span class="method">CreateDemo</span>()
+{
+    <span class="keyword">var</span> authState = <span class="keyword">await</span> AuthStateProvider.GetAuthenticationStateAsync();
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(authState.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateDemoDto
+    {
+        CompanyId = selectedCompanyId,
+        DemoDate = demoDate,
+        Location = location,
+        ProductInterests = productInterests,
+        Purpose = purpose,
+        AssignedUserId = selectedUserId
+    };
+    
+    <span class="keyword">var</span> demo = <span class="keyword">await</span> DemoService.CreateDemoAsync(dto, currentUserId);
+    <span class="keyword">await</span> JSRuntime.InvokeVoidAsync(<span class="string">"alert"</span>, <span class="string">"Demo planlandı"</span>);
+    NavigationManager.NavigateTo(<span class="string">"/demos"</span>);
+}</code></pre>
+                </div>
+                
+                <div id="demo-create-winforms" class="platform-content">
+                    <h4>WinForms</h4>
+                    <pre><code><span class="keyword">private readonly</span> IDemoService _demoService;
+<span class="keyword">private readonly int</span> _currentUserId;
+
+<span class="keyword">private async void</span> <span class="method">btnPlanDemo_Click</span>(<span class="keyword">object</span> sender, EventArgs e)
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateDemoDto
+    {
+        CompanyId = (<span class="keyword">int</span>)cmbCompany.SelectedValue,
+        DemoDate = dtpDemoDate.Value,
+        Location = txtLocation.Text,
+        ProductInterests = txtProducts.Text,
+        Purpose = txtPurpose.Text,
+        AssignedUserId = (<span class="keyword">int</span>)cmbUser.SelectedValue
+    };
+    
+    <span class="keyword">var</span> demo = <span class="keyword">await</span> _demoService.CreateDemoAsync(dto, _currentUserId);
+    MessageBox.Show(<span class="string">"Demo başarıyla planlandı"</span>, <span class="string">"Başarılı"</span>, 
+        MessageBoxButtons.OK, MessageBoxIcon.Information);
+    <span class="keyword">this</span>.Close();
+}</code></pre>
+                </div>
+                
+                <div id="demo-create-mobile" class="platform-content">
+                    <h4>Mobile (MAUI/Xamarin)</h4>
+                    <pre><code><span class="keyword">private readonly</span> IDemoService _demoService;
+<span class="keyword">private readonly int</span> _currentUserId;
+
+<span class="keyword">private async</span> Task <span class="method">CreateDemo</span>()
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateDemoDto
+    {
+        CompanyId = SelectedCompanyId,
+        DemoDate = DemoDate,
+        Location = Location,
+        ProductInterests = ProductInterests,
+        Purpose = Purpose,
+        AssignedUserId = SelectedUserId
+    };
+    
+    <span class="keyword">var</span> demo = <span class="keyword">await</span> _demoService.CreateDemoAsync(dto, _currentUserId);
+    <span class="keyword">await</span> Application.Current.MainPage.DisplayAlert(<span class="string">"Başarılı"</span>, 
+        <span class="string">"Demo planlandı"</span>, <span class="string">"Tamam"</span>);
+    <span class="keyword">await</span> Shell.Current.GoToAsync(<span class="string">".."</span>);
+}</code></pre>
+                </div>
+
+                <h3>DemoStatus Enum Değerleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Değer</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Planned (1)</td>
+                            <td>Planlandı - İlk durum</td>
+                        </tr>
+                        <tr>
+                            <td>Completed (2)</td>
+                            <td>Tamamlandı - Demo yapıldı</td>
+                        </tr>
+                        <tr>
+                            <td>Cancelled (3)</td>
+                            <td>İptal Edildi - Demo yapılmadı</td>
+                        </tr>
+                        <tr>
+                            <td>Postponed (4)</td>
+                            <td>Ertelendi - Yeni tarihe alındı</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Demo Güncelleme - UpdateDemoAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateDemoDto
+{
+    DemoDate = DateTime.Now.AddDays(<span class="number">5</span>),
+    Location = <span class="string">"Online - Zoom"</span>,
+    ProductInterests = <span class="string">"Online Tahsilat, POS Rapor"</span>,
+    Purpose = <span class="string">"Ürün tanıtımı ve fiyat bilgilendirmesi"</span>,
+    Status = DemoStatus.Planned,
+    AssignedUserId = <span class="number">15</span>
+};
+
+<span class="keyword">var</span> demo = <span class="keyword">await</span> _demoService.UpdateDemoAsync(demoId, dto, currentUserId);</code></pre>
+
+                <h3>Demo İşlemleri</h3>
+                <pre><code><span class="comment">// Demo tamamla</span>
+<span class="keyword">var</span> success = <span class="keyword">await</span> _demoService.CompleteDemoAsync(demoId, currentUserId);
+
+<span class="comment">// Demo iptal et</span>
+<span class="keyword">var</span> success = <span class="keyword">await</span> _demoService.CancelDemoAsync(demoId, currentUserId);
+
+<span class="comment">// Demo ertele</span>
+<span class="keyword">var</span> newDate = DateTime.Now.AddDays(<span class="number">7</span>);
+<span class="keyword">var</span> success = <span class="keyword">await</span> _demoService.PostponeDemoAsync(demoId, newDate, currentUserId);</code></pre>
+
+                <h3>Demo Getirme İşlemleri</h3>
+                <pre><code><span class="comment">// ID ile demo getir</span>
+<span class="keyword">var</span> demo = <span class="keyword">await</span> _demoService.GetDemoByIdAsync(demoId);
+
+<span class="comment">// Firmaya göre demoları getir</span>
+<span class="keyword">var</span> companyDemos = <span class="keyword">await</span> _demoService.GetDemosByCompanyAsync(companyId);
+
+<span class="comment">// Statüye göre demoları getir</span>
+<span class="keyword">var</span> plannedDemos = <span class="keyword">await</span> _demoService.GetDemosByStatusAsync(DemoStatus.Planned);
+<span class="keyword">var</span> completedDemos = <span class="keyword">await</span> _demoService.GetDemosByStatusAsync(DemoStatus.Completed);
+
+<span class="comment">// Atanan kullanıcıya göre demoları getir</span>
+<span class="keyword">var</span> myDemos = <span class="keyword">await</span> _demoService.GetDemosByAssignedUserAsync(currentUserId);
+
+<span class="comment">// Yaklaşan demoları getir (bugünden itibaren planlı olanlar)</span>
+<span class="keyword">var</span> upcomingDemos = <span class="keyword">await</span> _demoService.GetUpcomingDemosAsync();
+
+<span class="comment">// Tüm demoları getir</span>
+<span class="keyword">var</span> allDemos = <span class="keyword">await</span> _demoService.GetAllDemosAsync();</code></pre>
+
+                <div class="success">
+                    <strong>✓ Örnek Kullanım - Blazor Demo Takvimi:</strong>
+                    <pre><code>@inject IDemoService DemoService
+
+&lt;h3&gt;Yaklaşan Demolar&lt;/h3&gt;
+
+@foreach (var demo in upcomingDemos)
+{
+    &lt;div class="demo-card"&gt;
+        &lt;h4&gt;@demo.DemoDate.ToString("dd MMMM yyyy HH:mm")&lt;/h4&gt;
+        &lt;p&gt;&lt;strong&gt;Firma:&lt;/strong&gt; @demo.Company.Title&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Lokasyon:&lt;/strong&gt; @demo.Location&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;İlgili Ürünler:&lt;/strong&gt; @demo.ProductInterests&lt;/p&gt;
+        
+        &lt;div class="actions"&gt;
+            &lt;button @onclick="() => CompleteDemo(demo.Id)"&gt;Tamamla&lt;/button&gt;
+            &lt;button @onclick="() => CancelDemo(demo.Id)"&gt;İptal Et&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+}
+
+@code {
+    <span class="keyword">private</span> List&lt;Demo&gt; upcomingDemos;
+    
+    <span class="keyword">protected override async</span> Task <span class="method">OnInitializedAsync</span>()
+    {
+        upcomingDemos = <span class="keyword">await</span> DemoService.GetUpcomingDemosAsync();
+    }
+    
+    <span class="keyword">private async</span> Task <span class="method">CompleteDemo</span>(<span class="keyword">int</span> demoId)
+    {
+        <span class="keyword">await</span> DemoService.CompleteDemoAsync(demoId, currentUserId);
+        upcomingDemos = <span class="keyword">await</span> DemoService.GetUpcomingDemosAsync();
+        StateHasChanged();
+    }
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="demo-feedback-service">
+                <h2>💬 IDemoFeedbackService</h2>
+                
+                <div class="note">
+                    <strong>💡 Demo Feedback Nedir?</strong> Demo sonrası müşteriden alınan geri bildirimlerdir. Her demo için bir feedback kaydı tutulur.
+                </div>
+
+                <h3>Feedback Oluşturma - CreateFeedbackAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> CreateDemoFeedbackDto
+{
+    DemoId = <span class="number">5</span>,
+    Feedback = <span class="string">"Müşteri ürünleri çok beğendi. Online Tahsilat paketine ilgi gösterdi. Fiyat teklifi talep etti."</span>
+};
+
+<span class="keyword">try</span>
+{
+    <span class="keyword">var</span> feedback = <span class="keyword">await</span> _demoFeedbackService.CreateFeedbackAsync(dto, currentUserId);
+}
+<span class="keyword">catch</span> (InvalidOperationException ex)
+{
+    <span class="comment">// Bu demo için zaten feedback mevcut</span>
+}</code></pre>
+
+                <div class="warning">
+                    <strong>⚠️ Önemli:</strong> Her demo için sadece bir feedback kaydı tutulur. Mevcut feedback'i güncellemek için UpdateFeedbackAsync kullanın.
+                </div>
+
+                <h3>Feedback Güncelleme - UpdateFeedbackAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateDemoFeedbackDto
+{
+    Feedback = <span class="string">"Müşteri ürünleri beğendi. Ancak fiyat konusunda tereddütlü. Alternatif paketler sunulacak."</span>
+};
+
+<span class="keyword">var</span> feedback = <span class="keyword">await</span> _demoFeedbackService.UpdateFeedbackAsync(feedbackId, dto, currentUserId);</code></pre>
+
+                <h3>Demo Feedback Getirme - GetDemoFeedbackAsync</h3>
+                <pre><code><span class="comment">// Bir demo'nun feedback'ini getir</span>
+<span class="keyword">var</span> feedback = <span class="keyword">await</span> _demoFeedbackService.GetDemoFeedbackAsync(demoId);
+
+<span class="keyword">if</span> (feedback != <span class="keyword">null</span>)
+{
+    Console.WriteLine(<span class="string">$"Feedback: {feedback.Feedback}"</span>);
+}
+<span class="keyword">else</span>
+{
+    Console.WriteLine(<span class="string">"Henüz feedback girilmemiş"</span>);
+}</code></pre>
+
+                <div class="success">
+                    <strong>✓ Tam Senaryo - Demo Sonrası İş Akışı:</strong>
+                    <pre><code><span class="comment">// 1. Demo tamamla</span>
+<span class="keyword">await</span> _demoService.CompleteDemoAsync(demoId, currentUserId);
+
+<span class="comment">// 2. Feedback ekle</span>
+<span class="keyword">var</span> feedbackDto = <span class="keyword">new</span> CreateDemoFeedbackDto
+{
+    DemoId = demoId,
+    Feedback = <span class="string">"Müşteri ürünlere ilgi gösterdi. Enterprise paket için teklif hazırlanacak."</span>
+};
+<span class="keyword">await</span> _demoFeedbackService.CreateFeedbackAsync(feedbackDto, currentUserId);
+
+<span class="comment">// 3. Demo bilgilerini getir</span>
+<span class="keyword">var</span> demo = <span class="keyword">await</span> _demoService.GetDemoByIdAsync(demoId);
+
+<span class="comment">// 4. Firma statüsünü güncelle (opsiyonel)</span>
+<span class="keyword">if</span> (demo != <span class="keyword">null</span>)
+{
+    <span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.GetCompanyByIdAsync(demo.CompanyId);
+    
+    <span class="comment">// Firma notlarına feedback'i ekle</span>
+    <span class="keyword">var</span> updateDto = <span class="keyword">new</span> UpdateCompanyDto
+    {
+        <span class="comment">// ... mevcut bilgiler</span>
+        Notes = company.Notes + <span class="string">$"\n\nDemo Feedback ({DateTime.Now:dd.MM.yyyy}): {feedbackDto.Feedback}"</span>
+    };
+    
+    <span class="keyword">await</span> _companyService.UpdateCompanyAsync(company.Id, updateDto, currentUserId);
+}
+
+<span class="comment">// 5. Teklif oluştur (opsiyonel)</span>
+<span class="keyword">var</span> offerDto = <span class="keyword">new</span> CreateOfferDto
+{
+    CompanyId = demo.CompanyId,
+    <span class="comment">// ... teklif detayları</span>
+};
+<span class="keyword">await</span> _offerService.CreateOfferAsync(offerDto, currentUserId);</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>📋 Servis Özet Tablosu</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servis</th>
+                            <th>Metod</th>
+                            <th>Açıklama</th>
+                            <th>Dönüş Tipi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="10"><strong>IDemoService</strong></td>
+                            <td>CreateDemoAsync</td>
+                            <td>Yeni demo planlar</td>
+                            <td>Task&lt;Demo&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateDemoAsync</td>
+                            <td>Demo bilgilerini günceller</td>
+                            <td>Task&lt;Demo&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteDemoAsync</td>
+                            <td>Demo'yu siler (soft delete)</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetDemosByCompanyAsync</td>
+                            <td>Firmaya göre demoları getirir</td>
+                            <td>Task&lt;List&lt;Demo&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetDemosByStatusAsync</td>
+                            <td>Statüye göre demoları getirir</td>
+                            <td>Task&lt;List&lt;Demo&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetDemosByAssignedUserAsync</td>
+                            <td>Atanan kullanıcıya göre getirir</td>
+                            <td>Task&lt;List&lt;Demo&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetUpcomingDemosAsync</td>
+                            <td>Yaklaşan demoları getirir</td>
+                            <td>Task&lt;List&lt;Demo&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>CompleteDemoAsync</td>
+                            <td>Demo'yu tamamlar</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>CancelDemoAsync</td>
+                            <td>Demo'yu iptal eder</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>PostponeDemoAsync</td>
+                            <td>Demo'yu erteler</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="4"><strong>IDemoFeedbackService</strong></td>
+                            <td>CreateFeedbackAsync</td>
+                            <td>Yeni feedback oluşturur</td>
+                            <td>Task&lt;DemoFeedback&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateFeedbackAsync</td>
+                            <td>Feedback günceller</td>
+                            <td>Task&lt;DemoFeedback&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteFeedbackAsync</td>
+                            <td>Feedback siler</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetDemoFeedbackAsync</td>
+                            <td>Demo feedback'i getirir</td>
+                            <td>Task&lt;DemoFeedback&gt;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>⚡ Dependency Injection Kurulumu</h2>
+                
+                <h3>Program.cs / Startup.cs</h3>
+                <pre><code><span class="comment">// Servis kayıtları</span>
+builder.Services.AddScoped&lt;IDemoService, DemoService&gt;();
+builder.Services.AddScoped&lt;IDemoFeedbackService, DemoFeedbackService&gt;();</code></pre>
+            </section>
+
+            <section>
+                <h2>🎯 Gerçek Kullanım Senaryoları</h2>
+                
+                <h3>1. Web Sitesinden Demo Talebi</h3>
+                <pre><code><span class="comment">// Müşteri web sitesinden demo talep etti</span>
+<span class="comment">// 1. Firma kaydı</span>
+<span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.CreateCompanyAsync(companyDto, systemUserId);
+
+<span class="comment">// 2. İletişim kişisi</span>
+<span class="keyword">await</span> _companyContactService.CreateContactAsync(contactDto, systemUserId);
+
+<span class="comment">// 3. Demo planla (3 gün sonraya)</span>
+<span class="keyword">var</span> demoDto = <span class="keyword">new</span> CreateDemoDto
+{
+    CompanyId = company.Id,
+    DemoDate = DateTime.Now.AddDays(<span class="number">3</span>),
+    Location = <span class="string">"Online - Zoom"</span>,
+    ProductInterests = <span class="string">"Online Tahsilat"</span>,
+    Purpose = <span class="string">"Ürün tanıtımı ve demo"</span>,
+    AssignedUserId = salesUserId
+};
+
+<span class="keyword">var</span> demo = <span class="keyword">await</span> _demoService.CreateDemoAsync(demoDto, systemUserId);
+
+<span class="comment">// 4. Bildirim gönder</span>
+<span class="keyword">await</span> SendNotificationToSalesUser(salesUserId, <span class="string">$"Yeni demo planlandı: {company.Title}"</span>);</code></pre>
+
+                <h3>2. Satış Temsilcisinin Günlük Demo Listesi</h3>
+                <pre><code><span class="comment">// Satış temsilcisinin bugünkü demoları</span>
+<span class="keyword">var</span> salesUserId = <span class="number">15</span>;
+<span class="keyword">var</span> today = DateTime.UtcNow.Date;
+
+<span class="keyword">var</span> myDemos = <span class="keyword">await</span> _demoService.GetDemosByAssignedUserAsync(salesUserId);
+
+<span class="keyword">var</span> todayDemos = myDemos
+    .Where(d => d.DemoDate.Date == today && d.Status == DemoStatus.Planned)
+    .OrderBy(d => d.DemoDate)
+    .ToList();
+
+Console.WriteLine(<span class="string">$"Bugün {todayDemos.Count} demo var:\n"</span>);
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> demo <span class="keyword">in</span> todayDemos)
+{
+    <span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.GetCompanyByIdAsync(demo.CompanyId);
+    <span class="keyword">var</span> contact = <span class="keyword">await</span> _companyContactService.GetPrimaryContactAsync(demo.CompanyId);
+    
+    Console.WriteLine(<span class="string">$"⏰ {demo.DemoDate:HH:mm}"</span>);
+    Console.WriteLine(<span class="string">$"   Firma: {company.Title}"</span>);
+    Console.WriteLine(<span class="string">$"   İletişim: {contact?.FirstName} {contact?.LastName} - {contact?.Phone}"</span>);
+    Console.WriteLine(<span class="string">$"   Lokasyon: {demo.Location}\n"</span>);
+}</code></pre>
+
+                <h3>3. Demo Tamamlama ve Takip İşlemleri</h3>
+                <pre><code><span class="comment">// Demo tamamlandıktan sonra</span>
+<span class="keyword">var</span> demoId = <span class="number">10</span>;
+
+<span class="comment">// 1. Demo'yu tamamla</span>
+<span class="keyword">await</span> _demoService.CompleteDemoAsync(demoId, salesUserId);
+
+<span class="comment">// 2. Feedback ekle</span>
+<span class="keyword">var</span> feedbackDto = <span class="keyword">new</span> CreateDemoFeedbackDto
+{
+    DemoId = demoId,
+    Feedback = <span class="string">@"
+    Müşteri toplantıya hazırlıklı geldi. 
+    Online Tahsilat ve POS Rapor ürünlerine ilgi gösterdi.
+    Enterprise paket için fiyat teklifi talep etti.
+    Karar vericiler: IT Müdürü ve CFO
+    Sonraki adım: 2 gün içinde teklif gönderilecek.
+    "</span>
+};
+
+<span class="keyword">await</span> _demoFeedbackService.CreateFeedbackAsync(feedbackDto, salesUserId);
+
+<span class="comment">// 3. Teklif hazırla</span>
+<span class="keyword">var</span> demo = <span class="keyword">await</span> _demoService.GetDemoByIdAsync(demoId);
+
+<span class="keyword">var</span> offerDto = <span class="keyword">new</span> CreateOfferDto
+{
+    CompanyId = demo.CompanyId,
+    OfferDate = DateTime.Now,
+    ValidUntil = DateTime.Now.AddDays(<span class="number">30</span>),
+    <span class="comment">// ... diğer teklif bilgileri</span>
+};
+
+<span class="keyword">await</span> _offerService.CreateOfferAsync(offerDto, salesUserId);</code></pre>
+
+                <h3>4. Demo Erteleme İşlemi</h3>
+                <pre><code><span class="comment">// Müşteri demo tarihini değiştirmek istedi</span>
+<span class="keyword">var</span> demoId = <span class="number">10</span>;
+<span class="keyword">var</span> newDate = DateTime.Now.AddDays(<span class="number">7</span>);
+
+<span class="comment">// Demo'yu ertele</span>
+<span class="keyword">await</span> _demoService.PostponeDemoAsync(demoId, newDate, salesUserId);
+
+<span class="comment">// Bildirim gönder</span>
+<span class="keyword">var</span> demo = <span class="keyword">await</span> _demoService.GetDemoByIdAsync(demoId);
+<span class="keyword">await</span> SendEmailToCompany(demo.CompanyId, 
+    <span class="string">"Demo Tarihi Güncellendi"</span>, 
+    <span class="string">$"Demo tarihiniz {newDate:dd MMMM yyyy HH:mm} olarak güncellendi."</span>);</code></pre>
+
+                <h3>5. Haftalık Demo Raporu</h3>
+                <pre><code><span class="comment">// Bu hafta tamamlanan demoların raporu</span>
+<span class="keyword">var</span> weekStart = DateTime.UtcNow.Date.AddDays(-(<span class="keyword">int</span>)DateTime.UtcNow.DayOfWeek);
+<span class="keyword">var</span> weekEnd = weekStart.AddDays(<span class="number">7</span>);
+
+<span class="keyword">var</span> completedDemos = <span class="keyword">await</span> _demoService.GetDemosByStatusAsync(DemoStatus.Completed);
+
+<span class="keyword">var</span> weeklyDemos = completedDemos
+    .Where(d => d.DemoDate >= weekStart && d.DemoDate < weekEnd)
+    .ToList();
+
+Console.WriteLine(<span class="string">$"Bu Hafta Tamamlanan Demo Sayısı: {weeklyDemos.Count}\n"</span>);
+
+<span class="keyword">var</span> withFeedback = <span class="number">0</span>;
+<span class="keyword">var</span> withOffer = <span class="number">0</span>;
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> demo <span class="keyword">in</span> weeklyDemos)
+{
+    <span class="keyword">var</span> feedback = <span class="keyword">await</span> _demoFeedbackService.GetDemoFeedbackAsync(demo.Id);
+    <span class="keyword">if</span> (feedback != <span class="keyword">null</span>) withFeedback++;
+    
+    <span class="keyword">var</span> offers = <span class="keyword">await</span> _offerService.GetOffersByCompanyAsync(demo.CompanyId);
+    <span class="keyword">if</span> (offers.Any()) withOffer++;
+}
+
+Console.WriteLine(<span class="string">$"Feedback Girilmiş: {withFeedback}"</span>);
+Console.WriteLine(<span class="string">$"Teklif Oluşturulmuş: {withOffer}"</span>);
+Console.WriteLine(<span class="string">$"Dönüşüm Oranı: %{(withOffer * 100.0 / weeklyDemos.Count):F1}"</span>);</code></pre>
+            </section>
+
+            <section>
+                <h2>🔒 Güvenlik ve En İyi Pratikler</h2>
+                
+                <div class="warning">
+                    <h4>1. Demo Durumu Kontrolü</h4>
+                    <p>Demo'yu tamamlamadan önce gerçekten yapıldığından emin olun. Feedback zorunlu tutulabilir.</p>
+                </div>
+
+                <div class="warning">
+                    <h4>2. Tarih Kontrolü</h4>
+                    <p>Geçmiş tarihe demo planlanmasını engelleyin veya uyarı verin.</p>
+                    <pre><code><span class="keyword">if</span> (dto.DemoDate < DateTime.UtcNow)
+{
+    <span class="keyword">return</span> BadRequest(<span class="string">"Geçmiş tarihe demo planlayamazsınız"</span>);
+}</code></pre>
+                </div>
+
+                <div class="note">
+                    <h4>3. Bildirimler</h4>
+                    <p>Demo planlandığında, ertelendiğinde veya iptal edildiğinde ilgili kişilere bildirim gönderin.</p>
+                </div>
+
+                <div class="note">
+                    <h4>4. Demo Feedback Zorunluluğu</h4>
+                    <p>Demo tamamlandıktan sonra feedback girişi zorunlu tutulabilir.</p>
+                    <pre><code><span class="keyword">var</span> feedback = <span class="keyword">await</span> _demoFeedbackService.GetDemoFeedbackAsync(demoId);
+<span class="keyword">if</span> (feedback == <span class="keyword">null</span>)
+{
+    <span class="keyword">return</span> BadRequest(<span class="string">"Demo tamamlanmış ancak feedback girilmemiş"</span>);
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <strong>✓ İş Akışı Kuralları:</strong>
+                    <ul>
+                        <li>Her demo mutlaka bir firmaya bağlı olmalı</li>
+                        <li>Demo planlandığında statü otomatik "Planned" olmalı</li>
+                        <li>Demo tamamlandıktan sonra feedback girilmeli</li>
+                        <li>Feedback girilmeden teklif oluşturulamamalı (opsiyonel kural)</li>
+                        <li>İptal edilen demolar için iptal nedeni kaydedilebilir</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>📊 Demo İş Akışı</h2>
+                
+                <div class="note">
+                    <h4>Tipik Demo Süreci:</h4>
+                    <ol>
+                        <li><strong>Demo Talebi:</strong> Müşteri web sitesi veya çağrı merkezi üzerinden demo talep eder</li>
+                        <li><strong>Firma Kaydı:</strong> Firma ve iletişim kişisi sisteme kaydedilir</li>
+                        <li><strong>Demo Planlanır:</strong> Satış temsilcisine atanır, tarih belirlenir (Status: Planned)</li>
+                        <li><strong>Demo Yapılır:</strong> Belirlenen tarihte demo gerçekleştirilir</li>
+                        <li><strong>Demo Tamamlanır:</strong> Demo tamamlanır olarak işaretlenir (Status: Completed)</li>
+                        <li><strong>Feedback Girilir:</strong> Müşteriden alınan geri bildirim kaydedilir</li>
+                        <li><strong>Teklif Hazırlanır:</strong> Gerekirse teklif oluşturulur</li>
+                        <li><strong>Takip:</strong> Müşteri ile takip görüşmeleri yapılır</li>
+                    </ol>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Ödüyo CRM - Demo Yönetimi Servis Dokümantasyonu</p>
+        </footer>
+    </div>
+
+    <script>
+        function showPlatform(section, platform) {
+            const tabs = document.querySelectorAll(`#${section} .platform-tab`);
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const contents = document.querySelectorAll(`[id^="${section}-"]`);
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${section}-${platform}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

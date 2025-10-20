@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firma Yönetimi Servis Dokümantasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #3498db;
+        }
+        
+        main {
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+        }
+        
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .keyword { color: #c678dd; }
+        .string { color: #98c379; }
+        .comment { color: #5c6370; font-style: italic; }
+        .method { color: #61afef; }
+        .type { color: #e5c07b; }
+        .number { color: #d19a66; }
+        
+        .platform-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .platform-tab {
+            padding: 0.75rem 1.5rem;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .platform-tab:hover {
+            background: #e9ecef;
+        }
+        
+        .platform-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .platform-content {
+            display: none;
+        }
+        
+        .platform-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏢 Firma Yönetimi Servis Dokümantasyonu</h1>
+            <p>Web API • Blazor • WinForms • Mobile için Firma Servisleri</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#company-service">CompanyService</a></li>
+                <li><a href="#company-contact-service">CompanyContactService</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <section id="company-service">
+                <h2>🏢 ICompanyService</h2>
+                
+                <div class="note">
+                    <strong>💡 Firma Nedir?</strong> Potansiyel veya kazanılmış müşteri firmalarının tanımlandığı tablodur. Her firma bir kanala, bayiye ve destek kullanıcısına bağlanabilir.
+                </div>
+
+                <h3>Firma Oluşturma - CreateCompanyAsync</h3>
+                
+                <div class="platform-tabs">
+                    <button class="platform-tab active" onclick="showPlatform('company-create', 'webapi')">Web API</button>
+                    <button class="platform-tab" onclick="showPlatform('company-create', 'blazor')">Blazor</button>
+                    <button class="platform-tab" onclick="showPlatform('company-create', 'winforms')">WinForms</button>
+                    <button class="platform-tab" onclick="showPlatform('company-create', 'mobile')">Mobile</button>
+                </div>
+                
+                <div id="company-create-webapi" class="platform-content active">
+                    <h4>Web API Controller</h4>
+                    <pre><code>[<span class="type">HttpPost</span>]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">CreateCompany</span>([FromBody] CreateCompanyDto dto)
+{
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">try</span>
+    {
+        <span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.CreateCompanyAsync(dto, currentUserId);
+        <span class="keyword">return</span> Ok(<span class="keyword">new</span> { message = <span class="string">"Firma oluşturuldu"</span>, data = company });
+    }
+    <span class="keyword">catch</span> (InvalidOperationException ex)
+    {
+        <span class="keyword">return</span> BadRequest(<span class="keyword">new</span> { message = ex.Message });
+    }
+}</code></pre>
+                </div>
+                
+                <div id="company-create-blazor" class="platform-content">
+                    <h4>Blazor Component</h4>
+                    <pre><code>@inject ICompanyService CompanyService
+@inject AuthenticationStateProvider AuthStateProvider
+
+<span class="keyword">private async</span> Task <span class="method">CreateCompany</span>()
+{
+    <span class="keyword">var</span> authState = <span class="keyword">await</span> AuthStateProvider.GetAuthenticationStateAsync();
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(authState.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateCompanyDto
+    {
+        Title = title,
+        TaxNumber = taxNumber,
+        TaxOffice = taxOffice,
+        ChannelId = selectedChannelId,
+        DealerId = selectedDealerId,
+        Status = CompanyStatus.Waiting,
+        SupportUserId = selectedSupportUserId,
+        Notes = notes
+    };
+    
+    <span class="keyword">try</span>
+    {
+        <span class="keyword">var</span> company = <span class="keyword">await</span> CompanyService.CreateCompanyAsync(dto, currentUserId);
+        <span class="keyword">await</span> JSRuntime.InvokeVoidAsync(<span class="string">"alert"</span>, <span class="string">"Firma oluşturuldu"</span>);
+        NavigationManager.NavigateTo(<span class="string">"/companies"</span>);
+    }
+    <span class="keyword">catch</span> (InvalidOperationException ex)
+    {
+        errorMessage = ex.Message;
+    }
+}</code></pre>
+                </div>
+                
+                <div id="company-create-winforms" class="platform-content">
+                    <h4>WinForms</h4>
+                    <pre><code><span class="keyword">private readonly</span> ICompanyService _companyService;
+<span class="keyword">private readonly int</span> _currentUserId;
+
+<span class="keyword">private async void</span> <span class="method">btnCreateCompany_Click</span>(<span class="keyword">object</span> sender, EventArgs e)
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateCompanyDto
+    {
+        Title = txtTitle.Text,
+        TaxNumber = txtTaxNumber.Text,
+        TaxOffice = txtTaxOffice.Text,
+        ChannelId = (int?)cmbChannel.SelectedValue,
+        DealerId = (int?)cmbDealer.SelectedValue,
+        Status = (CompanyStatus)cmbStatus.SelectedValue,
+        SupportUserId = (int?)cmbSupportUser.SelectedValue,
+        Notes = txtNotes.Text
+    };
+    
+    <span class="keyword">try</span>
+    {
+        <span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.CreateCompanyAsync(dto, _currentUserId);
+        MessageBox.Show(<span class="string">"Firma başarıyla oluşturuldu"</span>, <span class="string">"Başarılı"</span>, 
+            MessageBoxButtons.OK, MessageBoxIcon.Information);
+        <span class="keyword">this</span>.Close();
+    }
+    <span class="keyword">catch</span> (InvalidOperationException ex)
+    {
+        MessageBox.Show(ex.Message, <span class="string">"Hata"</span>, MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}</code></pre>
+                </div>
+                
+                <div id="company-create-mobile" class="platform-content">
+                    <h4>Mobile (MAUI/Xamarin)</h4>
+                    <pre><code><span class="keyword">private readonly</span> ICompanyService _companyService;
+<span class="keyword">private readonly int</span> _currentUserId;
+
+<span class="keyword">private async</span> Task <span class="method">CreateCompany</span>()
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateCompanyDto
+    {
+        Title = Title,
+        TaxNumber = TaxNumber,
+        TaxOffice = TaxOffice,
+        ChannelId = SelectedChannelId,
+        DealerId = SelectedDealerId,
+        Status = SelectedStatus,
+        SupportUserId = SelectedSupportUserId,
+        Notes = Notes
+    };
+    
+    <span class="keyword">try</span>
+    {
+        <span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.CreateCompanyAsync(dto, _currentUserId);
+        <span class="keyword">await</span> Application.Current.MainPage.DisplayAlert(<span class="string">"Başarılı"</span>, 
+            <span class="string">"Firma oluşturuldu"</span>, <span class="string">"Tamam"</span>);
+        <span class="keyword">await</span> Shell.Current.GoToAsync(<span class="string">".."</span>);
+    }
+    <span class="keyword">catch</span> (InvalidOperationException ex)
+    {
+        <span class="keyword">await</span> Application.Current.MainPage.DisplayAlert(<span class="string">"Hata"</span>, ex.Message, <span class="string">"Tamam"</span>);
+    }
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <strong>✓ Otomatik Referans Kodu:</strong> ReferenceCode boş bırakılırsa, sistem otomatik olarak benzersiz bir kod üretir (MD5 hash algoritması ile).
+                </div>
+
+                <h3>CompanyStatus Enum Değerleri</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>GetPrimaryContactAsync</td>
+                            <td>Primary iletişim kişisi getirir</td>
+                            <td>Task&lt;CompanyContact&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>SetPrimaryContactAsync</td>
+                            <td>Primary kişi değiştirir</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>⚡ Dependency Injection Kurulumu</h2>
+                
+                <h3>Program.cs / Startup.cs</h3>
+                <pre><code><span class="comment">// Servis kayıtları</span>
+builder.Services.AddScoped&lt;ICompanyService, CompanyService&gt;();
+builder.Services.AddScoped&lt;ICompanyContactService, CompanyContactService&gt;();</code></pre>
+
+                <h3>Constructor Injection Kullanımı</h3>
+                <pre><code><span class="comment">// Web API Controller</span>
+<span class="keyword">public class</span> <span class="type">CompanyController</span> : ControllerBase
+{
+    <span class="keyword">private readonly</span> ICompanyService _companyService;
+    <span class="keyword">private readonly</span> ICompanyContactService _companyContactService;
+    
+    <span class="keyword">public</span> CompanyController(
+        ICompanyService companyService,
+        ICompanyContactService companyContactService)
+    {
+        _companyService = companyService;
+        _companyContactService = companyContactService;
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>🎯 Gerçek Kullanım Senaryoları</h2>
+                
+                <h3>1. Yeni Potansiyel Müşteri Kaydı</h3>
+                <pre><code><span class="comment">// Demo formundan gelen müşteri kaydı</span>
+<span class="keyword">var</span> companyDto = <span class="keyword">new</span> CreateCompanyDto
+{
+    Title = <span class="string">"ABC Teknoloji A.Ş."</span>,
+    TaxNumber = <span class="string">"1234567890"</span>,
+    TaxOffice = <span class="string">"Kadıköy"</span>,
+    ChannelId = <span class="number">1</span>, <span class="comment">// Web sitesi</span>
+    Status = CompanyStatus.Waiting,
+    Notes = <span class="string">"Web demo formu üzerinden talep geldi"</span>
+};
+
+<span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.CreateCompanyAsync(companyDto, adminUserId);
+
+<span class="comment">// İletişim kişisi ekle</span>
+<span class="keyword">var</span> contactDto = <span class="keyword">new</span> CreateCompanyContactDto
+{
+    CompanyId = company.Id,
+    FirstName = <span class="string">"Ahmet"</span>,
+    LastName = <span class="string">"Yılmaz"</span>,
+    Phone = <span class="string">"5551234567"</span>,
+    Email = <span class="string">"ahmet@abc.com"</span>,
+    IsPrimary = <span class="keyword">true</span>
+};
+
+<span class="keyword">await</span> _companyContactService.CreateContactAsync(contactDto, adminUserId);</code></pre>
+
+                <h3>2. Bayi Üzerinden Firma Kaydı</h3>
+                <pre><code><span class="comment">// Bayi kendi müşterisini sisteme ekliyor</span>
+<span class="keyword">var</span> dealerId = <span class="number">5</span>;
+<span class="keyword">var</span> dealerUserId = <span class="number">15</span>;
+
+<span class="keyword">var</span> companyDto = <span class="keyword">new</span> CreateCompanyDto
+{
+    Title = <span class="string">"XYZ Perakende Ltd."</span>,
+    TaxNumber = <span class="string">"9876543210"</span>,
+    TaxOffice = <span class="string">"Beşiktaş"</span>,
+    ChannelId = <span class="number">7</span>, <span class="comment">// Bayi Paneli</span>
+    DealerId = dealerId,
+    Status = CompanyStatus.Waiting,
+    Notes = <span class="string">"Bayi kanalından potansiyel müşteri"</span>
+};
+
+<span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.CreateCompanyAsync(companyDto, dealerUserId);</code></pre>
+
+                <h3>3. Firma Statü Değişimi - Müşteri Kazanıldı</h3>
+                <pre><code><span class="comment">// Teklif kabul edildi, firma kazanıldı</span>
+<span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.GetCompanyByIdAsync(companyId);
+
+<span class="keyword">var</span> updateDto = <span class="keyword">new</span> UpdateCompanyDto
+{
+    Title = company.Title,
+    TaxNumber = company.TaxNumber,
+    TaxOffice = company.TaxOffice,
+    ChannelId = company.ChannelId,
+    DealerId = company.DealerId,
+    Status = CompanyStatus.Won, <span class="comment">// Kazanıldı olarak güncelle</span>
+    SupportUserId = <span class="number">20</span>, <span class="comment">// Destek kullanıcısı ata</span>
+    Notes = company.Notes + <span class="string">"\nTeklif kabul edildi. Müşteri kazanıldı."</span>
+};
+
+<span class="keyword">await</span> _companyService.UpdateCompanyAsync(companyId, updateDto, currentUserId);</code></pre>
+
+                <h3>4. Firmanın Tüm İletişim Kişilerini Görüntüleme</h3>
+                <pre><code><span class="comment">// Firma detay sayfası için</span>
+<span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.GetCompanyByIdAsync(companyId);
+<span class="keyword">var</span> contacts = <span class="keyword">await</span> _companyContactService.GetCompanyContactsAsync(companyId);
+
+Console.WriteLine(<span class="string">$"Firma: {company.Title}"</span>);
+Console.WriteLine(<span class="string">$"Referans Kodu: {company.ReferenceCode}"</span>);
+Console.WriteLine(<span class="string">$"Statü: {company.Status}"</span>);
+Console.WriteLine(<span class="string">"\nİletişim Kişileri:"</span>);
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> contact <span class="keyword">in</span> contacts)
+{
+    <span class="keyword">var</span> primaryLabel = contact.IsPrimary ? <span class="string">" [ANA KİŞİ]"</span> : <span class="string">""</span>;
+    Console.WriteLine(<span class="string">$"- {contact.FirstName} {contact.LastName}{primaryLabel}"</span>);
+    Console.WriteLine(<span class="string">$"  Tel: {contact.Phone}, Email: {contact.Email}"</span>);
+}</code></pre>
+
+                <h3>5. Destek Kullanıcısına Atanan Firmaları Listeleme</h3>
+                <pre><code><span class="comment">// Destek kullanıcısının dashboard'ı için</span>
+<span class="keyword">var</span> supportUserId = <span class="number">20</span>;
+<span class="keyword">var</span> myCompanies = <span class="keyword">await</span> _companyService.GetCompaniesBySupportUserAsync(supportUserId);
+
+Console.WriteLine(<span class="string">$"Bana atanan {myCompanies.Count} firma var:"</span>);
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> company <span class="keyword">in</span> myCompanies)
+{
+    <span class="keyword">var</span> primaryContact = <span class="keyword">await</span> _companyContactService.GetPrimaryContactAsync(company.Id);
+    
+    Console.WriteLine(<span class="string">$"- {company.Title} ({company.Status})"</span>);
+    
+    <span class="keyword">if</span> (primaryContact != <span class="keyword">null</span>)
+    {
+        Console.WriteLine(<span class="string">$"  İletişim: {primaryContact.FirstName} {primaryContact.LastName}"</span>);
+    }
+}</code></pre>
+
+                <h3>6. Referans Kodu ile Firma Bulma</h3>
+                <pre><code><span class="comment">// Müşteri demo talep formunda referans kodunu girdi</span>
+<span class="keyword">var</span> referenceCode = <span class="string">"A1B2C3D4"</span>;
+<span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.GetCompanyByReferenceCodeAsync(referenceCode);
+
+<span class="keyword">if</span> (company != <span class="keyword">null</span>)
+{
+    Console.WriteLine(<span class="string">$"Firma bulundu: {company.Title}"</span>);
+    Console.WriteLine(<span class="string">$"Mevcut statü: {company.Status}"</span>);
+    
+    <span class="comment">// Demo talebi oluştur</span>
+    <span class="keyword">var</span> demo = <span class="keyword">new</span> CreateDemoDto
+    {
+        CompanyId = company.Id,
+        DemoDate = DateTime.Now.AddDays(<span class="number">3</span>),
+        Location = <span class="string">"Online"</span>,
+        <span class="comment">// ...</span>
+    };
+}
+<span class="keyword">else</span>
+{
+    Console.WriteLine(<span class="string">"Geçersiz referans kodu"</span>);
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>🔒 Güvenlik ve En İyi Pratikler</h2>
+                
+                <div class="warning">
+                    <h4>1. Referans Kodu Benzersizliği</h4>
+                    <p>ReferenceCode benzersiz olmalıdır. CreateCompanyAsync metodu aynı kod ile yeni firma oluşturulmasını engeller.</p>
+                </div>
+
+                <div class="warning">
+                    <h4>2. Primary Contact Yönetimi</h4>
+                    <p>Her firmada sadece bir primary contact olmalıdır. Servisler bunu otomatik yönetir.</p>
+                </div>
+
+                <div class="note">
+                    <h4>3. Statü Akışı</h4>
+                    <p>Firma statüleri iş akışına göre düzenli olarak güncellenmelidir:</p>
+                    <ul>
+                        <li><strong>Waiting:</strong> İlk kayıt</li>
+                        <li><strong>InSetupList:</strong> Teklif kabul edildi, kurulum hazırlığı</li>
+                        <li><strong>Won:</strong> Kurulum tamamlandı, aktif müşteri</li>
+                        <li><strong>Cancelled:</strong> Müşteri kazanılamadı</li>
+                    </ul>
+                </div>
+
+                <div class="note">
+                    <h4>4. Veri İlişkileri</h4>
+                    <p>Firma silindiğinde (soft delete) ilişkili kayıtlar otomatik silinmez. Gerekirse manuel kontrol edin.</p>
+                </div>
+
+                <div class="success">
+                    <strong>✓ İletişim Kişisi Silme Kontrolü:</strong>
+                    <pre><code><span class="comment">// Primary kişiyi silmeden önce uyarı ver</span>
+<span class="keyword">var</span> contact = <span class="keyword">await</span> _companyContactService.GetContactByIdAsync(contactId);
+
+<span class="keyword">if</span> (contact.IsPrimary)
+{
+    <span class="keyword">var</span> otherContacts = <span class="keyword">await</span> _companyContactService.GetCompanyContactsAsync(contact.CompanyId);
+    
+    <span class="keyword">if</span> (otherContacts.Count > <span class="number">1</span>)
+    {
+        <span class="keyword">return</span> BadRequest(<span class="string">"Primary kişi silinmeden önce başka bir kişiyi primary yapmalısınız."</span>);
+    }
+}
+
+<span class="keyword">await</span> _companyContactService.DeleteContactAsync(contactId, currentUserId);</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>📊 Firma İş Akışı</h2>
+                
+                <div class="note">
+                    <h4>Tipik Firma Yaşam Döngüsü:</h4>
+                    <ol>
+                        <li><strong>Potansiyel Kayıt:</strong> Web sitesi veya bayi üzerinden firma kaydı oluşturulur (Status: Waiting)</li>
+                        <li><strong>Demo Talebi:</strong> Firma için demo planlanır</li>
+                        <li><strong>Demo Gerçekleştirilir:</strong> Demo sonrası feedback kaydedilir</li>
+                        <li><strong>Tekliflendirme:</strong> Firmaya teklif gönderilir</li>
+                        <li><strong>Teklif Kabul:</strong> Firma statüsü "InSetupList" olur</li>
+                        <li><strong>Kurulum:</strong> Tenant açılır, kullanıcılar oluşturulur</li>
+                        <li><strong>Müşteri Aktif:</strong> Firma statüsü "Won" olur, destek kullanıcısı atanır</li>
+                    </ol>
+                </div>
+
+                <div class="success">
+                    <h4>Örnek Akış Kodu:</h4>
+                    <pre><code><span class="comment">// 1. Firma kaydı</span>
+<span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.CreateCompanyAsync(companyDto, userId);
+
+<span class="comment">// 2. İletişim kişisi</span>
+<span class="keyword">await</span> _companyContactService.CreateContactAsync(contactDto, userId);
+
+<span class="comment">// 3. Demo planla</span>
+<span class="keyword">await</span> _demoService.CreateDemoAsync(demoDto, userId);
+
+<span class="comment">// 4. Teklif oluştur</span>
+<span class="keyword">await</span> _offerService.CreateOfferAsync(offerDto, userId);
+
+<span class="comment">// 5. Teklif kabul - Statü güncelle</span>
+<span class="keyword">await</span> _companyService.UpdateCompanyAsync(company.Id, updateDto, userId);
+
+<span class="comment">// 6. Tenant aç</span>
+<span class="keyword">await</span> _tenantService.CreateTenantAsync(tenantDto, userId);
+
+<span class="comment">// 7. Firma kazanıldı</span>
+updateDto.Status = CompanyStatus.Won;
+<span class="keyword">await</span> _companyService.UpdateCompanyAsync(company.Id, updateDto, userId);</code></pre>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Ödüyo CRM - Firma Yönetimi Servis Dokümantasyonu</p>
+        </footer>
+    </div>
+
+    <script>
+        function showPlatform(section, platform) {
+            const tabs = document.querySelectorAll(`#${section} .platform-tab`);
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const contents = document.querySelectorAll(`[id^="${section}-"]`);
+            contents.forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`${section}-${platform}`).classList.add('active');
+        }
+    </script>
+</body>
+</html><th>Değer</th>
+                            <th>Açıklama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Waiting (1)</td>
+                            <td>Bekliyor - İlk kayıt durumu</td>
+                        </tr>
+                        <tr>
+                            <td>Cancelled (2)</td>
+                            <td>İptal Edildi - Müşteri kazanılamadı</td>
+                        </tr>
+                        <tr>
+                            <td>Won (3)</td>
+                            <td>Kazanıldı - Müşteri aktif</td>
+                        </tr>
+                        <tr>
+                            <td>InSetupList (4)</td>
+                            <td>Kurulum Listesinde - Hazırlık aşaması</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Firma Güncelleme - UpdateCompanyAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateCompanyDto
+{
+    Title = <span class="string">"ABC Şirketi A.Ş."</span>,
+    TaxNumber = <span class="string">"1234567890"</span>,
+    TaxOffice = <span class="string">"Kadıköy"</span>,
+    ChannelId = <span class="number">3</span>,
+    DealerId = <span class="number">5</span>,
+    Status = CompanyStatus.Won,
+    SupportUserId = <span class="number">12</span>,
+    Notes = <span class="string">"Güncellenen notlar"</span>
+};
+
+<span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.UpdateCompanyAsync(companyId, dto, currentUserId);</code></pre>
+
+                <h3>Firma Silme - DeleteCompanyAsync</h3>
+                <pre><code><span class="keyword">var</span> success = <span class="keyword">await</span> _companyService.DeleteCompanyAsync(companyId, currentUserId);</code></pre>
+
+                <h3>Firma Getirme İşlemleri</h3>
+                <pre><code><span class="comment">// ID ile firma getir</span>
+<span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.GetCompanyByIdAsync(companyId);
+
+<span class="comment">// Referans kodu ile firma getir</span>
+<span class="keyword">var</span> company = <span class="keyword">await</span> _companyService.GetCompanyByReferenceCodeAsync(<span class="string">"A1B2C3D4"</span>);
+
+<span class="comment">// Tüm firmaları getir</span>
+<span class="keyword">var</span> allCompanies = <span class="keyword">await</span> _companyService.GetAllCompaniesAsync();
+
+<span class="comment">// Statüye göre firmaları getir</span>
+<span class="keyword">var</span> waitingCompanies = <span class="keyword">await</span> _companyService.GetCompaniesByStatusAsync(CompanyStatus.Waiting);
+<span class="keyword">var</span> wonCompanies = <span class="keyword">await</span> _companyService.GetCompaniesByStatusAsync(CompanyStatus.Won);
+
+<span class="comment">// Kanala göre firmaları getir</span>
+<span class="keyword">var</span> channelCompanies = <span class="keyword">await</span> _companyService.GetCompaniesByChannelAsync(channelId);
+
+<span class="comment">// Bayiye göre firmaları getir</span>
+<span class="keyword">var</span> dealerCompanies = <span class="keyword">await</span> _companyService.GetCompaniesByDealerAsync(dealerId);
+
+<span class="comment">// Destek kullanıcısına göre firmaları getir</span>
+<span class="keyword">var</span> supportCompanies = <span class="keyword">await</span> _companyService.GetCompaniesBySupportUserAsync(supportUserId);</code></pre>
+
+                <h3>Referans Kodu Oluşturma - GenerateReferenceCodeAsync</h3>
+                <pre><code><span class="comment">// Manuel referans kodu oluşturma</span>
+<span class="keyword">var</span> referenceCode = <span class="keyword">await</span> _companyService.GenerateReferenceCodeAsync();
+<span class="comment">// Örnek: "A1B2C3D4"</span></code></pre>
+
+                <div class="warning">
+                    <strong>⚠️ Önemli:</strong> ReferenceCode benzersiz olmalıdır. Aynı kod ile yeni firma oluşturamazsınız.
+                </div>
+            </section>
+
+            <section id="company-contact-service">
+                <h2>👤 ICompanyContactService</h2>
+                
+                <div class="note">
+                    <strong>💡 İletişim Kişisi Nedir?</strong> Firmaya ait iletişim kişileridir. Her firmada birden fazla kişi olabilir ve bunlardan biri primary (ana) kişi olabilir.
+                </div>
+
+                <h3>İletişim Kişisi Oluşturma - CreateContactAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> CreateCompanyContactDto
+{
+    CompanyId = <span class="number">5</span>,
+    FirstName = <span class="string">"Ahmet"</span>,
+    LastName = <span class="string">"Yılmaz"</span>,
+    Phone = <span class="string">"5551234567"</span>,
+    Email = <span class="string">"ahmet@abc.com"</span>,
+    IsPrimary = <span class="keyword">true</span>
+};
+
+<span class="keyword">var</span> contact = <span class="keyword">await</span> _companyContactService.CreateContactAsync(dto, currentUserId);</code></pre>
+
+                <div class="success">
+                    <strong>✓ Otomatik Primary Yönetimi:</strong> IsPrimary=true olan kişi eklendiğinde, önceki primary kişi otomatik olarak false yapılır.
+                </div>
+
+                <h3>İletişim Kişisi Güncelleme - UpdateContactAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateCompanyContactDto
+{
+    FirstName = <span class="string">"Mehmet"</span>,
+    LastName = <span class="string">"Demir"</span>,
+    Phone = <span class="string">"5559876543"</span>,
+    Email = <span class="string">"mehmet@abc.com"</span>,
+    IsPrimary = <span class="keyword">false</span>
+};
+
+<span class="keyword">var</span> contact = <span class="keyword">await</span> _companyContactService.UpdateContactAsync(contactId, dto, currentUserId);</code></pre>
+
+                <h3>İletişim Kişisi Silme - DeleteContactAsync</h3>
+                <pre><code><span class="keyword">var</span> success = <span class="keyword">await</span> _companyContactService.DeleteContactAsync(contactId, currentUserId);</code></pre>
+
+                <h3>Firma İletişim Kişilerini Getirme - GetCompanyContactsAsync</h3>
+                <pre><code><span class="comment">// Firmaya ait tüm iletişim kişilerini getir (Primary ilk sırada)</span>
+<span class="keyword">var</span> contacts = <span class="keyword">await</span> _companyContactService.GetCompanyContactsAsync(companyId);
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> contact <span class="keyword">in</span> contacts)
+{
+    <span class="keyword">var</span> label = contact.IsPrimary ? <span class="string">" (Ana Kişi)"</span> : <span class="string">""</span>;
+    Console.WriteLine(<span class="string">$"{contact.FirstName} {contact.LastName}{label}"</span>);
+}</code></pre>
+
+                <h3>Primary İletişim Kişisi Getirme - GetPrimaryContactAsync</h3>
+                <pre><code><span class="comment">// Firmanın ana iletişim kişisini getir</span>
+<span class="keyword">var</span> primaryContact = <span class="keyword">await</span> _companyContactService.GetPrimaryContactAsync(companyId);
+
+<span class="keyword">if</span> (primaryContact != <span class="keyword">null</span>)
+{
+    Console.WriteLine(<span class="string">$"Ana Kişi: {primaryContact.FirstName} {primaryContact.LastName}"</span>);
+}</code></pre>
+
+                <h3>Primary Kişi Değiştirme - SetPrimaryContactAsync</h3>
+                <pre><code><span class="comment">// Belirli bir kişiyi primary yap, diğerlerini otomatik false yap</span>
+<span class="keyword">var</span> success = <span class="keyword">await</span> _companyContactService.SetPrimaryContactAsync(
+    companyId: <span class="number">5</span>, 
+    contactId: <span class="number">12</span>, 
+    updatedBy: currentUserId
+);</code></pre>
+
+                <div class="success">
+                    <strong>✓ Örnek Kullanım - Blazor İletişim Kişileri Listesi:</strong>
+                    <pre><code>@inject ICompanyContactService ContactService
+
+&lt;h3&gt;İletişim Kişileri&lt;/h3&gt;
+
+@foreach (var contact in contacts)
+{
+    &lt;div class="contact-card @(contact.IsPrimary ? "primary" : "")"&gt;
+        &lt;h4&gt;@contact.FirstName @contact.LastName&lt;/h4&gt;
+        @if (contact.IsPrimary)
+        {
+            &lt;span class="badge"&gt;Ana Kişi&lt;/span&gt;
+        }
+        &lt;p&gt;Tel: @contact.Phone&lt;/p&gt;
+        &lt;p&gt;Email: @contact.Email&lt;/p&gt;
+        
+        @if (!contact.IsPrimary)
+        {
+            &lt;button @onclick="() => SetPrimary(contact.Id)"&gt;
+                Ana Kişi Yap
+            &lt;/button&gt;
+        }
+    &lt;/div&gt;
+}
+
+@code {
+    <span class="keyword">private</span> List&lt;CompanyContact&gt; contacts;
+    [<span class="type">Parameter</span>] <span class="keyword">public int</span> CompanyId { <span class="keyword">get</span>; <span class="keyword">set</span>; }
+    
+    <span class="keyword">protected override async</span> Task <span class="method">OnInitializedAsync</span>()
+    {
+        contacts = <span class="keyword">await</span> ContactService.GetCompanyContactsAsync(CompanyId);
+    }
+    
+    <span class="keyword">private async</span> Task <span class="method">SetPrimary</span>(<span class="keyword">int</span> contactId)
+    {
+        <span class="keyword">var</span> success = <span class="keyword">await</span> ContactService.SetPrimaryContactAsync(CompanyId, contactId, currentUserId);
+        
+        <span class="keyword">if</span> (success)
+        {
+            contacts = <span class="keyword">await</span> ContactService.GetCompanyContactsAsync(CompanyId);
+            StateHasChanged();
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>📋 Servis Özet Tablosu</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servis</th>
+                            <th>Metod</th>
+                            <th>Açıklama</th>
+                            <th>Dönüş Tipi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="9"><strong>ICompanyService</strong></td>
+                            <td>CreateCompanyAsync</td>
+                            <td>Yeni firma oluşturur</td>
+                            <td>Task&lt;Company&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateCompanyAsync</td>
+                            <td>Firma bilgilerini günceller</td>
+                            <td>Task&lt;Company&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteCompanyAsync</td>
+                            <td>Firmayı siler (soft delete)</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCompanyByIdAsync</td>
+                            <td>ID ile firma getirir</td>
+                            <td>Task&lt;Company&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCompanyByReferenceCodeAsync</td>
+                            <td>Referans kodu ile firma getirir</td>
+                            <td>Task&lt;Company&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCompaniesByStatusAsync</td>
+                            <td>Statüye göre firmaları getirir</td>
+                            <td>Task&lt;List&lt;Company&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCompaniesByChannelAsync</td>
+                            <td>Kanala göre firmaları getirir</td>
+                            <td>Task&lt;List&lt;Company&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCompaniesByDealerAsync</td>
+                            <td>Bayiye göre firmaları getirir</td>
+                            <td>Task&lt;List&lt;Company&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GenerateReferenceCodeAsync</td>
+                            <td>Benzersiz referans kodu oluşturur</td>
+                            <td>Task&lt;string&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="6"><strong>ICompanyContactService</strong></td>
+                            <td>CreateContactAsync</td>
+                            <td>Yeni iletişim kişisi oluşturur</td>
+                            <td>Task&lt;CompanyContact&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateContactAsync</td>
+                            <td>İletişim kişisi günceller</td>
+                            <td>Task&lt;CompanyContact&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteContactAsync</td>
+                            <td>İletişim kişisi siler</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetCompanyContactsAsync</td>
+                            <td>Firma iletişim kişilerini getirir</td>
+                            <td>Task&lt;List&lt;CompanyContact&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            

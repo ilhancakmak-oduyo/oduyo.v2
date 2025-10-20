@@ -1,0 +1,6 @@
+@Oduyo.Test_HostAddress = http://localhost:5008
+
+GET {{Oduyo.Test_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

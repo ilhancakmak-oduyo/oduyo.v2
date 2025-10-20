@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servis Katmanı Kullanım Dokümantasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #3498db;
+        }
+        
+        main {
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem;
+        }
+        
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .keyword { color: #c678dd; }
+        .string { color: #98c379; }
+        .comment { color: #5c6370; font-style: italic; }
+        .method { color: #61afef; }
+        .type { color: #e5c07b; }
+        .number { color: #d19a66; }
+        
+        .platform-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .platform-tab {
+            padding: 0.75rem 1.5rem;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .platform-tab:hover {
+            background: #e9ecef;
+        }
+        
+        .platform-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .platform-content {
+            display: none;
+        }
+        
+        .platform-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        ul {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Servis Katmanı Kullanım Dokümantasyonu</h1>
+            <p>Web API • Blazor • WinForms • Mobile için Servis Kullanımı</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#user-service">UserService</a></li>
+                <li><a href="#role-service">RoleService</a></li>
+                <li><a href="#permission-service">PermissionService</a></li>
+                <li><a href="#hierarchy-service">UserHierarchyService</a></li>
+                <li><a href="#discount-service">DiscountAuthorityService</a></li>
+            </ul>
+        </nav>
+        
+        <main>
+            <section id="user-service">
+                <h2>👤 IUserService</h2>
+                
+                <h3>Kullanıcı Oluşturma - CreateUserAsync</h3>
+                
+                <div class="platform-tabs">
+                    <button class="platform-tab active" onclick="showPlatform('user-create', 'webapi')">Web API</button>
+                    <button class="platform-tab" onclick="showPlatform('user-create', 'blazor')">Blazor</button>
+                    <button class="platform-tab" onclick="showPlatform('user-create', 'winforms')">WinForms</button>
+                    <button class="platform-tab" onclick="showPlatform('user-create', 'mobile')">Mobile</button>
+                </div>
+                
+                <div id="user-create-webapi" class="platform-content active">
+                    <h4>Web API Controller</h4>
+                    <pre><code>[<span class="type">HttpPost</span>]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">CreateUser</span>([FromBody] CreateUserDto dto)
+{
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">var</span> result = <span class="keyword">await</span> _userService.CreateUserAsync(dto, currentUserId);
+    
+    <span class="keyword">if</span> (result.Succeeded)
+        <span class="keyword">return</span> Ok(<span class="keyword">new</span> { message = <span class="string">"Kullanıcı oluşturuldu"</span> });
+        
+    <span class="keyword">return</span> BadRequest(result.Errors);
+}</code></pre>
+                </div>
+                
+                <div id="user-create-blazor" class="platform-content">
+                    <h4>Blazor Component</h4>
+                    <pre><code>@inject IUserService UserService
+@inject AuthenticationStateProvider AuthStateProvider
+
+<span class="keyword">private async</span> Task <span class="method">CreateUser</span>()
+{
+    <span class="keyword">var</span> authState = <span class="keyword">await</span> AuthStateProvider.GetAuthenticationStateAsync();
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(authState.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateUserDto
+    {
+        FirstName = firstName,
+        LastName = lastName,
+        Email = email,
+        Phone = phone,
+        Password = password,
+        UserType = selectedUserType
+    };
+    
+    <span class="keyword">var</span> result = <span class="keyword">await</span> UserService.CreateUserAsync(dto, currentUserId);
+    
+    <span class="keyword">if</span> (result.Succeeded)
+    {
+        <span class="keyword">await</span> JSRuntime.InvokeVoidAsync(<span class="string">"alert"</span>, <span class="string">"Kullanıcı oluşturuldu"</span>);
+        NavigationManager.NavigateTo(<span class="string">"/users"</span>);
+    }
+    <span class="keyword">else</span>
+    {
+        errorMessage = <span class="keyword">string</span>.Join(<span class="string">", "</span>, result.Errors.Select(e => e.Description));
+    }
+}</code></pre>
+                </div>
+                
+                <div id="user-create-winforms" class="platform-content">
+                    <h4>WinForms</h4>
+                    <pre><code><span class="keyword">private readonly</span> IUserService _userService;
+<span class="keyword">private readonly int</span> _currentUserId;
+
+<span class="keyword">private async void</span> <span class="method">btnCreateUser_Click</span>(<span class="keyword">object</span> sender, EventArgs e)
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateUserDto
+    {
+        FirstName = txtFirstName.Text,
+        LastName = txtLastName.Text,
+        Email = txtEmail.Text,
+        Phone = txtPhone.Text,
+        Password = txtPassword.Text,
+        UserType = (UserType)cmbUserType.SelectedValue
+    };
+    
+    <span class="keyword">var</span> result = <span class="keyword">await</span> _userService.CreateUserAsync(dto, _currentUserId);
+    
+    <span class="keyword">if</span> (result.Succeeded)
+    {
+        MessageBox.Show(<span class="string">"Kullanıcı başarıyla oluşturuldu"</span>, <span class="string">"Başarılı"</span>, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        <span class="keyword">this</span>.Close();
+    }
+    <span class="keyword">else</span>
+    {
+        <span class="keyword">var</span> errors = <span class="keyword">string</span>.Join(<span class="string">"\n"</span>, result.Errors.Select(e => e.Description));
+        MessageBox.Show(errors, <span class="string">"Hata"</span>, MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}</code></pre>
+                </div>
+                
+                <div id="user-create-mobile" class="platform-content">
+                    <h4>Mobile (MAUI/Xamarin)</h4>
+                    <pre><code><span class="keyword">private readonly</span> IUserService _userService;
+<span class="keyword">private readonly int</span> _currentUserId;
+
+<span class="keyword">private async</span> Task <span class="method">CreateUser</span>()
+{
+    <span class="keyword">var</span> dto = <span class="keyword">new</span> CreateUserDto
+    {
+        FirstName = FirstName,
+        LastName = LastName,
+        Email = Email,
+        Phone = Phone,
+        Password = Password,
+        UserType = SelectedUserType
+    };
+    
+    <span class="keyword">var</span> result = <span class="keyword">await</span> _userService.CreateUserAsync(dto, _currentUserId);
+    
+    <span class="keyword">if</span> (result.Succeeded)
+    {
+        <span class="keyword">await</span> Application.Current.MainPage.DisplayAlert(<span class="string">"Başarılı"</span>, <span class="string">"Kullanıcı oluşturuldu"</span>, <span class="string">"Tamam"</span>);
+        <span class="keyword">await</span> Shell.Current.GoToAsync(<span class="string">".."</span>);
+    }
+    <span class="keyword">else</span>
+    {
+        <span class="keyword">var</span> errors = <span class="keyword">string</span>.Join(<span class="string">"\n"</span>, result.Errors.Select(e => e.Description));
+        <span class="keyword">await</span> Application.Current.MainPage.DisplayAlert(<span class="string">"Hata"</span>, errors, <span class="string">"Tamam"</span>);
+    }
+}</code></pre>
+                </div>
+
+                <h3>Kullanıcı Güncelleme - UpdateUserAsync</h3>
+                <pre><code><span class="comment">// Tüm platformlarda aynı kullanım</span>
+<span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateUserDto
+{
+    FirstName = <span class="string">"Ahmet"</span>,
+    LastName = <span class="string">"Yılmaz"</span>,
+    Phone = <span class="string">"5551234567"</span>,
+    IsActive = <span class="keyword">true</span>
+};
+
+<span class="keyword">var</span> result = <span class="keyword">await</span> _userService.UpdateUserAsync(userId, dto, currentUserId);</code></pre>
+
+                <h3>Kullanıcı Silme - DeleteUserAsync</h3>
+                <pre><code><span class="comment">// Soft delete</span>
+<span class="keyword">var</span> result = <span class="keyword">await</span> _userService.DeleteUserAsync(userId, currentUserId);
+
+<span class="keyword">if</span> (result.Succeeded)
+{
+    <span class="comment">// Başarılı</span>
+}</code></pre>
+
+                <h3>Kullanıcı Getirme İşlemleri</h3>
+                <pre><code><span class="comment">// ID ile kullanıcı getir</span>
+<span class="keyword">var</span> user = <span class="keyword">await</span> _userService.GetUserByIdAsync(userId);
+
+<span class="comment">// Email ile kullanıcı getir</span>
+<span class="keyword">var</span> user = <span class="keyword">await</span> _userService.GetUserByEmailAsync(<span class="string">"ahmet@example.com"</span>);
+
+<span class="comment">// Tipe göre kullanıcıları getir</span>
+<span class="keyword">var</span> backofficeUsers = <span class="keyword">await</span> _userService.GetUsersByTypeAsync(UserType.Backoffice);
+<span class="keyword">var</span> tenantUsers = <span class="keyword">await</span> _userService.GetUsersByTypeAsync(UserType.Tenant);
+<span class="keyword">var</span> dealerUsers = <span class="keyword">await</span> _userService.GetUsersByTypeAsync(UserType.Dealer);
+
+<span class="comment">// Tüm kullanıcıları getir</span>
+<span class="keyword">var</span> allUsers = <span class="keyword">await</span> _userService.GetAllUsersAsync();</code></pre>
+
+                <h3>Şifre İşlemleri</h3>
+                <pre><code><span class="comment">// Şifre kontrolü</span>
+<span class="keyword">var</span> isPasswordValid = <span class="keyword">await</span> _userService.CheckPasswordAsync(user, password);
+
+<span class="comment">// Şifre değiştirme</span>
+<span class="keyword">var</span> result = <span class="keyword">await</span> _userService.ChangePasswordAsync(
+    userId, 
+    <span class="string">"EskiSifre123!"</span>, 
+    <span class="string">"YeniSifre123!"</span>
+);</code></pre>
+            </section>
+
+            <section id="role-service">
+                <h2>🎭 IRoleService</h2>
+                
+                <h3>Rol Oluşturma - CreateRoleAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> CreateRoleDto
+{
+    Name = <span class="string">"Satış Temsilcisi"</span>,
+    Description = <span class="string">"Satış işlemlerini yönetir"</span>,
+    RoleType = RoleType.Backoffice
+};
+
+<span class="keyword">var</span> result = <span class="keyword">await</span> _roleService.CreateRoleAsync(dto, currentUserId);</code></pre>
+
+                <h3>Rol Güncelleme - UpdateRoleAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateRoleDto
+{
+    Name = <span class="string">"Kıdemli Satış Temsilcisi"</span>,
+    Description = <span class="string">"Satış işlemlerini yönetir ve ekip liderliği yapar"</span>,
+    IsActive = <span class="keyword">true</span>
+};
+
+<span class="keyword">var</span> result = <span class="keyword">await</span> _roleService.UpdateRoleAsync(roleId, dto, currentUserId);</code></pre>
+
+                <h3>Kullanıcıya Rol Atama/Kaldırma</h3>
+                <pre><code><span class="comment">// Rol atama</span>
+<span class="keyword">var</span> result = <span class="keyword">await</span> _roleService.AssignRoleToUserAsync(userId, roleId);
+
+<span class="comment">// Rol kaldırma</span>
+<span class="keyword">var</span> result = <span class="keyword">await</span> _roleService.RemoveRoleFromUserAsync(userId, roleId);</code></pre>
+
+                <h3>Rol Listeleme</h3>
+                <pre><code><span class="comment">// Tüm rolleri getir</span>
+<span class="keyword">var</span> allRoles = <span class="keyword">await</span> _roleService.GetAllRolesAsync();
+
+<span class="comment">// Tipe göre rolleri getir</span>
+<span class="keyword">var</span> backofficeRoles = <span class="keyword">await</span> _roleService.GetRolesByTypeAsync(RoleType.Backoffice);
+<span class="keyword">var</span> tenantRoles = <span class="keyword">await</span> _roleService.GetRolesByTypeAsync(RoleType.Tenant);
+
+<span class="comment">// Kullanıcının rollerini getir</span>
+<span class="keyword">var</span> userRoles = <span class="keyword">await</span> _roleService.GetUserRolesAsync(userId);</code></pre>
+
+                <div class="note">
+                    <strong>💡 Örnek Kullanım - Blazor:</strong>
+                    <pre><code>@inject IRoleService RoleService
+
+&lt;select @bind="selectedRoleId"&gt;
+    @foreach (var role in roles)
+    {
+        &lt;option value="@role.Id"&gt;@role.Name&lt;/option&gt;
+    }
+&lt;/select&gt;
+
+@code {
+    <span class="keyword">private</span> List&lt;Role&gt; roles;
+    <span class="keyword">private int</span> selectedRoleId;
+    
+    <span class="keyword">protected override async</span> Task <span class="method">OnInitializedAsync</span>()
+    {
+        roles = <span class="keyword">await</span> RoleService.GetAllRolesAsync();
+    }
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="permission-service">
+                <h2>🔑 IPermissionService</h2>
+                
+                <h3>İzin Oluşturma - CreatePermissionAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> CreatePermissionDto
+{
+    Name = <span class="string">"Firma Oluşturma"</span>,
+    Code = <span class="string">"company.create"</span>,
+    Module = <span class="string">"Firmalar"</span>,
+    Description = <span class="string">"Yeni firma kaydı oluşturabilir"</span>
+};
+
+<span class="keyword">var</span> permission = <span class="keyword">await</span> _permissionService.CreatePermissionAsync(dto, currentUserId);</code></pre>
+
+                <h3>İzin Güncelleme - UpdatePermissionAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdatePermissionDto
+{
+    Name = <span class="string">"Firma Ekleme"</span>,
+    Description = <span class="string">"Yeni firma kaydı ekleyebilir"</span>,
+    IsActive = <span class="keyword">true</span>
+};
+
+<span class="keyword">var</span> permission = <span class="keyword">await</span> _permissionService.UpdatePermissionAsync(permissionId, dto, currentUserId);</code></pre>
+
+                <h3>Role İzin Atama/Kaldırma</h3>
+                <pre><code><span class="comment">// Role izin atama</span>
+<span class="keyword">var</span> success = <span class="keyword">await</span> _permissionService.AssignPermissionToRoleAsync(roleId, permissionId, currentUserId);
+
+<span class="comment">// Rolden izin kaldırma</span>
+<span class="keyword">var</span> success = <span class="keyword">await</span> _permissionService.RemovePermissionFromRoleAsync(roleId, permissionId, currentUserId);</code></pre>
+
+                <h3>İzin Listeleme</h3>
+                <pre><code><span class="comment">// Tüm izinleri getir</span>
+<span class="keyword">var</span> allPermissions = <span class="keyword">await</span> _permissionService.GetAllPermissionsAsync();
+
+<span class="comment">// Modüle göre izinleri getir</span>
+<span class="keyword">var</span> companyPermissions = <span class="keyword">await</span> _permissionService.GetPermissionsByModuleAsync(<span class="string">"Firmalar"</span>);
+
+<span class="comment">// Rolün izinlerini getir</span>
+<span class="keyword">var</span> rolePermissions = <span class="keyword">await</span> _permissionService.GetRolePermissionsAsync(roleId);</code></pre>
+
+                <h3>Kullanıcı İzin Kontrolü - UserHasPermissionAsync</h3>
+                <pre><code><span class="comment">// Kullanıcının belirli bir izni var mı kontrol et</span>
+<span class="keyword">var</span> hasPermission = <span class="keyword">await</span> _permissionService.UserHasPermissionAsync(userId, <span class="string">"company.create"</span>);
+
+<span class="keyword">if</span> (hasPermission)
+{
+    <span class="comment">// İşleme izin ver</span>
+}
+<span class="keyword">else</span>
+{
+    <span class="comment">// Yetkisiz erişim</span>
+}</code></pre>
+
+                <div class="success">
+                    <strong>✓ Örnek Kullanım - WinForms Button Enable/Disable:</strong>
+                    <pre><code><span class="keyword">private async void</span> <span class="method">LoadPermissions</span>()
+{
+    btnCreateCompany.Enabled = <span class="keyword">await</span> _permissionService.UserHasPermissionAsync(_currentUserId, <span class="string">"company.create"</span>);
+    btnEditCompany.Enabled = <span class="keyword">await</span> _permissionService.UserHasPermissionAsync(_currentUserId, <span class="string">"company.update"</span>);
+    btnDeleteCompany.Enabled = <span class="keyword">await</span> _permissionService.UserHasPermissionAsync(_currentUserId, <span class="string">"company.delete"</span>);
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <strong>✓ Örnek Kullanım - Blazor Component:</strong>
+                    <pre><code>@inject IPermissionService PermissionService
+
+@if (canCreate)
+{
+    &lt;button @onclick="CreateCompany"&gt;Firma Oluştur&lt;/button&gt;
+}
+
+@code {
+    <span class="keyword">private bool</span> canCreate;
+    
+    <span class="keyword">protected override async</span> Task <span class="method">OnInitializedAsync</span>()
+    {
+        <span class="keyword">var</span> authState = <span class="keyword">await</span> AuthStateProvider.GetAuthenticationStateAsync();
+        <span class="keyword">var</span> userId = <span class="keyword">int</span>.Parse(authState.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        
+        canCreate = <span class="keyword">await</span> PermissionService.UserHasPermissionAsync(userId, <span class="string">"company.create"</span>);
+    }
+}</code></pre>
+                </div>
+            </section>
+
+            <section id="hierarchy-service">
+                <h2>🌳 IUserHierarchyService</h2>
+                
+                <h3>Hiyerarşi Oluşturma - CreateHierarchyAsync</h3>
+                <pre><code><span class="comment">// Alt kullanıcı ilişkisi oluştur</span>
+<span class="keyword">var</span> hierarchy = <span class="keyword">await</span> _userHierarchyService.CreateHierarchyAsync(
+    parentUserId: <span class="number">5</span>, 
+    childUserId: <span class="number">12</span>, 
+    createdBy: currentUserId
+);
+
+<span class="keyword">if</span> (hierarchy != <span class="keyword">null</span>)
+{
+    <span class="comment">// Hiyerarşi başarıyla oluşturuldu</span>
+}</code></pre>
+
+                <h3>Hiyerarşi Silme - DeleteHierarchyAsync</h3>
+                <pre><code><span class="keyword">var</span> success = <span class="keyword">await</span> _userHierarchyService.DeleteHierarchyAsync(hierarchyId, currentUserId);</code></pre>
+
+                <h3>Alt Kullanıcıları Getirme - GetChildUsersAsync</h3>
+                <pre><code><span class="comment">// Bir kullanıcının tüm alt kullanıcılarını getir</span>
+<span class="keyword">var</span> childUsers = <span class="keyword">await</span> _userHierarchyService.GetChildUsersAsync(parentUserId);
+
+<span class="keyword">foreach</span> (<span class="keyword">var</span> child <span class="keyword">in</span> childUsers)
+{
+    Console.WriteLine(<span class="string">$"Alt Kullanıcı: {child.FirstName} {child.LastName}"</span>);
+}</code></pre>
+
+                <h3>Üst Kullanıcıyı Getirme - GetParentUserAsync</h3>
+                <pre><code><span class="comment">// Bir kullanıcının üst kullanıcısını getir</span>
+<span class="keyword">var</span> parent = <span class="keyword">await</span> _userHierarchyService.GetParentUserAsync(childUserId);
+
+<span class="keyword">if</span> (parent != <span class="keyword">null</span>)
+{
+    Console.WriteLine(<span class="string">$"Üst Kullanıcı: {parent.FirstName} {parent.LastName}"</span>);
+}</code></pre>
+
+                <h3>Hiyerarşi Kontrolü - IsUserChildOfAsync</h3>
+                <pre><code><span class="comment">// Bir kullanıcı başka bir kullanıcının alt kullanıcısı mı?</span>
+<span class="keyword">var</span> isChild = <span class="keyword">await</span> _userHierarchyService.IsUserChildOfAsync(parentUserId, childUserId);
+
+<span class="keyword">if</span> (isChild)
+{
+    <span class="comment">// Kullanıcı, belirtilen kullanıcının alt kullanıcısıdır</span>
+}</code></pre>
+
+                <div class="note">
+                    <strong>💡 Kullanım Senaryosu - Tenant Kullanıcıları:</strong>
+                    <pre><code><span class="comment">// Örnek: Bir tenant kullanıcısının altında birden fazla alt kullanıcı var</span>
+<span class="keyword">var</span> mainTenantUser = <span class="keyword">await</span> _userService.GetUserByIdAsync(<span class="number">10</span>);
+
+<span class="comment">// Ana kullanıcının altına 3 alt kullanıcı ekle</span>
+<span class="keyword">await</span> _userHierarchyService.CreateHierarchyAsync(<span class="number">10</span>, <span class="number">11</span>, currentUserId);
+<span class="keyword">await</span> _userHierarchyService.CreateHierarchyAsync(<span class="number">10</span>, <span class="number">12</span>, currentUserId);
+<span class="keyword">await</span> _userHierarchyService.CreateHierarchyAsync(<span class="number">10</span>, <span class="number">13</span>, currentUserId);
+
+<span class="comment">// Ana kullanıcının tüm alt kullanıcılarını listele</span>
+<span class="keyword">var</span> subUsers = <span class="keyword">await</span> _userHierarchyService.GetChildUsersAsync(<span class="number">10</span>);
+<span class="comment">// subUsers.Count = 3</span></code></pre>
+                </div>
+
+                <div class="warning">
+                    <strong>⚠️ Önemli Not:</strong> Bir kullanıcının sadece bir üst kullanıcısı olabilir ancak birden fazla alt kullanıcısı olabilir.
+                </div>
+            </section>
+
+            <section id="discount-service">
+                <h2>💰 IDiscountAuthorityService</h2>
+                
+                <h3>İndirim Yetkisi Oluşturma - CreateAuthorityAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> CreateDiscountAuthorityDto
+{
+    UserId = <span class="number">5</span>,
+    MaxDiscountRate = <span class="number">15.50m</span>
+};
+
+<span class="keyword">var</span> authority = <span class="keyword">await</span> _discountAuthorityService.CreateAuthorityAsync(dto, currentUserId);
+
+<span class="keyword">if</span> (authority != <span class="keyword">null</span>)
+{
+    <span class="comment">// İndirim yetkisi başarıyla tanımlandı</span>
+}</code></pre>
+
+                <h3>İndirim Yetkisi Güncelleme - UpdateAuthorityAsync</h3>
+                <pre><code><span class="keyword">var</span> dto = <span class="keyword">new</span> UpdateDiscountAuthorityDto
+{
+    MaxDiscountRate = <span class="number">20.00m</span>,
+    IsActive = <span class="keyword">true</span>
+};
+
+<span class="keyword">var</span> authority = <span class="keyword">await</span> _discountAuthorityService.UpdateAuthorityAsync(authorityId, dto, currentUserId);</code></pre>
+
+                <h3>Kullanıcının İndirim Yetkisini Getirme - GetUserDiscountAuthorityAsync</h3>
+                <pre><code><span class="keyword">var</span> authority = <span class="keyword">await</span> _discountAuthorityService.GetUserDiscountAuthorityAsync(userId);
+
+<span class="keyword">if</span> (authority != <span class="keyword">null</span>)
+{
+    Console.WriteLine(<span class="string">$"Maksimum İndirim Oranı: %{authority.MaxDiscountRate}"</span>);
+}</code></pre>
+
+                <h3>İndirim Yetkisi Kontrolü - CanUserApplyDiscountAsync</h3>
+                <pre><code><span class="comment">// Kullanıcı belirli bir indirim oranını uygulayabilir mi?</span>
+<span class="keyword">var</span> canApply = <span class="keyword">await</span> _discountAuthorityService.CanUserApplyDiscountAsync(userId, <span class="number">12.5m</span>);
+
+<span class="keyword">if</span> (canApply)
+{
+    <span class="comment">// İndirim uygulanabilir</span>
+}
+<span class="keyword">else</span>
+{
+    <span class="comment">// İndirim yetkisi aşılıyor, üst yönetim onayı gerekli</span>
+}</code></pre>
+
+                <div class="success">
+                    <strong>✓ Gerçek Senaryo - Teklif Oluşturma:</strong>
+                    <pre><code><span class="comment">// Web API Controller</span>
+[<span class="type">HttpPost</span>(<span class="string">"offers"</span>)]
+<span class="keyword">public async</span> Task&lt;IActionResult&gt; <span class="method">CreateOffer</span>([FromBody] CreateOfferDto dto)
+{
+    <span class="keyword">var</span> currentUserId = <span class="keyword">int</span>.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+    
+    <span class="comment">// İndirim kontrolü</span>
+    <span class="keyword">if</span> (dto.DiscountRate > <span class="number">0</span>)
+    {
+        <span class="keyword">var</span> canApply = <span class="keyword">await</span> _discountAuthorityService.CanUserApplyDiscountAsync(
+            currentUserId, 
+            dto.DiscountRate
+        );
+        
+        <span class="keyword">if</span> (!canApply)
+        {
+            <span class="comment">// Üst yönetim onayına gönder</span>
+            <span class="keyword">var</span> approval = <span class="keyword">new</span> OfferApproval
+            {
+                OfferId = offer.Id,
+                RequestedUserId = currentUserId,
+                ApproverUserId = GetManagerUserId(),
+                IsApproved = <span class="keyword">false</span>
+            };
+            
+            <span class="keyword">await</span> _context.OfferApprovals.AddAsync(approval);
+            <span class="keyword">await</span> _context.SaveChangesAsync();
+            
+            <span class="keyword">return</span> Ok(<span class="keyword">new</span> { 
+                message = <span class="string">"İndirim yetkiniz bu oranı aşıyor. Onay için yöneticinize iletildi."</span>,
+                requiresApproval = <span class="keyword">true</span>
+            });
+        }
+    }
+    
+    <span class="comment">// Teklif oluşturma işlemine devam et</span>
+    <span class="comment">// ...</span>
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <strong>✓ WinForms Örneği - Dinamik İndirim Kontrolü:</strong>
+                    <pre><code><span class="keyword">private async void</span> <span class="method">txtDiscountRate_TextChanged</span>(<span class="keyword">object</span> sender, EventArgs e)
+{
+    <span class="keyword">if</span> (<span class="keyword">decimal</span>.TryParse(txtDiscountRate.Text, <span class="keyword">out decimal</span> discountRate))
+    {
+        <span class="keyword">var</span> canApply = <span class="keyword">await</span> _discountAuthorityService.CanUserApplyDiscountAsync(
+            _currentUserId, 
+            discountRate
+        );
+        
+        <span class="keyword">if</span> (canApply)
+        {
+            lblDiscountWarning.Text = <span class="string">"✓ İndirim uygulanabilir"</span>;
+            lblDiscountWarning.ForeColor = Color.Green;
+            btnCreateOffer.Enabled = <span class="keyword">true</span>;
+        }
+        <span class="keyword">else</span>
+        {
+            lblDiscountWarning.Text = <span class="string">"⚠ İndirim yetkinizi aşıyor. Yönetici onayı gerekli."</span>;
+            lblDiscountWarning.ForeColor = Color.Orange;
+            btnCreateOffer.Enabled = <span class="keyword">false</span>;
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="success">
+                    <strong>✓ Blazor Örneği - Gerçek Zamanlı İndirim Kontrolü:</strong>
+                    <pre><code>@inject IDiscountAuthorityService DiscountService
+
+&lt;input type="number" @bind="discountRate" @bind:event="oninput" /&gt;
+
+@if (showWarning)
+{
+    &lt;div class="alert alert-warning"&gt;
+        ⚠ İndirim yetkinizi aşıyor. Yönetici onayı gerekli.
+    &lt;/div&gt;
+}
+else if (discountRate > 0)
+{
+    &lt;div class="alert alert-success"&gt;
+        ✓ İndirim uygulanabilir
+    &lt;/div&gt;
+}
+
+@code {
+    <span class="keyword">private decimal</span> discountRate;
+    <span class="keyword">private bool</span> showWarning;
+    <span class="keyword">private int</span> currentUserId;
+    
+    <span class="keyword">protected override async</span> Task <span class="method">OnParametersSetAsync</span>()
+    {
+        <span class="keyword">if</span> (discountRate > <span class="number">0</span>)
+        {
+            <span class="keyword">var</span> canApply = <span class="keyword">await</span> DiscountService.CanUserApplyDiscountAsync(currentUserId, discountRate);
+            showWarning = !canApply;
+        }
+    }
+}</code></pre>
+                </div>
+            </section>
+
+            <section>
+                <h2>📋 Servis Özet Tablosu</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servis</th>
+                            <th>Metod</th>
+                            <th>Açıklama</th>
+                            <th>Dönüş Tipi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="8"><strong>IUserService</strong></td>
+                            <td>CreateUserAsync</td>
+                            <td>Yeni kullanıcı oluşturur</td>
+                            <td>Task&lt;IdentityResult&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateUserAsync</td>
+                            <td>Kullanıcı bilgilerini günceller</td>
+                            <td>Task&lt;IdentityResult&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteUserAsync</td>
+                            <td>Kullanıcıyı siler (soft delete)</td>
+                            <td>Task&lt;IdentityResult&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetUserByIdAsync</td>
+                            <td>ID ile kullanıcı getirir</td>
+                            <td>Task&lt;User&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetUserByEmailAsync</td>
+                            <td>Email ile kullanıcı getirir</td>
+                            <td>Task&lt;User&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetUsersByTypeAsync</td>
+                            <td>Tipe göre kullanıcıları getirir</td>
+                            <td>Task&lt;List&lt;User&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>CheckPasswordAsync</td>
+                            <td>Şifre doğrulaması yapar</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>ChangePasswordAsync</td>
+                            <td>Kullanıcı şifresini değiştirir</td>
+                            <td>Task&lt;IdentityResult&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="7"><strong>IRoleService</strong></td>
+                            <td>CreateRoleAsync</td>
+                            <td>Yeni rol oluşturur</td>
+                            <td>Task&lt;IdentityResult&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateRoleAsync</td>
+                            <td>Rol bilgilerini günceller</td>
+                            <td>Task&lt;IdentityResult&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>DeleteRoleAsync</td>
+                            <td>Rolü siler (soft delete)</td>
+                            <td>Task&lt;IdentityResult&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>AssignRoleToUserAsync</td>
+                            <td>Kullanıcıya rol atar</td>
+                            <td>Task&lt;IdentityResult&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>RemoveRoleFromUserAsync</td>
+                            <td>Kullanıcıdan rol kaldırır</td>
+                            <td>Task&lt;IdentityResult&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetRolesByTypeAsync</td>
+                            <td>Tipe göre rolleri getirir</td>
+                            <td>Task&lt;List&lt;Role&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetUserRolesAsync</td>
+                            <td>Kullanıcının rollerini getirir</td>
+                            <td>Task&lt;List&lt;Role&gt;&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="7"><strong>IPermissionService</strong></td>
+                            <td>CreatePermissionAsync</td>
+                            <td>Yeni izin oluşturur</td>
+                            <td>Task&lt;Permission&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdatePermissionAsync</td>
+                            <td>İzin bilgilerini günceller</td>
+                            <td>Task&lt;Permission&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>AssignPermissionToRoleAsync</td>
+                            <td>Role izin atar</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>RemovePermissionFromRoleAsync</td>
+                            <td>Rolden izin kaldırır</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetPermissionsByModuleAsync</td>
+                            <td>Modüle göre izinleri getirir</td>
+                            <td>Task&lt;List&lt;Permission&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetRolePermissionsAsync</td>
+                            <td>Rolün izinlerini getirir</td>
+                            <td>Task&lt;List&lt;Permission&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UserHasPermissionAsync</td>
+                            <td>Kullanıcının izni var mı kontrol eder</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="4"><strong>IUserHierarchyService</strong></td>
+                            <td>CreateHierarchyAsync</td>
+                            <td>Kullanıcı hiyerarşisi oluşturur</td>
+                            <td>Task&lt;UserHierarchy&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetChildUsersAsync</td>
+                            <td>Alt kullanıcıları getirir</td>
+                            <td>Task&lt;List&lt;User&gt;&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetParentUserAsync</td>
+                            <td>Üst kullanıcıyı getirir</td>
+                            <td>Task&lt;User&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>IsUserChildOfAsync</td>
+                            <td>Hiyerarşi ilişkisini kontrol eder</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                        
+                        <tr>
+                            <td rowspan="4"><strong>IDiscountAuthorityService</strong></td>
+                            <td>CreateAuthorityAsync</td>
+                            <td>İndirim yetkisi tanımlar</td>
+                            <td>Task&lt;DiscountAuthority&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>UpdateAuthorityAsync</td>
+                            <td>İndirim yetkisini günceller</td>
+                            <td>Task&lt;DiscountAuthority&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>GetUserDiscountAuthorityAsync</td>
+                            <td>Kullanıcının indirim yetkisini getirir</td>
+                            <td>Task&lt;DiscountAuthority&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>CanUserApplyDiscountAsync</td>
+                            <td>İndirim uygulayabilir mi kontrol eder</td>
+                            <td>Task&lt;bool&gt;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section>
+                <h2>⚡ Dependency Injection Kurulumu</h2>
+                
+                <h3>Program.cs / Startup.cs</h3>
+                <pre><code><span class="comment">// Servis kayıtları</span>
+builder.Services.AddScoped&lt;IUserService, UserService&gt;();
+builder.Services.AddScoped&lt;IRoleService, RoleService&gt;();
+builder.Services.AddScoped&lt;IPermissionService, PermissionService&gt;();
+builder.Services.AddScoped&lt;IUserHierarchyService, UserHierarchyService&gt;();
+builder.Services.AddScoped&lt;IDiscountAuthorityService, DiscountAuthorityService&gt;();</code></pre>
+
+                <h3>Constructor Injection Kullanımı</h3>
+                <pre><code><span class="comment">// Web API Controller</span>
+<span class="keyword">public class</span> <span class="type">UserController</span> : ControllerBase
+{
+    <span class="keyword">private readonly</span> IUserService _userService;
+    <span class="keyword">private readonly</span> IRoleService _roleService;
+    <span class="keyword">private readonly</span> IPermissionService _permissionService;
+    
+    <span class="keyword">public</span> UserController(
+        IUserService userService,
+        IRoleService roleService,
+        IPermissionService permissionService)
+    {
+        _userService = userService;
+        _roleService = roleService;
+        _permissionService = permissionService;
+    }
+}
+
+<span class="comment">// Blazor Component</span>
+@inject IUserService UserService
+@inject IRoleService RoleService
+@inject IPermissionService PermissionService
+
+<span class="comment">// WinForms (Manual DI Container kullanarak)</span>
+<span class="keyword">public class</span> <span class="type">UserForm</span> : Form
+{
+    <span class="keyword">private readonly</span> IUserService _userService;
+    
+    <span class="keyword">public</span> UserForm(IUserService userService)
+    {
+        _userService = userService;
+        InitializeComponent();
+    }
+}</code></pre>
+            </section>
+
+            <section>
+                <h2>🔒 Güvenlik ve En İyi Pratikler</h2>
+                
+                <div class="warning">
+                    <h4>1. Soft Delete Kullanımı</h4>
+                    <p>Tüm silme işlemleri soft delete olarak yapılır. Hard delete için EntityBase'deki IsHardDelete property'si true yapılmalıdır.</p>
+                    <pre><code><span class="keyword">var</span> entity = <span class="keyword">await</span> _context.Users.FindAsync(userId);
+entity.IsHardDelete = <span class="keyword">true</span>; <span class="comment">// Hard delete için</span>
+_context.Users.Remove(entity);
+<span class="keyword">await</span> _context.SaveChangesAsync();</code></pre>
+                </div>
+
+                <div class="warning">
+                    <h4>2. Audit Trail</h4>
+                    <p>Her işlemde CreatedBy, UpdatedBy, DeletedBy alanları otomatik güncellenir. Bu sayede kim ne yaptı takibi yapılabilir.</p>
+                </div>
+
+                <div class="warning">
+                    <h4>3. Query Filter</h4>
+                    <p>DbContext'te global query filter tanımlıdır. Soft delete edilmiş kayıtlar otomatik filtrelenir. Soft delete edilmiş kayıtları görmek için:</p>
+                    <pre><code><span class="keyword">var</span> allUsers = <span class="keyword">await</span> _context.Users
+    .IgnoreQueryFilters()
+    .ToListAsync();</code></pre>
+                </div>
+
+                <div class="note">
+                    <h4>4. Async/Await Kullanımı</h4>
+                    <p>Tüm servis metodları asenkron olarak tasarlanmıştır. Mutlaka await kullanarak çağırın.</p>
+                </div>
+
+                <div class="note">
+                    <h4>5. Error Handling</h4>
+                    <p>IdentityResult dönen metodlarda mutlaka Succeeded kontrolü yapın ve Errors koleksiyonunu kontrol edin.</p>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Ödüyo CRM - Servis Katmanı Kullanım Dokümantasyonu</p>
+        </footer>
+    </div>
+
+    <script>
+        function showPlatform(section, platform) {
+            // Tüm tab'ları pasif yap
+            const tabs = document.querySelectorAll(`#${section} .platform-tab`);
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Tüm içerikleri gizle
+            const contents = document.querySelectorAll(`[id^="${section}-"]`);
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Seçili tab ve içeriği aktif yap
+            event.target.classList.add('active');
+            document.getElementById(`${section}-${platform}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>
