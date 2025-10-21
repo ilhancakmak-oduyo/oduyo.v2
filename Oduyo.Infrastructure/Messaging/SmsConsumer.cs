@@ -19,7 +19,7 @@ namespace Oduyo.Infrastructure.Messaging
 
             try
             {
-                _logger.LogInformation("Processing SMS to {Phone} for {EntityType} {EntityId}", 
+                _logger.LogInformation("Processing SMS to {Phone} for {EntityType} {EntityId}",
                     message.Phone, message.EntityType, message.EntityId);
 
                 // TODO: Implement actual SMS sending logic with your SMS provider

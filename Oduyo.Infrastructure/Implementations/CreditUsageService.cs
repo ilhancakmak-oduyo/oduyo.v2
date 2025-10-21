@@ -1,11 +1,9 @@
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Oduyo.DataAccess.DataContexts;
-using Oduyo.Domain.Constants;
 using Oduyo.Domain.Entities;
 using Oduyo.Domain.Messages;
-using Oduyo.Infrastructure.Interfaces;
 
 namespace Oduyo.Infrastructure.Implementations
 {

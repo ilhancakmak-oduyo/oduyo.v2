@@ -19,7 +19,7 @@ namespace Oduyo.Infrastructure.Messaging
 
             try
             {
-                _logger.LogInformation("Processing Email to {To} with subject {Subject}", 
+                _logger.LogInformation("Processing Email to {To} with subject {Subject}",
                     message.To, message.Subject);
 
                 // TODO: Implement actual email sending logic with your email provider

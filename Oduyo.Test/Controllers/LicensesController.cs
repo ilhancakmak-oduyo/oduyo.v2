@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-using Oduyo.Infrastructure.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
 using Oduyo.Domain.DTOs;
+using Oduyo.Infrastructure.Interfaces;
 
 namespace Oduyo.Test.Controllers
 {

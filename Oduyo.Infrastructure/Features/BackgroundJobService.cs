@@ -1,9 +1,9 @@
 ﻿using Hangfire;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Oduyo.DataAccess.DataContexts;
 using Oduyo.Domain.Entities;
 using Oduyo.Domain.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace Oduyo.Infrastructure.Features
 {
@@ -140,7 +140,7 @@ namespace Oduyo.Infrastructure.Features
 
                 var commissions = await _context.DealerCommissions
                     .Include(dc => dc.Dealer)
-                    .Where(dc => dc.CreatedAt >= startOfMonth && 
+                    .Where(dc => dc.CreatedAt >= startOfMonth &&
                                 dc.CreatedAt <= endOfMonth &&
                                 dc.Status == CommissionStatus.Approved)
                     .GroupBy(dc => dc.DealerId)
